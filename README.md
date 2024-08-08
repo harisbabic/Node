@@ -267,9 +267,20 @@ Node/
 1. README.md
 2. Node-Project-Current-State.txt
 3. Action-Plan-Master.txt
-4. functionality-in-queue-for-implementing.txt
-5. projects-ai-toolbox-server-src-tests-utils.txt
-6. projects-web-tools-client-server.txt
+4. Comprehensive-Integration-Plan-Incorporating-Features-from-Web-Tools-and-DemTech-into-d-Node-Project.txt
+5. functionality-in-queue-for-implementing.txt
+6. projects-ai-toolbox-server-src-tests-utils.txt
+7. projects-web-tools-client-server.txt
+
+# File Paths (LINKS)
+1. https://github.com/harisbabic/Node/blob/main/README.md
+2. https://github.com/harisbabic/Node/blob/main/Node-Project-Current-State.txt
+3. https://github.com/harisbabic/Node/blob/main/Action-Plan-Master.txt
+4. https://github.com/harisbabic/Node/blob/main/Comprehensive-Integration-Plan-Incorporating-Features-from-Web-Tools-and-DemTech-into-d-Node-Project.txt
+5. https://github.com/harisbabic/Node/blob/main/functionality-in-queue-for-implementing.txt
+6. https://github.com/harisbabic/Node/blob/main/projects-ai-toolbox-server-src-tests-utils.txt
+7. https://github.com/harisbabic/Node/blob/main/projects-web-tools-client-server.txt
+
 
 # What I am attempting to do with this repository, is to have a complete reference and answer to questions such as whats our current project state? What section are we working on currently?, and What functionality will we be implementing still? As we implement features and move forward in the project, I’ll be updating these files to reflect our state and action plan. This report should be able to help keep us on track. 
 
