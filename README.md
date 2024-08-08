@@ -1,313 +1,134 @@
-p# Node
-/d/Node environment design to automate the setup of new projects
+```markdown
+# Node Project Management Hub
 
-Project Structure:
+## Overview
+This repository serves as a central management hub for the `/d/Node` project. It contains documentation on the current project state, action plans, and code snippets for future implementation.
 
-Node/
-├── docs
-│   │   ├── Comprehensive-Integration-Plan-Incorporating-Features-from-Web-Tools-and-DemTech-into-d-Node-Project
-│   │   ├── extra-sh-scripts-list.txt
-│   │   ├── implementation-guide.md
-│   │   ├── noloco-theme-setup.md
-│   │   └── postgres.md
-├── git
-│   │   └── Node
-│       │       └── LICENSE
-├── projects
-│   │   └── ultimate
-│       │       ├── .env
-│       │       ├── .gitignore
-│       │       ├── client
-│       │   │       │   ├── .babelrc
-│       │   │       │   ├── .gitignore
-│       │   │       │   ├── .storybook
-│       │   │   │       │   │   ├── main.js
-│       │   │   │       │   │   └── preview.js
-│       │   │       │   ├── components.json
-│       │   │       │   ├── package-lock.json
-│       │   │       │   ├── package.json
-│       │   │       │   ├── postcss.config.js
-│       │   │       │   ├── public
-│       │   │   │       │   │   ├── favicon.ico
-│       │   │   │       │   │   ├── index.html
-│       │   │   │       │   │   ├── locales
-│       │   │   │   │       │   │   │   ├── en
-│       │   │   │   │   │       │   │   │   │   └── translation.json
-│       │   │   │   │       │   │   │   └── es
-│       │   │   │       │       │   │   │       └── translation.json
-│       │   │   │       │   │   ├── logo192.png
-│       │   │   │       │   │   ├── logo512.png
-│       │   │   │       │   │   ├── manifest.json
-│       │   │   │       │   │   ├── robots.txt
-│       │   │   │       │   │   └── sitemap.xml
-│       │   │       │   ├── README.md
-│       │   │       │   ├── scripts
-│       │   │   │       │   │   └── generate-sitemap.js
-│       │   │       │   ├── src
-│       │   │   │       │   │   ├── @
-│       │   │   │   │       │   │   │   ├── components
-│       │   │   │   │   │       │   │   │   │   └── ui
-│       │   │   │   │       │       │   │   │   │       └── alert.tsx
-│       │   │   │   │       │   │   │   └── lib
-│       │   │   │       │       │   │   │       └── utils.ts
-│       │   │   │       │   │   ├── App.css
-│       │   │   │       │   │   ├── App.js
-│       │   │   │       │   │   ├── App.test.js
-│       │   │   │       │   │   ├── components
-│       │   │   │   │       │   │   │   ├── AnimatedBox.js
-│       │   │   │   │       │   │   │   ├── Dashboard
-│       │   │   │   │   │       │   │   │   │   ├── Dashboard.js
-│       │   │   │   │   │       │   │   │   │   └── DashboardWidget.js
-│       │   │   │   │       │   │   │   ├── DynamicUI
-│       │   │   │   │   │       │   │   │   │   ├── DynamicForm.js
-│       │   │   │   │   │       │   │   │   │   └── DynamicTable.js
-│       │   │   │   │       │   │   │   ├── FocusTrap.js
-│       │   │   │   │       │   │   │   ├── LanguageSwitcher.js
-│       │   │   │   │       │   │   │   ├── Noloco
-│       │   │   │   │   │       │   │   │   │   ├── Button.js
-│       │   │   │   │   │       │   │   │   │   ├── Card.js
-│       │   │   │   │   │       │   │   │   │   └── Container.js
-│       │   │   │   │       │   │   │   ├── ResponsiveGrid.js
-│       │   │   │   │       │   │   │   └── SEO.js
-│       │   │   │       │   │   ├── i18n
-│       │   │   │   │       │   │   │   └── i18n.js
-│       │   │   │       │   │   ├── index.css
-│       │   │   │       │   │   ├── index.js
-│       │   │   │       │   │   ├── layouts
-│       │   │   │   │       │   │   │   └── DashboardLayout.js
-│       │   │   │       │   │   ├── logo.svg
-│       │   │   │       │   │   ├── redux
-│       │   │   │   │       │   │   │   ├── slices
-│       │   │   │   │   │       │   │   │   │   ├── exampleSlice.js
-│       │   │   │   │   │       │   │   │   │   └── index.js
-│       │   │   │   │       │   │   │   └── store.js
-│       │   │   │       │   │   ├── reportWebVitals.js
-│       │   │   │       │   │   ├── services
-│       │   │   │   │       │   │   │   └── apiService.js
-│       │   │   │       │   │   ├── serviceWorkerRegistration.js
-│       │   │   │       │   │   ├── setupTests.js
-│       │   │   │       │   │   ├── stories
-│       │   │   │   │       │   │   │   ├── assets
-│       │   │   │   │   │       │   │   │   │   ├── accessibility.png
-│       │   │   │   │   │       │   │   │   │   ├── accessibility.svg
-│       │   │   │   │   │       │   │   │   │   ├── addon-library.png
-│       │   │   │   │   │       │   │   │   │   ├── assets.png
-│       │   │   │   │   │       │   │   │   │   ├── avif-test-image.avif
-│       │   │   │   │   │       │   │   │   │   ├── context.png
-│       │   │   │   │   │       │   │   │   │   ├── discord.svg
-│       │   │   │   │   │       │   │   │   │   ├── docs.png
-│       │   │   │   │   │       │   │   │   │   ├── figma-plugin.png
-│       │   │   │   │   │       │   │   │   │   ├── github.svg
-│       │   │   │   │   │       │   │   │   │   ├── share.png
-│       │   │   │   │   │       │   │   │   │   ├── styling.png
-│       │   │   │   │   │       │   │   │   │   ├── testing.png
-│       │   │   │   │   │       │   │   │   │   ├── theming.png
-│       │   │   │   │   │       │   │   │   │   ├── tutorials.svg
-│       │   │   │   │   │       │   │   │   │   └── youtube.svg
-│       │   │   │   │       │   │   │   ├── button.css
-│       │   │   │   │       │   │   │   ├── Button.jsx
-│       │   │   │   │       │   │   │   ├── Button.stories.js
-│       │   │   │   │       │   │   │   ├── Configure.mdx
-│       │   │   │   │       │   │   │   ├── header.css
-│       │   │   │   │       │   │   │   ├── Header.jsx
-│       │   │   │   │       │   │   │   ├── Header.stories.js
-│       │   │   │   │       │   │   │   ├── page.css
-│       │   │   │   │       │   │   │   ├── Page.jsx
-│       │   │   │   │       │   │   │   └── Page.stories.js
-│       │   │   │       │   │   ├── styles
-│       │   │   │   │       │   │   │   ├── abstracts
-│       │   │   │   │   │       │   │   │   │   ├── _mixins.scss
-│       │   │   │   │   │       │   │   │   │   └── _variables.scss
-│       │   │   │   │       │   │   │   ├── base
-│       │   │   │   │   │       │   │   │   │   └── _reset.scss
-│       │   │   │   │       │   │   │   ├── breakpoints.js
-│       │   │   │   │       │   │   │   ├── components
-│       │   │   │   │       │   │   │   ├── GlobalStyle.js
-│       │   │   │   │       │   │   │   ├── layout
-│       │   │   │   │       │   │   │   ├── main.scss
-│       │   │   │   │       │   │   │   ├── NolocoTheme.js
-│       │   │   │   │       │   │   │   ├── pages
-│       │   │   │   │       │   │   │   ├── ResponsiveWrapper.js
-│       │   │   │   │       │   │   │   └── theme.js
-│       │   │   │       │   │   └── utils
-│       │   │       │       │   │       ├── imageOptimization.js
-│       │   │       │       │   │       └── useIntersectionObserver.js
-│       │   │       │   ├── tailwind.config.js
-│       │   │       │   ├── tsconfig.json
-│       │   │       │   └── webpack.config.js
-│       │       ├── docs
-│       │       ├── package-lock.json
-│       │       ├── package.json
-│       │       ├── README.md
-│       │       └── server
-│           │           ├── .env
-│           │           ├── babel.config.js
-│           │           ├── jest.config.js
-│           │           ├── jest.setup.js
-│           │           ├── package-lock.json
-│           │           ├── package.json
-│           │           ├── psql_output.log
-│           │           ├── src
-│           │   │           │   ├── app.js
-│           │   │           │   ├── config
-│           │   │   │           │   │   ├── database.js
-│           │   │   │           │   │   └── passport.js
-│           │   │           │   ├── controllers
-│           │   │   │           │   │   ├── about.js
-│           │   │   │           │   │   ├── contact.js
-│           │   │   │           │   │   └── docs.js
-│           │   │           │   ├── index.js
-│           │   │           │   ├── middleware
-│           │   │   │           │   │   ├── auth.js
-│           │   │   │           │   │   ├── error-handling-middleware.js
-│           │   │   │           │   │   └── errorHandler.js
-│           │   │           │   ├── middlewares
-│           │   │   │           │   │   └── rbacMiddleware.js
-│           │   │           │   ├── models
-│           │   │   │           │   │   ├── about.js
-│           │   │   │           │   │   ├── contact.js
-│           │   │   │           │   │   ├── docs.js
-│           │   │   │           │   │   ├── EmailTemplate.js
-│           │   │   │           │   │   ├── File.js
-│           │   │   │           │   │   ├── User.js
-│           │   │   │           │   │   └── Workflow.js
-│           │   │           │   ├── redux
-│           │   │   │           │   │   └── actions
-│           │   │       │           │   │       ├── authActions.js
-│           │   │       │           │   │       ├── projectActions.js
-│           │   │       │           │   │       └── taskActions.js
-│           │   │           │   ├── routes
-│           │   │   │           │   │   ├── about.js
-│           │   │   │           │   │   ├── auth.js
-│           │   │   │           │   │   ├── authRoutes.js
-│           │   │   │           │   │   ├── contact.js
-│           │   │   │           │   │   ├── docs.js
-│           │   │   │           │   │   ├── dynamicApiRoutes.js
-│           │   │   │           │   │   ├── emailTemplateRoutes.js
-│           │   │   │           │   │   ├── fileRoutes.js
-│           │   │   │           │   │   ├── models.js
-│           │   │   │           │   │   └── workflowRoutes.js
-│           │   │           │   ├── services
-│           │   │   │           │   │   ├── apiGenerationService.js
-│           │   │   │           │   │   ├── emailService.js
-│           │   │   │           │   │   ├── fileService.js
-│           │   │   │           │   │   └── workflowService.js
-│           │   │           │   └── utils
-│           │       │           │       └── apiResponse.js
-│           │           └── tests
-│               │               ├── integration
-│               │   │               │   └── api.test.js
-│               │               └── unit
-│                   │                   └── sample.test.js
-├── shared-utils
-│   │   ├── generate-project-readme.js
-│   │   ├── generate-tree.js
-│   │   ├── package.json
-│   │   └── test-utils
-└── utils
-        ├── continue-master-setup.sh
-        ├── create-api-route.sh
-        ├── d-node-utils.txt
-        ├── FULL_PROJECT_TREE.txt
-        ├── FULL_README.md
-        ├── generate-api-service.sh
-        ├── generate-config.sh
-        ├── generate-layout.sh
-        ├── generate-tests.sh
-        ├── init-git.sh
-        ├── js-utils
-    │       │   ├── d-node-utils-js-utils.txt
-    │       │   ├── generate-ai-tools.js
-    │       │   ├── generate-charts.js
-    │       │   ├── generate-components.js
-    │       │   ├── generate-forms-templates.js
-    │       │   ├── generate-mock-data.js
-    │       │   ├── generate-models.js
-    │       │   ├── generate-readme.js
-    │       │   └── generate-routes.js
-        ├── master-setup.sh
-        ├── run-migrations.sh
-        ├── set-configs.sh
-        ├── setup-accessibility.sh
-        ├── setup-animation.sh
-        ├── setup-api-generation.sh
-        ├── setup-auth.sh
-        ├── setup-component-docs.sh
-        ├── setup-dashboard.sh
-        ├── setup-data-modeling.sh
-        ├── setup-dynamic-ui.sh
-        ├── setup-email-templates.sh
-        ├── setup-file-management.sh
-        ├── setup-i18n.sh
-        ├── setup-noloco-theme.sh
-        ├── setup-performance-optimization.sh
-        ├── setup-postgresql.sh
-        ├── setup-project.sh
-        ├── setup-pwa.sh
-        ├── setup-rbac.sh
-        ├── setup-redux-actions.sh
-        ├── setup-redux.sh
-        ├── setup-responsive-design.sh
-        ├── setup-sass.sh
-        ├── setup-seo.sh
-        ├── setup-state-management.sh
-        ├── setup-styled-components.sh
-        ├── setup-workflows.sh
-
-# Project Documentation
-
-### Node
-
-# analyze the current project using this link : ‘https://github.com/harisbabic/Node’ 
-
-# this link should have the project in the main branch ‘Node-Project-Current-State.txt’ file, along with our ‘Action-Plan-Master.txt’ for moving forward, as well as other ‘*.txt’ that have code written for either functionality we will use to adopt and implement into for our ‘/d/Node’ project, it will have information describing the action plan. 
-
-# Read files in following order:
-
-1. README.md
-2. Node-Project-Current-State.txt
-3. Action-Plan-Master.txt
-4. Comprehensive-Integration-Plan-Incorporating-Features-from-Web-Tools-and-DemTech-into-d-Node-Project.txt
-5. functionality-in-queue-for-implementing.txt
-6. projects-ai-toolbox-server-src-tests-utils.txt
-7. projects-web-tools-client-server.txt
-
-# File Paths (LINKS)
-1. https://github.com/harisbabic/Node/blob/main/README.md
-2. https://github.com/harisbabic/Node/blob/main/Node-Project-Current-State.txt
-3. https://github.com/harisbabic/Node/blob/main/Action-Plan-Master.txt
-4. https://github.com/harisbabic/Node/blob/main/Comprehensive-Integration-Plan-Incorporating-Features-from-Web-Tools-and-DemTech-into-d-Node-Project.txt
-5. https://github.com/harisbabic/Node/blob/main/functionality-in-queue-for-implementing.txt
-6. https://github.com/harisbabic/Node/blob/main/projects-ai-toolbox-server-src-tests-utils.txt
-7. https://github.com/harisbabic/Node/blob/main/projects-web-tools-client-server.txt
-
-
-# What I am attempting to do with this repository, is to have a complete reference and answer to questions such as whats our current project state? What section are we working on currently?, and What functionality will we be implementing still? As we implement features and move forward in the project, I’ll be updating these files to reflect our state and action plan. This report should be able to help keep us on track. 
-
-
-### LICENSE
-
+## Project Structure
 ```
-MIT License
-
-Copyright (c) 2024 Haris Babic
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
+/
+├── README.md
+├── docs/
+│   ├── Node-Project-Current-State.md
+│   ├── Action-Plan-Master.md
+│   └── Project-Structure.md
+├── utils/
+│   ├── setup-project.sh
+│   ├── setup-postgresql.sh
+│   ├── generate-api-routes.sh
+│   └── ... (other shell scripts)
+├── src/
+│   ├── js-utils/
+│   │   ├── generate-components.js
+│   │   ├── generate-models.js
+│   │   └── ... (other JS utility scripts)
+│   ├── components/
+│   │   ├── Dashboard.js
+│   │   ├── AuthForm.js
+│   │   └── ... (other React components)
+│   ├── services/
+│   │   ├── api.js
+│   │   ├── auth.js
+│   │   └── ... (other service files)
+│   └── styles/
+│       ├── global.css
+│       └── theme.js
+├── tests/
+│   ├── unit/
+│   ├── integration/
+│   └── e2e/
+└── .github/
+    └── workflows/
+        └── ci.yml
 ```
+
+## Quick Start
+1. Clone this repository
+2. Navigate to the project directory
+3. Run `./utils/setup-project.sh <project-name>` to set up a new project
+
+## Current Project State
+[Link to Node-Project-Current-State.md](docs/Node-Project-Current-State.md)
+
+Last Updated: [Date]
+
+## Action Plan
+[Link to Action-Plan-Master.md](docs/Action-Plan-Master.md)
+
+Last Updated: [Date]
+
+## Key Components
+
+### Utility Scripts
+Located in the `/utils` directory, these shell scripts automate various setup and generation tasks:
+- `setup-project.sh`: Sets up a new project
+- `setup-postgresql.sh`: Configures PostgreSQL for the project
+- `generate-api-routes.sh`: Generates API routes
+
+[View all utility scripts](utils/)
+
+### JavaScript Utilities
+Located in `/src/js-utils`, these scripts provide functionality for component and model generation:
+- `generate-components.js`: Automates React component creation
+- `generate-models.js`: Generates data models
+
+[View all JS utilities](src/js-utils/)
+
+### React Components
+Reusable React components are stored in `/src/components`:
+- `Dashboard.js`: Main dashboard component
+- `AuthForm.js`: Authentication form component
+
+[View all components](src/components/)
+
+## Testing
+- Unit tests: `npm run test:unit`
+- Integration tests: `npm run test:integration`
+- E2E tests: `npm run test:e2e`
+
+## Contributing
+Please read our [Contributing Guidelines](CONTRIBUTING.md) before submitting any pull requests.
+
+## Roadmap
+- [x] Project Setup Automation
+- [ ] Authentication System
+- [ ] Dashboard Implementation
+- [ ] File Management System
+- [ ] Role-Based Access Control
+
+[View detailed roadmap](docs/Roadmap.md)
+
+## Dependencies
+- Node.js (v14+)
+- PostgreSQL (v12+)
+- React (v17+)
+
+For a full list of dependencies, see `package.json`.
+
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+```
+
+This README provides a clear structure and overview of the project. Here are some additional suggestions for the repository:
+
+1. Create a `docs` folder for all markdown documentation files.
+2. Move shell scripts to a `utils` folder for better organization.
+3. Create a `src` folder with subfolders for different types of source code:
+   - `js-utils` for JavaScript utility scripts
+   - `components` for React components
+   - `services` for API and other services
+   - `styles` for CSS and theming files
+4. Add a `tests` folder with subdirectories for different types of tests.
+5. Include a `.github/workflows` directory for CI/CD configuration.
+
+This structure provides clear separation of concerns and makes it easy to locate different types of files. The README now includes links to key documents, a project structure overview, quick start guide, and information about different components of the project.
+
+To further improve the repository:
+
+1. Add a `CONTRIBUTING.md` file with detailed guidelines for contributors.
+2. Create a `Roadmap.md` file in the `docs` folder to detail future plans.
+3. Include a `LICENSE` file if it's not already present.
+4. Add `.gitignore` file to exclude unnecessary files from version control.
+5. Consider adding issue and pull request templates in the `.github` folder.
+
+This structure and documentation should provide the clarity needed to work through errors and complete the project efficiently. It's organized in a way that makes it easy to find information and understand the project's current state and future direction.​​​​​​​​​​​​​​​​
