@@ -4,6 +4,10 @@
 ## Overview
 This repository serves as a central management hub for the `/d/Node` project. It contains documentation on the current project state, action plans, and code snippets for future implementation.
 
+## Working Rules and Instructions
+
+Before contributing or reviewing code, please read our [Working Rules and Instructions](WORKING_RULES.md). These guidelines ensure consistency and clarity in our development process.
+
 ## Project Structure
 ```
 /
