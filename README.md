@@ -1,4 +1,4 @@
-# Node
+p# Node
 /d/Node environment design to automate the setup of new projects
 
 Project Structure:
@@ -261,6 +261,15 @@ Node/
 # analyze the current project using this link : ‘https://github.com/harisbabic/Node’ 
 
 # this link should have the project in the main branch ‘Node-Project-Current-State.txt’ file, along with our ‘Action-Plan-Master.txt’ for moving forward, as well as other ‘*.txt’ that have code written for either functionality we will use to adopt and implement into for our ‘/d/Node’ project, it will have information describing the action plan. 
+
+# Read files in following order:
+
+1. README.md
+2. Node-Project-Current-State.txt
+3. Action-Plan-Master.txt
+4. functionality-in-queue-for-implementing.txt
+5. projects-ai-toolbox-server-src-tests-utils.txt
+6. projects-web-tools-client-server.txt
 
 # What I am attempting to do with this repository, is to have a complete reference and answer to questions such as whats our current project state? What section are we working on currently?, and What functionality will we be implementing still? As we implement features and move forward in the project, I’ll be updating these files to reflect our state and action plan. This report should be able to help keep us on track. 
 
