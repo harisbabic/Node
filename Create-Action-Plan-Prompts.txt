@@ -1,3 +1,5 @@
+### USE THE FILE Create-Action-Plan-Prompts-Master.txt as the main file for this. Not sure if this one saved correctly. this one can be deleted. 
+
 # Cloude.ai - compare action plans to create master plan.
 
 # 'Please take your action plan :' 
