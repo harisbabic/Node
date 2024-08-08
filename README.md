@@ -256,12 +256,6 @@ Node/
 
 # Project Documentation
 
-# add-new-project
-
-# Node
-
-## git
-
 ### Node
 
 ### LICENSE
