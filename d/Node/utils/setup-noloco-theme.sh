@@ -17,7 +17,7 @@ BACKGROUND_COLOR="#F8FAFC"
 TEXT_COLOR="#1E293B"
 
 # Font
-FONT_FAMILY="'Inter', sans-serif"
+FONT_FAMILY= 'Inter, sans-serif'
 
 setup_client() {
     echo "Setting up Noloco theme for client..."

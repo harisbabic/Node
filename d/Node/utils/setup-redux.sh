@@ -25,14 +25,12 @@ fi
 
 client_dir="$project_dir/client"
 src_dir="$client_dir/src"
-
+mkdir -p "$src_dir/redux/slices"
 cd "$client_dir"
 
 log "Installing Redux and related packages..."
 npm install redux react-redux @reduxjs/toolkit
-
 log "Creating Redux directory structure..."
-mkdir -p "$src_dir/redux/slices"
 
 log "Creating store.js..."
 cat << EOF > "$src_dir/redux/store.js"

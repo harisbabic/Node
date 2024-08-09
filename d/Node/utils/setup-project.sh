@@ -228,7 +228,7 @@ EOF
 
 log "Creating server/.env..."
 cat << EOF > "$server_dir/.env"
-DATABASE_URL=postgres://${project_name}_user:your_secure_password@localhost:5432/${project_name}
+DATABASE_URL=postgres://${project_name}_user:postgres@localhost:5432/${project_name}
 PORT=3000
 BASE_URL=http://localhost:3000  # Optional, for local development
 EOF

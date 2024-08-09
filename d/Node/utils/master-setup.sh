@@ -83,11 +83,12 @@ run_script init-git.sh "$project_name"
 run_script setup-sass.sh "$project_dir"
 run_script setup-styled-components.sh "$project_dir"
 run_script setup-redux.sh "$project_dir"
-run_script setup-redux-actions.sh "$project_name"
-run_script generate-config.sh "$project_dir" webpack
-run_script generate-config.sh "$project_dir" babel
-run_script generate-config.sh "$project_dir" tsconfig
-run_script generate-layout.sh "$project_dir" dashboard
+# run_script setup-redux-actions.sh "$project_name"
+run_script generate-config.sh "$project_dir"
+# run_script generate-config.sh "$project_dir" webpack
+# run_script generate-config.sh "$project_dir" babel
+# run_script generate-config.sh "$project_dir" tsconfig
+# run_script generate-layout.sh "$project_dir" dashboard
 run_script setup-state-management.sh "$project_dir" redux
 run_script generate-api-service.sh "$project_dir" api
 run_script setup-responsive-design.sh "$project_dir"
@@ -115,22 +116,24 @@ if [[ $setup_pwa =~ ^[Yy]$ ]]; then
   run_script setup-pwa.sh "$project_dir"
 fi
 
-read -p "Do you want to set up component documentation? (y/n) " setup_component_docs
-if [[ $setup_component_docs =~ ^[Yy]$ ]]; then
-  run_script setup-component-docs.sh "$project_dir"
-fi
-
 # Server setup
 read -s -p "Enter PostgreSQL password for ${project_name}_user: " db_password
 echo
 run_script setup-postgresql.sh "$project_name" "${project_name}_user" "$db_password"
 run_script setup-auth.sh "$project_name"
-run_script run-migrations.sh "$project_name"
+run_script run-migrations.sh "$project_name" "${project_name}_user" "$db_password"
+run_script enhance-error-handling.sh "$project_name"
+
+# API Route setup
+read -p "Do you want to create an API route? (y/n) " create_route
+if [[ $create_route =~ ^[Yy]$ ]]; then
+  read -p "Enter the route name: " route_name
+  run_script create-api-route.sh "$project_name" "$route_name"
+fi
 
 # Noloco-like functionality setup
 read -p "Do you want to set up Noloco-like functionalities? (y/n) " setup_noloco
 if [[ $setup_noloco =~ ^[Yy]$ ]]; then
-  run_script setup-data-modeling.sh "$project_dir"
   run_script setup-api-generation.sh "$project_dir"
   run_script setup-rbac.sh "$project_dir"
   run_script setup-workflows.sh "$project_dir"
@@ -139,6 +142,12 @@ if [[ $setup_noloco =~ ^[Yy]$ ]]; then
   run_script setup-email-templates.sh "$project_dir"
   run_script setup-dashboard.sh "$project_dir"
   run_script setup-noloco-theme.sh "$project_dir" "both"
+  run_script setup-data-modeling.sh "$project_dir"
+fi
+
+read -p "Do you want to set up component documentation? (y/n) " setup_component_docs
+if [[ $setup_component_docs =~ ^[Yy]$ ]]; then
+  run_script setup-component-docs.sh "$project_dir"
 fi
 
 log "Project setup complete."
