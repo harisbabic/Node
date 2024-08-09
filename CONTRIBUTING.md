@@ -1,28 +1,33 @@
-# Contributing to Node Project Management Hub
+# Contributing to /d/Node
 
-We welcome contributions to the Node Project Management Hub! This document outlines the process for contributing and lists our current contributors.
+## Steps to Contribute
+1. **Fork the Repository**:
+    - Click the 'Fork' button at the top right of the repository page.
 
-## How to Contribute
+2. **Clone Your Fork**:
+    ```bash
+    git clone https://github.com/<your-username>/Node.git
+    cd Node
+    ```
 
-1. Fork the repository
-2. Create a new branch for your feature or bug fix
-3. Make your changes
-4. Submit a pull request
+3. **Create a New Branch**:
+    ```bash
+    git checkout -b <feature-branch>
+    ```
 
-Please ensure your code adheres to our coding standards and includes appropriate tests.
+4. **Make Your Changes**:
+    - Follow the [WORKING_RULES.md](./WORKING_RULES.md).
 
-## Current Contributors
+5. **Submit a Pull Request**:
+    - Go to your forked repository on GitHub.
+    - Click 'New pull request'.
+    - Describe your changes clearly.
 
-- Haris Babic
-- Claude.ai
-- GPT
+## Setting Up the Development Environment
+- Ensure Node.js and npm are installed.
+- Run `npm install` in the project root.
+- Follow the setup instructions in the [README.md](./README.md).
 
-Thank you to all our contributors for their valuable input and efforts!
-
-## Code of Conduct
-
-Please note that this project is released with a Contributor Code of Conduct. By participating in this project you agree to abide by its terms.
-
-## Questions
-
-If you have any questions, please open an issue or contact one of the contributors.
+## Reporting Bugs and Suggesting Features
+- Open an issue on GitHub with a detailed description.
+- Tag the issue with appropriate labels.
