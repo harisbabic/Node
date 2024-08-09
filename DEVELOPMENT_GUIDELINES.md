@@ -41,6 +41,12 @@
 ### 10. Accessibility
 - Ensure new UI components are accessible and follow WCAG guidelines.
 
+### 11. Complete and Meaningful Code Generation
+- Ensure that generated files are as complete as possible, avoiding placeholders or incomplete examples.
+- Each file should be production-ready, with meaningful implementations and tests.
+- Only use placeholders when absolutely necessary, and clearly mark them for later completion.
+- Focus on generating meaningful and thorough tests for each module, avoiding generic or example tests that do not fully assess functionality.
+
 ## Reference
 - Review these rules regularly and before generating any code or responses.
 - Helps maintain consistency and quality throughout the project.
