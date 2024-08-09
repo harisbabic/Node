@@ -24,17 +24,17 @@ The `/d/Node` project is an environment designed to automate the setup of new pr
 
 ## Environment Setup
 
-1. **Navigate to the `/d/Node` directory**.
+1. Navigate to the **`/d/Node`** directory.
    ```bash
     cd /d/Node
     ```
-2. **Copy the `.env.example` file to create a new `.env` file**:
+2. Copy the **`.env.example`** file to create a new **`.env`** file:
    ```bash
     cp .env.example .env
    ```
-3. **Open the `.env` file and replace the placeholder values with your actual configuration details**.
+3. Open the **`.env`** file and replace the placeholder values with your actual configuration details.
 
-Note: Never commit your actual `.env` file to version control as it may contain sensitive information.
+Note: Never commit your actual **`.env`** file to version control as it may contain sensitive information.
 
 ## Project Tree
 [Include the latest project tree here]
