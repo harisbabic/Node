@@ -10,7 +10,7 @@ To maintain consistency and clarity in our project development, please adhere to
    - We're working on advancing our `/d/Node` project.
    - The current project located in the `/d/Node` directory, and is designed to automate the setup of new projects with various utility scripts and setup tools. Key components include:
     - **`master-setup.sh`**: The primary script that orchestrates the project setup.
-    - **Utility Scripts**: Shell scripts in `/d/Node/utils` and JavaScript utilities in `/d/Node/utils/js-utils`.
+    - **Utility Scripts**: Shell scripts in `/d/Node/utils` and JavaScript shared utils in `/d/Node/shared-utils`.
     - **Modular Directory Structure**: Organized subdirectories for components, views, services, styles, etc.
     - **PostgreSQL**: Preferred database for backend operations.
    - The project is built with Node.js, npm, PostgreSQL, React, Express, and other related technologies.
