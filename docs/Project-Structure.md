@@ -6,7 +6,8 @@
 
 ### Project Structure:
 ```
-/d/Node/
+Node/
+├── .gitignore
 ├── docs
 │   │   ├── Comprehensive-Integration-Plan-Incorporating-Features-from-Web-Tools-and-DemTech-into-d-Node-Project
 │   │   ├── extra-sh-scripts-list.txt
@@ -17,6 +18,176 @@
 │   │   └── Node
 │       │       └── LICENSE
 ├── projects
+│   │   ├── test_project
+│   │   │   │   ├── .gitignore
+│   │   │   │   ├── client
+│   │   │   │   │   │   ├── .babelrc
+│   │   │   │   │   │   ├── .gitignore
+│   │   │   │   │   │   ├── .storybook
+│   │   │   │   │   │   │   │   ├── main.js
+│   │   │   │   │   │   │   │   └── preview.js
+│   │   │   │   │   │   ├── app
+│   │   │   │   │   │   │   │   └── globals.css
+│   │   │   │   │   │   ├── components.json
+│   │   │   │   │   │   ├── package-lock.json
+│   │   │   │   │   │   ├── package.json
+│   │   │   │   │   │   ├── postcss.config.js
+│   │   │   │   │   │   ├── public
+│   │   │   │   │   │   │   │   ├── favicon.ico
+│   │   │   │   │   │   │   │   ├── index.html
+│   │   │   │   │   │   │   │   ├── locales
+│   │   │   │   │   │   │   │   │   │   ├── en
+│   │   │   │   │   │   │   │   │   │   │   │   └── translation.json
+│   │   │   │   │   │   │   │   │   │   └── es
+│   │   │   │   │       │   │   │   │   │       └── translation.json
+│   │   │   │   │   │   │   │   ├── logo192.png
+│   │   │   │   │   │   │   │   ├── logo512.png
+│   │   │   │   │   │   │   │   ├── manifest.json
+│   │   │   │   │   │   │   │   ├── robots.txt
+│   │   │   │   │   │   │   │   └── sitemap.xml
+│   │   │   │   │   │   ├── README.md
+│   │   │   │   │   │   ├── scripts
+│   │   │   │   │   │   │   │   └── generate-sitemap.js
+│   │   │   │   │   │   ├── src
+│   │   │   │   │   │   │   │   ├── @
+│   │   │   │   │   │   │   │   │   │   ├── components
+│   │   │   │   │   │   │   │   │   │   └── lib
+│   │   │   │   │       │   │   │   │   │       └── utils.ts
+│   │   │   │   │   │   │   │   ├── App.css
+│   │   │   │   │   │   │   │   ├── App.js
+│   │   │   │   │   │   │   │   ├── App.test.js
+│   │   │   │   │   │   │   │   ├── components
+│   │   │   │   │   │   │   │   │   │   ├── AnimatedBox.js
+│   │   │   │   │   │   │   │   │   │   ├── Dashboard
+│   │   │   │   │   │   │   │   │   │   │   │   ├── Dashboard.js
+│   │   │   │   │   │   │   │   │   │   │   │   └── DashboardWidget.js
+│   │   │   │   │   │   │   │   │   │   ├── DynamicUI
+│   │   │   │   │   │   │   │   │   │   │   │   ├── DynamicForm.js
+│   │   │   │   │   │   │   │   │   │   │   │   └── DynamicTable.js
+│   │   │   │   │   │   │   │   │   │   ├── FocusTrap.js
+│   │   │   │   │   │   │   │   │   │   ├── LanguageSwitcher.js
+│   │   │   │   │   │   │   │   │   │   ├── Noloco
+│   │   │   │   │   │   │   │   │   │   │   │   ├── Button.js
+│   │   │   │   │   │   │   │   │   │   │   │   ├── Card.js
+│   │   │   │   │   │   │   │   │   │   │   │   └── Container.js
+│   │   │   │   │   │   │   │   │   │   ├── ResponsiveGrid.js
+│   │   │   │   │   │   │   │   │   │   └── SEO.js
+│   │   │   │   │   │   │   │   ├── i18n
+│   │   │   │   │   │   │   │   │   │   └── i18n.js
+│   │   │   │   │   │   │   │   ├── index.css
+│   │   │   │   │   │   │   │   ├── index.js
+│   │   │   │   │   │   │   │   ├── logo.svg
+│   │   │   │   │   │   │   │   ├── redux
+│   │   │   │   │   │   │   │   │   │   ├── slices
+│   │   │   │   │   │   │   │   │   │   │   │   ├── exampleSlice.js
+│   │   │   │   │   │   │   │   │   │   │   │   └── index.js
+│   │   │   │   │   │   │   │   │   │   └── store.js
+│   │   │   │   │   │   │   │   ├── reportWebVitals.js
+│   │   │   │   │   │   │   │   ├── services
+│   │   │   │   │   │   │   │   │   │   └── apiService.js
+│   │   │   │   │   │   │   │   ├── serviceWorkerRegistration.js
+│   │   │   │   │   │   │   │   ├── setupTests.js
+│   │   │   │   │   │   │   │   ├── stories
+│   │   │   │   │   │   │   │   │   │   ├── assets
+│   │   │   │   │   │   │   │   │   │   │   │   ├── accessibility.png
+│   │   │   │   │   │   │   │   │   │   │   │   ├── accessibility.svg
+│   │   │   │   │   │   │   │   │   │   │   │   ├── addon-library.png
+│   │   │   │   │   │   │   │   │   │   │   │   ├── assets.png
+│   │   │   │   │   │   │   │   │   │   │   │   ├── avif-test-image.avif
+│   │   │   │   │   │   │   │   │   │   │   │   ├── context.png
+│   │   │   │   │   │   │   │   │   │   │   │   ├── discord.svg
+│   │   │   │   │   │   │   │   │   │   │   │   ├── docs.png
+│   │   │   │   │   │   │   │   │   │   │   │   ├── figma-plugin.png
+│   │   │   │   │   │   │   │   │   │   │   │   ├── github.svg
+│   │   │   │   │   │   │   │   │   │   │   │   ├── share.png
+│   │   │   │   │   │   │   │   │   │   │   │   ├── styling.png
+│   │   │   │   │   │   │   │   │   │   │   │   ├── testing.png
+│   │   │   │   │   │   │   │   │   │   │   │   ├── theming.png
+│   │   │   │   │   │   │   │   │   │   │   │   ├── tutorials.svg
+│   │   │   │   │   │   │   │   │   │   │   │   └── youtube.svg
+│   │   │   │   │   │   │   │   │   │   ├── button.css
+│   │   │   │   │   │   │   │   │   │   ├── Button.jsx
+│   │   │   │   │   │   │   │   │   │   ├── Button.stories.js
+│   │   │   │   │   │   │   │   │   │   ├── Configure.mdx
+│   │   │   │   │   │   │   │   │   │   ├── header.css
+│   │   │   │   │   │   │   │   │   │   ├── Header.jsx
+│   │   │   │   │   │   │   │   │   │   ├── Header.stories.js
+│   │   │   │   │   │   │   │   │   │   ├── page.css
+│   │   │   │   │   │   │   │   │   │   ├── Page.jsx
+│   │   │   │   │   │   │   │   │   │   └── Page.stories.js
+│   │   │   │   │   │   │   │   ├── styles
+│   │   │   │   │   │   │   │   │   │   ├── abstracts
+│   │   │   │   │   │   │   │   │   │   │   │   ├── _mixins.scss
+│   │   │   │   │   │   │   │   │   │   │   │   └── _variables.scss
+│   │   │   │   │   │   │   │   │   │   ├── base
+│   │   │   │   │   │   │   │   │   │   │   │   └── _reset.scss
+│   │   │   │   │   │   │   │   │   │   ├── breakpoints.js
+│   │   │   │   │   │   │   │   │   │   ├── components
+│   │   │   │   │   │   │   │   │   │   ├── GlobalStyle.js
+│   │   │   │   │   │   │   │   │   │   ├── layout
+│   │   │   │   │   │   │   │   │   │   ├── main.scss
+│   │   │   │   │   │   │   │   │   │   ├── NolocoTheme.js
+│   │   │   │   │   │   │   │   │   │   ├── pages
+│   │   │   │   │   │   │   │   │   │   ├── ResponsiveWrapper.js
+│   │   │   │   │   │   │   │   │   │   └── theme.js
+│   │   │   │   │   │   │   │   └── utils
+│   │   │   │       │   │   │   │       ├── imageOptimization.js
+│   │   │   │       │   │   │   │       └── useIntersectionObserver.js
+│   │   │   │   │   │   ├── tailwind.config.js
+│   │   │   │   │   │   ├── tsconfig.json
+│   │   │   │   │   │   └── webpack.config.js
+│   │   │   │   ├── docs
+│   │   │   │   ├── package-lock.json
+│   │   │   │   ├── package.json
+│   │   │   │   ├── README.md
+│   │   │   │   └── server
+│   │       │   │       ├── .env
+│   │       │   │       ├── babel.config.js
+│   │       │   │       ├── jest.config.js
+│   │       │   │       ├── jest.setup.js
+│   │       │   │       ├── package-lock.json
+│   │       │   │       ├── package.json
+│   │       │   │       ├── src
+│   │       │   │   │       │   ├── app.js
+│   │       │   │   │       │   ├── config
+│   │       │   │   │   │       │   │   ├── database.js
+│   │       │   │   │   │       │   │   └── passport.js
+│   │       │   │   │       │   ├── controllers
+│   │       │   │   │   │       │   │   └── about.js
+│   │       │   │   │       │   ├── index.js
+│   │       │   │   │       │   ├── middleware
+│   │       │   │   │   │       │   │   ├── auth.js
+│   │       │   │   │   │       │   │   ├── error-handling-middleware.js
+│   │       │   │   │   │       │   │   └── errorHandler.js
+│   │       │   │   │       │   ├── middlewares
+│   │       │   │   │   │       │   │   └── rbacMiddleware.js
+│   │       │   │   │       │   ├── models
+│   │       │   │   │   │       │   │   ├── about.js
+│   │       │   │   │   │       │   │   ├── EmailTemplate.js
+│   │       │   │   │   │       │   │   ├── File.js
+│   │       │   │   │   │       │   │   ├── User.js
+│   │       │   │   │   │       │   │   └── Workflow.js
+│   │       │   │   │       │   ├── routes
+│   │       │   │   │   │       │   │   ├── about.js
+│   │       │   │   │   │       │   │   ├── auth.js
+│   │       │   │   │   │       │   │   ├── authRoutes.js
+│   │       │   │   │   │       │   │   ├── dynamicApiRoutes.js
+│   │       │   │   │   │       │   │   ├── emailTemplateRoutes.js
+│   │       │   │   │   │       │   │   ├── fileRoutes.js
+│   │       │   │   │   │       │   │   ├── models.js
+│   │       │   │   │   │       │   │   └── workflowRoutes.js
+│   │       │   │   │       │   ├── services
+│   │       │   │   │   │       │   │   ├── apiGenerationService.js
+│   │       │   │   │   │       │   │   ├── emailService.js
+│   │       │   │   │   │       │   │   ├── fileService.js
+│   │       │   │   │   │       │   │   └── workflowService.js
+│   │       │   │   │       │   └── utils
+│   │       │       │   │       │       └── apiResponse.js
+│   │       │   │       └── tests
+│   │           │   │           ├── integration
+│   │           │   │   │           │   └── api.test.js
+│   │           │   │           └── unit
+│   │               │   │               └── sample.test.js
 │   │   └── ultimate
 │       │       ├── .env
 │       │       ├── .gitignore
@@ -202,6 +373,8 @@
 │               │   │               │   └── api.test.js
 │               │               └── unit
 │                   │                   └── sample.test.js
+├── PROJECT_STRUCTURE.txt
+├── README.md
 ├── shared-utils
 │   │   ├── generate-ai-tools.js
 │   │   ├── generate-charts.js
