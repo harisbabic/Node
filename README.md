@@ -506,7 +506,9 @@ Located in `d/node/shared-utils`, these scripts provide functionality for compon
 - `generate-components.js`: Automates React component creation
 - `generate-models.js`: Generates data models
 
-[View all JS utilities](d/Node/shared-utils/)
+[View all shared JS utilities](d/Node/shared-utils/)
+[View project ai-toolbox utilities](d/Node/projects/ai-toolbox/utils/)
+[View project ai-toolbox utilities](d/Node/projects/ai-toolbox/utils/)
 
 ### React Components
 Reusable React components and `*.js` code files are located within each project inside the `projects` directory
@@ -514,12 +516,26 @@ Reusable React components and `*.js` code files are located within each project 
 - `d/Node/projects/DemTech/client/src/components/Dashboard.js`: Main dashboard component
 - `d/Node/projects/web-tools/client/src/components/CreatePoll.js`: Create Poll form component
 
-[View all components](d/Node/projects/web-tools/client/src/components/)
+[View project DemTech/client/src/components](d/Node/projects/DemTech/client/src/components/)
+[View project ultimate/client/src/components](d/Node/projects/ultimate/client/src/components/)
+[View project web-tools client components](d/Node/projects/web-tools/client/src/components/)
 
 ## Testing
 - Unit tests: `npm run test:unit`
 - Integration tests: `npm run test:integration`
 - E2E tests: `npm run test:e2e`
+
+[View example tests](d/Node/tests/)
+[View project ai-toolbox tests](d/Node/projects/ai-toolbox/tests/)
+[View project DemTech tests](d/Node/projects/DemTech/tests/)
+[View project ultimate tests](d/Node/projects/ultimate/tests/)
+[View project web-tools tests](d/Node/projects/web-tools/tests/)
+
+## Projects
+- ai-toolbox: [View ai-toolbox](d/Node/projects/ai-toolbox/)
+- DemTech: [View DemTech](d/Node/projects/DemTech/)
+- ultimate: [View ultimate](d/Node/projects/ultimate/)
+- web-tools: [View web-tools](d/Node/projects/web-tools/)
 
 ## Contributing
 Please read our [Contributing Guidelines](CONTRIBUTING.md) before submitting any pull requests.
