@@ -1,0 +1,26 @@
+/*client/src/styles/variables.css*/
+:root {
+  --font-family: 'Helvetica Neue', sans-serif;
+  --background-color: #ffffff;
+  --text-color: #333333;
+  --primary-color: #1a73e8;
+  --secondary-color: #ff6f61;
+  --heading-font-size: 2.5rem;
+  --subheading-font-size: 1.5rem;
+  --text-font-size: 1rem;
+  --padding-large: 4rem;
+  --padding-medium: 2rem;
+  --padding-small: 1rem;
+  --margin-large: 4rem;
+  --margin-medium: 2rem;
+  --margin-small: 1rem;
+  --border-radius: 8px;
+  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='dark'] {
+  --background-color: #333333;
+  --text-color: #ffffff;
+  --primary-color: #1a73e8;
+  --secondary-color: #ff6f61;
+}

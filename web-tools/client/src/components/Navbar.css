@@ -1,0 +1,58 @@
+/*client/src/components/Navbar.css*/
+.navbar {
+  background-color: var(--background-color);
+  box-shadow: var(--box-shadow);
+  padding: var(--padding-small);
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.navbar-logo {
+  font-size: var(--subheading-font-size);
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.navbar-menu {
+  list-style: none;
+  display: flex;
+  gap: var(--padding-medium);
+}
+
+.navbar-item {
+  display: inline;
+}
+
+.navbar-link {
+  font-size: var(--text-font-size);
+  color: var(--text-color);
+  text-decoration: none;
+  padding: var(--padding-small);
+  transition: color 0.3s ease;
+}
+
+.navbar-link:hover {
+  color: var(--primary-color);
+}
+
+.navbar-link-cta {
+  background-color: var(--primary-color);
+  color: var(--background-color);
+  padding: var(--padding-small) var(--padding-medium);
+  border-radius: var(--border-radius);
+  transition: background-color 0.3s ease;
+}
+
+.navbar-link-cta:hover {
+  background-color: var(--secondary-color);
+}

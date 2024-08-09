@@ -1,0 +1,43 @@
+/*client/src/styles/global.css*/
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  background-color: var(--secondary-color);
+  color: #333;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+  color: var(--primary-color);
+}
+
+h1 {
+  font-size: var(--heading-font-size);
+}
+
+h2 {
+  font-size: var(--subheading-font-size);
+}
+
+p {
+  font-size: var(--text-font-size);
+  line-height: 1.5;
+  margin: var(--margin-small) 0;
+}
+
+/* Add media queries and responsive styles here */
+
+@media (max-width: 768px) {
+  .navbar-container {
+    flex-direction: column;
+  }
+
+  .hero-content {
+    padding: var(--padding-medium);
+  }
+}

@@ -1,4 +1,3 @@
-```markdown
 # Working Rules and Instructions
 
 To maintain consistency and clarity in our project development, please adhere to the following rules:
@@ -43,4 +42,3 @@ To maintain consistency and clarity in our project development, please adhere to
     - Ensure new UI components are accessible and follow WCAG guidelines.
 
 Remember to review these rules regularly and before generating any code or responses. This helps maintain consistency and quality throughout the project.
-```

@@ -1,4 +1,3 @@
-```markdown
 # Node Project Management Hub
 
 ## Overview
@@ -9,42 +8,462 @@ This repository serves as a central management hub for the `/d/Node` project. It
 Before contributing or reviewing code, please read our [Working Rules and Instructions](WORKING_RULES.md). These guidelines ensure consistency and clarity in our development process.
 
 ## Project Structure
-```
-/
+
+Project Structure:
+
+Node/
+├── .github
+│   │   └── workflows
+│       │       └── ci.yml
+├── .gitignore
+├── ai-toolbox
+│   │   ├── tests
+│   │   │   │   ├── aiFunctions.test.js
+│   │   │   │   ├── analyzeCodeQuality.test.js
+│   │   │   │   ├── analyzeState.test.js
+│   │   │   │   ├── checkDependencies.test.js
+│   │   │   │   ├── codeAnalyzer.test.js
+│   │   │   │   ├── commandLogger.test.js
+│   │   │   │   ├── dependencyVerifier.test.js
+│   │   │   │   ├── directoryTraversal.test.js
+│   │   │   │   ├── generate-config.test.js
+│   │   │   │   ├── generate-state-report.test.js
+│   │   │   │   ├── generateProjectStructure.test.js
+│   │   │   │   ├── gptHelper.test.js
+│   │   │   │   ├── sum.test.js
+│   │   │   │   ├── validateProject.test.js
+│   │   │   │   ├── verifyProjectStructure.test.js
+│   │   │   │   └── virtualAssistant.test.js
+│   │   └── utils
+│       │       ├── aiFunctions.js
+│       │       ├── analyzeCodeQuality.js
+│       │       ├── analyzeState.js
+│       │       ├── backUpProjectFiles.js
+│       │       ├── checkDependencies.js
+│       │       ├── codeAnalyzer.js
+│       │       ├── commandLogger.js
+│       │       ├── dependencyVerifier.js
+│       │       ├── directoryTraversal.js
+│       │       ├── eslintValidate.js
+│       │       ├── generate-config.js
+│       │       ├── generate-state-report.js
+│       │       ├── generateProjectStructure.js
+│       │       ├── gptConnect.js
+│       │       ├── gptHelper.js
+│       │       ├── nextStep.js
+│       │       ├── projectVerifier.js
+│       │       ├── taskRunner.js
+│       │       ├── testApiConnection.js
+│       │       ├── validateProject.js
+│       │       ├── verifyProjectStructure.js
+│       │       └── virtualAssistant.js
+├── CONTRIBUTING.md
+├── DemTech
+│   │   ├── client
+│   │   │   │   └── src
+│   │       │   │       ├── components
+│   │       │   │   │       │   ├── BusinessList.js
+│   │       │   │   │       │   ├── ClientForm.js
+│   │       │   │   │       │   ├── Clients.js
+│   │       │   │   │       │   ├── CreatePoll.js
+│   │       │   │   │       │   ├── Dashboard.js
+│   │       │   │   │       │   ├── DynamicUI
+│   │       │   │   │   │       │   │   └── DynamicForm.js
+│   │       │   │   │       │   ├── EventList.js
+│   │       │   │   │       │   ├── Features.css
+│   │       │   │   │       │   ├── Features.js
+│   │       │   │   │       │   ├── forms
+│   │       │   │   │   │       │   │   ├── BusinessForm.js
+│   │       │   │   │   │       │   │   ├── EventForm.js
+│   │       │   │   │   │       │   │   └── Register.js
+│   │       │   │   │       │   ├── Hero.css
+│   │       │   │   │       │   ├── Hero.js
+│   │       │   │   │       │   ├── layout
+│   │       │   │   │   │       │   │   ├── Footer.css
+│   │       │   │   │   │       │   │   ├── Footer.js
+│   │       │   │   │   │       │   │   ├── Navbar.css
+│   │       │   │   │   │       │   │   └── Navbar.js
+│   │       │   │   │       │   ├── Login.js
+│   │       │   │   │       │   ├── Navigation.js
+│   │       │   │   │       │   ├── NotFound.js
+│   │       │   │   │       │   ├── pages
+│   │       │   │   │   │       │   │   ├── About.js
+│   │       │   │   │   │       │   │   ├── Contact.js
+│   │       │   │   │   │       │   │   ├── Dashboard.js
+│   │       │   │   │   │       │   │   ├── Home.js
+│   │       │   │   │   │       │   │   └── Services.js
+│   │       │   │   │       │   ├── Polls.js
+│   │       │   │   │       │   ├── ReviewForm.js
+│   │       │   │   │       │   ├── ReviewList.js
+│   │       │   │   │       │   ├── ServiceForm.js
+│   │       │   │   │       │   ├── ServiceList.js
+│   │       │   │   │       │   ├── Testimonials.css
+│   │       │   │   │       │   ├── Testimonials.js
+│   │       │   │   │       │   └── ThemeToggle.js
+│   │       │   │       ├── pages
+│   │       │   │   │       │   ├── Clients.js
+│   │       │   │   │       │   ├── Dashboard.js
+│   │       │   │   │       │   ├── Invoices.js
+│   │       │   │   │       │   └── Projects.js
+│   │       │   │       ├── services
+│   │       │   │   │       │   └── api.js
+│   │       │   │       ├── store
+│   │       │   │   │       │   └── index.js
+│   │       │   │       └── styles
+│   │           │   │           ├── App.css
+│   │           │   │           ├── Clients.css
+│   │           │   │           ├── Dashboard.css
+│   │           │   │           ├── global.css
+│   │           │   │           ├── Invoices.css
+│   │           │   │           ├── Navigation.css
+│   │           │   │           ├── Projects.css
+│   │           │   │           └── variables.css
+│   │   ├── server
+│   │   │   │   └── src
+│   │       │   │       ├── config
+│   │       │   │   │       │   ├── auth.js
+│   │       │   │   │       │   ├── commission.js
+│   │       │   │   │       │   ├── database.js
+│   │       │   │   │       │   ├── passport.js
+│   │       │   │   │       │   ├── swagger.js
+│   │       │   │   │       │   └── webpack-config.js
+│   │       │   │       ├── controllers
+│   │       │   │   │       │   ├── authController.js
+│   │       │   │   │       │   ├── businessController.js
+│   │       │   │   │       │   └── eventController.js
+│   │       │   │       ├── middleware
+│   │       │   │   │       │   ├── auth.js
+│   │       │   │   │       │   ├── error-handling-middleware.js
+│   │       │   │   │       │   └── input-validation.js
+│   │       │   │       ├── models
+│   │       │   │   │       │   └── User.js
+│   │       │   │       ├── routes
+│   │       │   │   │       │   ├── auth.js
+│   │       │   │   │       │   └── dataModelRoutes.js
+│   │       │   │       └── services
+│   │           │   │           └── dataModelingService.js
+│   │   └── tests
+│       │       ├── client
+│       │   │       │   ├── apiRequests.test.js
+│       │   │       │   ├── componentRendering.test.js
+│       │   │       │   ├── components
+│       │   │   │       │   │   └── Navbar.test.js
+│       │   │       │   └── formHandling.test.js
+│       │       ├── common
+│       │   │       │   ├── configuration.test.js
+│       │   │       │   ├── utilityFunctions.test.js
+│       │   │       │   └── validation.test.js
+│       │       ├── e2e
+│       │       ├── integration
+│       │       ├── server
+│       │   │       │   ├── apiRoutes.test.js
+│       │   │       │   ├── authentication.test.js
+│       │   │       │   ├── controllers
+│       │   │   │       │   │   └── authController.test.js
+│       │   │       │   └── databaseOperations.test.js
+│       │       └── unit
+│           │           ├── authController.test.js
+│           │           └── dataModelingService.test.js
+├── docs
+│   │   ├── Action-Plan-Master.md
+│   │   ├── Node-Project-Current-State.md
+│   │   ├── Project-Structure.md
+│   │   └── Roadmap.md
+├── LICENSE
 ├── README.md
-├── docs/
-│   ├── Node-Project-Current-State.md
-│   ├── Action-Plan-Master.md
-│   └── Project-Structure.md
-├── utils/
-│   ├── setup-project.sh
-│   ├── setup-postgresql.sh
-│   ├── generate-api-routes.sh
-│   └── ... (other shell scripts)
-├── src/
-│   ├── js-utils/
-│   │   ├── generate-components.js
-│   │   ├── generate-models.js
-│   │   └── ... (other JS utility scripts)
-│   ├── components/
-│   │   ├── Dashboard.js
-│   │   ├── AuthForm.js
-│   │   └── ... (other React components)
-│   ├── services/
-│   │   ├── api.js
-│   │   ├── auth.js
-│   │   └── ... (other service files)
-│   └── styles/
-│       ├── global.css
-│       └── theme.js
-├── tests/
-│   ├── unit/
-│   ├── integration/
-│   └── e2e/
-└── .github/
-    └── workflows/
-        └── ci.yml
-```
+├── src
+│   │   ├── client
+│   │   │   │   ├── .babelrc
+│   │   │   │   ├── .gitignore
+│   │   │   │   ├── .storybook
+│   │   │   │   │   │   ├── main.js
+│   │   │   │   │   │   └── preview.js
+│   │   │   │   ├── components.json
+│   │   │   │   ├── package.json
+│   │   │   │   ├── postcss.config.js
+│   │   │   │   ├── public
+│   │   │   │   │   │   ├── favicon.ico
+│   │   │   │   │   │   ├── index.html
+│   │   │   │   │   │   ├── locales
+│   │   │   │   │   │   │   │   ├── en
+│   │   │   │   │   │   │   │   │   │   └── translation.json
+│   │   │   │   │   │   │   │   └── es
+│   │   │   │       │   │   │   │       └── translation.json
+│   │   │   │   │   │   ├── logo192.png
+│   │   │   │   │   │   ├── logo512.png
+│   │   │   │   │   │   ├── manifest.json
+│   │   │   │   │   │   ├── robots.txt
+│   │   │   │   │   │   └── sitemap.xml
+│   │   │   │   ├── README.md
+│   │   │   │   ├── scripts
+│   │   │   │   │   │   └── generate-sitemap.js
+│   │   │   │   ├── src
+│   │   │   │   │   │   ├── @
+│   │   │   │   │   │   │   │   ├── components
+│   │   │   │   │   │   │   │   │   │   └── ui
+│   │   │   │   │       │   │   │   │   │       └── alert.tsx
+│   │   │   │   │   │   │   │   └── lib
+│   │   │   │       │   │   │   │       └── utils.ts
+│   │   │   │   │   │   ├── App.css
+│   │   │   │   │   │   ├── App.js
+│   │   │   │   │   │   ├── App.test.js
+│   │   │   │   │   │   ├── components
+│   │   │   │   │   │   │   │   ├── AnimatedBox.js
+│   │   │   │   │   │   │   │   ├── Dashboard
+│   │   │   │   │   │   │   │   │   │   ├── Dashboard.js
+│   │   │   │   │   │   │   │   │   │   └── DashboardWidget.js
+│   │   │   │   │   │   │   │   ├── DynamicUI
+│   │   │   │   │   │   │   │   │   │   ├── DynamicForm.js
+│   │   │   │   │   │   │   │   │   │   └── DynamicTable.js
+│   │   │   │   │   │   │   │   ├── FocusTrap.js
+│   │   │   │   │   │   │   │   ├── LanguageSwitcher.js
+│   │   │   │   │   │   │   │   ├── Noloco
+│   │   │   │   │   │   │   │   │   │   ├── Button.js
+│   │   │   │   │   │   │   │   │   │   ├── Card.js
+│   │   │   │   │   │   │   │   │   │   └── Container.js
+│   │   │   │   │   │   │   │   ├── ResponsiveGrid.js
+│   │   │   │   │   │   │   │   └── SEO.js
+│   │   │   │   │   │   ├── i18n
+│   │   │   │   │   │   │   │   └── i18n.js
+│   │   │   │   │   │   ├── index.css
+│   │   │   │   │   │   ├── index.js
+│   │   │   │   │   │   ├── layouts
+│   │   │   │   │   │   │   │   └── DashboardLayout.js
+│   │   │   │   │   │   ├── logo.svg
+│   │   │   │   │   │   ├── redux
+│   │   │   │   │   │   │   │   ├── slices
+│   │   │   │   │   │   │   │   │   │   ├── exampleSlice.js
+│   │   │   │   │   │   │   │   │   │   └── index.js
+│   │   │   │   │   │   │   │   └── store.js
+│   │   │   │   │   │   ├── reportWebVitals.js
+│   │   │   │   │   │   ├── services
+│   │   │   │   │   │   │   │   └── apiService.js
+│   │   │   │   │   │   ├── serviceWorkerRegistration.js
+│   │   │   │   │   │   ├── setupTests.js
+│   │   │   │   │   │   ├── stories
+│   │   │   │   │   │   │   │   ├── assets
+│   │   │   │   │   │   │   │   │   │   ├── accessibility.png
+│   │   │   │   │   │   │   │   │   │   ├── accessibility.svg
+│   │   │   │   │   │   │   │   │   │   ├── addon-library.png
+│   │   │   │   │   │   │   │   │   │   ├── assets.png
+│   │   │   │   │   │   │   │   │   │   ├── avif-test-image.avif
+│   │   │   │   │   │   │   │   │   │   ├── context.png
+│   │   │   │   │   │   │   │   │   │   ├── discord.svg
+│   │   │   │   │   │   │   │   │   │   ├── docs.png
+│   │   │   │   │   │   │   │   │   │   ├── figma-plugin.png
+│   │   │   │   │   │   │   │   │   │   ├── github.svg
+│   │   │   │   │   │   │   │   │   │   ├── share.png
+│   │   │   │   │   │   │   │   │   │   ├── styling.png
+│   │   │   │   │   │   │   │   │   │   ├── testing.png
+│   │   │   │   │   │   │   │   │   │   ├── theming.png
+│   │   │   │   │   │   │   │   │   │   ├── tutorials.svg
+│   │   │   │   │   │   │   │   │   │   └── youtube.svg
+│   │   │   │   │   │   │   │   ├── button.css
+│   │   │   │   │   │   │   │   ├── Button.jsx
+│   │   │   │   │   │   │   │   ├── Button.stories.js
+│   │   │   │   │   │   │   │   ├── Configure.mdx
+│   │   │   │   │   │   │   │   ├── header.css
+│   │   │   │   │   │   │   │   ├── Header.jsx
+│   │   │   │   │   │   │   │   ├── Header.stories.js
+│   │   │   │   │   │   │   │   ├── page.css
+│   │   │   │   │   │   │   │   ├── Page.jsx
+│   │   │   │   │   │   │   │   └── Page.stories.js
+│   │   │   │   │   │   ├── styles
+│   │   │   │   │   │   │   │   ├── abstracts
+│   │   │   │   │   │   │   │   │   │   ├── _mixins.scss
+│   │   │   │   │   │   │   │   │   │   └── _variables.scss
+│   │   │   │   │   │   │   │   ├── base
+│   │   │   │   │   │   │   │   │   │   └── _reset.scss
+│   │   │   │   │   │   │   │   ├── breakpoints.js
+│   │   │   │   │   │   │   │   ├── components
+│   │   │   │   │   │   │   │   ├── GlobalStyle.js
+│   │   │   │   │   │   │   │   ├── layout
+│   │   │   │   │   │   │   │   ├── main.scss
+│   │   │   │   │   │   │   │   ├── NolocoTheme.js
+│   │   │   │   │   │   │   │   ├── pages
+│   │   │   │   │   │   │   │   ├── ResponsiveWrapper.js
+│   │   │   │   │   │   │   │   └── theme.js
+│   │   │   │   │   │   └── utils
+│   │   │       │   │   │       ├── imageOptimization.js
+│   │   │       │   │   │       └── useIntersectionObserver.js
+│   │   │   │   ├── tailwind.config.js
+│   │   │   │   ├── tsconfig.json
+│   │   │   │   └── webpack.config.js
+│   │   ├── js-utils
+│   │   │   │   ├── generate-ai-tools.js
+│   │   │   │   ├── generate-charts.js
+│   │   │   │   ├── generate-components.js
+│   │   │   │   ├── generate-forms-templates.js
+│   │   │   │   ├── generate-mock-data.js
+│   │   │   │   ├── generate-models.js
+│   │   │   │   ├── generate-readme.js
+│   │   │   │   └── generate-routes.js
+│   │   └── server
+│       │       ├── .gitignore
+│       │       ├── babel.config.js
+│       │       ├── jest.config.js
+│       │       ├── jest.setup.js
+│       │       ├── package.json
+│       │       └── src
+│           │           ├── app.js
+│           │           ├── config
+│           │   │           │   ├── database.js
+│           │   │           │   └── passport.js
+│           │           ├── controllers
+│           │   │           │   ├── about.js
+│           │   │           │   ├── contact.js
+│           │   │           │   └── docs.js
+│           │           ├── index.js
+│           │           ├── middleware
+│           │   │           │   ├── auth.js
+│           │   │           │   ├── error-handling-middleware.js
+│           │   │           │   └── errorHandler.js
+│           │           ├── middlewares
+│           │   │           │   └── rbacMiddleware.js
+│           │           ├── models
+│           │   │           │   ├── about.js
+│           │   │           │   ├── contact.js
+│           │   │           │   ├── docs.js
+│           │   │           │   ├── EmailTemplate.js
+│           │   │           │   ├── File.js
+│           │   │           │   ├── User.js
+│           │   │           │   └── Workflow.js
+│           │           ├── redux
+│           │   │           │   └── actions
+│           │       │           │       ├── authActions.js
+│           │       │           │       ├── projectActions.js
+│           │       │           │       └── taskActions.js
+│           │           ├── routes
+│           │   │           │   ├── about.js
+│           │   │           │   ├── auth.js
+│           │   │           │   ├── authRoutes.js
+│           │   │           │   ├── contact.js
+│           │   │           │   ├── docs.js
+│           │   │           │   ├── dynamicApiRoutes.js
+│           │   │           │   ├── emailTemplateRoutes.js
+│           │   │           │   ├── fileRoutes.js
+│           │   │           │   ├── models.js
+│           │   │           │   └── workflowRoutes.js
+│           │           ├── services
+│           │   │           │   ├── apiGenerationService.js
+│           │   │           │   ├── emailService.js
+│           │   │           │   ├── fileService.js
+│           │   │           │   └── workflowService.js
+│           │           └── utils
+│               │               └── apiResponse.js
+├── tests
+│   │   ├── integration
+│   │   │   │   └── api.test.js
+│   │   └── unit
+│       │       └── sample.test.js
+├── utils
+│   │   ├── continue-master-setup.sh
+│   │   ├── create-api-route.sh
+│   │   ├── generate-api-service.sh
+│   │   ├── generate-config.sh
+│   │   ├── generate-layout.sh
+│   │   ├── generate-tests.sh
+│   │   ├── init-git.sh
+│   │   ├── master-setup.sh
+│   │   ├── run-migrations.sh
+│   │   ├── set-configs.sh
+│   │   ├── setup-accessibility.sh
+│   │   ├── setup-animation.sh
+│   │   ├── setup-api-generation.sh
+│   │   ├── setup-auth.sh
+│   │   ├── setup-component-docs.sh
+│   │   ├── setup-dashboard.sh
+│   │   ├── setup-data-modeling.sh
+│   │   ├── setup-dynamic-ui.sh
+│   │   ├── setup-email-templates.sh
+│   │   ├── setup-file-management.sh
+│   │   ├── setup-i18n.sh
+│   │   ├── setup-noloco-theme.sh
+│   │   ├── setup-performance-optimization.sh
+│   │   ├── setup-postgresql.sh
+│   │   ├── setup-project.sh
+│   │   ├── setup-pwa.sh
+│   │   ├── setup-rbac.sh
+│   │   ├── setup-redux-actions.sh
+│   │   ├── setup-redux.sh
+│   │   ├── setup-responsive-design.sh
+│   │   ├── setup-sass.sh
+│   │   ├── setup-seo.sh
+│   │   ├── setup-state-management.sh
+│   │   ├── setup-styled-components.sh
+│   │   └── setup-workflows.sh
+├── web-tools
+│   │   ├── client
+│   │   │   │   └── src
+│   │       │   │       └── components
+│   │           │   │           ├── About.js
+│   │           │   │           ├── BusinessForm.js
+│   │           │   │           ├── BusinessList.js
+│   │           │   │           ├── Contact.js
+│   │           │   │           ├── CreatePoll.js
+│   │           │   │           ├── Dashboard.js
+│   │           │   │           ├── EventForm.js
+│   │           │   │           ├── EventList.js
+│   │           │   │           ├── Features.css
+│   │           │   │           ├── Features.js
+│   │           │   │           ├── Footer.css
+│   │           │   │           ├── Footer.js
+│   │           │   │           ├── Hero.css
+│   │           │   │           ├── Hero.js
+│   │           │   │           ├── Home.js
+│   │           │   │           ├── Login.js
+│   │           │   │           ├── Navbar.css
+│   │           │   │           ├── Navbar.js
+│   │           │   │           ├── NotFound.js
+│   │           │   │           ├── Polls.js
+│   │           │   │           ├── Register.js
+│   │           │   │           ├── ReviewForm.js
+│   │           │   │           ├── ReviewList.js
+│   │           │   │           ├── ServiceForm.js
+│   │           │   │           ├── ServiceList.js
+│   │           │   │           ├── Services.js
+│   │           │   │           ├── Testimonials.css
+│   │           │   │           ├── Testimonials.js
+│   │           │   │           └── ThemeToggle.js
+│   │   ├── server
+│   │   │   │   └── src
+│   │       │   │       ├── config
+│   │       │   │   │       │   ├── auth.js
+│   │       │   │   │       │   ├── commission.js
+│   │       │   │   │       │   └── passport.js
+│   │       │   │       ├── middleware
+│   │       │   │   │       │   └── auth.js
+│   │       │   │       ├── models
+│   │       │   │   │       │   ├── Business.js
+│   │       │   │   │       │   ├── Event.js
+│   │       │   │   │       │   ├── Review.js
+│   │       │   │   │       │   ├── Service.js
+│   │       │   │   │       │   └── User.js
+│   │       │   │       └── routes
+│   │           │   │           ├── auth.js
+│   │           │   │           ├── businesses.js
+│   │           │   │           ├── events.js
+│   │           │   │           ├── payments.js
+│   │           │   │           ├── polls.js
+│   │           │   │           ├── protectedRoute.js
+│   │           │   │           ├── reviews.js
+│   │           │   │           ├── rsvp.js
+│   │           │   │           ├── services.js
+│   │           │   │           └── users.js
+│   │   └── tests
+│       │       ├── e2e
+│       │   │       │   └── cypress
+│       │       │       │       └── integration
+│       │           │       │           └── authentication.spec.js
+│       │       ├── fileMock.js
+│       │       ├── integration
+│       │   │       │   └── services.test.js
+│       │       ├── setup.js
+│       │       ├── styleMock.js
+│       │       └── unit
+│           │           └── service.test.js
+└── WORKING_RULES.md
+
 
 ## Quick Start
 1. Clone this repository
@@ -111,28 +530,3 @@ For a full list of dependencies, see `package.json`.
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-```
-
-This README provides a clear structure and overview of the project. Here are some additional suggestions for the repository:
-
-1. Create a `docs` folder for all markdown documentation files.
-2. Move shell scripts to a `utils` folder for better organization.
-3. Create a `src` folder with subfolders for different types of source code:
-   - `js-utils` for JavaScript utility scripts
-   - `components` for React components
-   - `services` for API and other services
-   - `styles` for CSS and theming files
-4. Add a `tests` folder with subdirectories for different types of tests.
-5. Include a `.github/workflows` directory for CI/CD configuration.
-
-This structure provides clear separation of concerns and makes it easy to locate different types of files. The README now includes links to key documents, a project structure overview, quick start guide, and information about different components of the project.
-
-To further improve the repository:
-
-1. Add a `CONTRIBUTING.md` file with detailed guidelines for contributors.
-2. Create a `Roadmap.md` file in the `docs` folder to detail future plans.
-3. Include a `LICENSE` file if it's not already present.
-4. Add `.gitignore` file to exclude unnecessary files from version control.
-5. Consider adding issue and pull request templates in the `.github` folder.
-
-This structure and documentation should provide the clarity needed to work through errors and complete the project efficiently. It's organized in a way that makes it easy to find information and understand the project's current state and future direction.​​​​​​​​​​​​​​​​

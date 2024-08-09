@@ -1,0 +1,56 @@
+/*client/src/components/Hero.css*/
+.hero {
+  background-image: url('../images/hero.jpg');
+  background-size: cover;
+  background-position: center;
+  padding: var(--spacing-large) var(--spacing-medium);
+  text-align: center;
+  color: #b50000;
+}
+
+.hero-content {
+  max-width: 600px;
+  margin: 0 auto;
+  padding-bottom: 500px;
+}
+
+.hero-title {
+  font-size: var(--font-size-large);
+  margin-bottom: var(--spacing-medium);
+}
+
+.hero-subtitle {
+  font-size: var(--subheading-font-size);
+  margin-bottom: var(--margin-large);
+}
+
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: var(--padding-medium);
+}
+
+.hero-button {
+  display: inline-block;
+  padding: var(--spacing-small) var(--spacing-medium);
+  background-color: var(--primary-color);
+  color: #fff;
+  border-radius: 5px;
+  margin: var(--spacing-small);
+}
+
+.hero-button:hover {
+  background-color: var(--secondary-color);
+  color: var(--background-color);
+}
+
+.hero-button.secondary {
+  background-color: transparent;
+  border: 2px solid var(--background-color);
+  color: var(--background-color);
+}
+
+.hero-button.secondary:hover {
+  background-color: var(--background-color);
+  color: var(--primary-color);
+}
