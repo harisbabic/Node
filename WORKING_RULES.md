@@ -7,12 +7,17 @@ To maintain consistency and clarity in our project development, please adhere to
    - Use consistent naming conventions (kebab-case for files, PascalCase for components).
 
 2. Project Context:
-   - We're working on advancing our '/d/Node' project.
+   - We're working on advancing our `/d/Node` project.
+   - The current project located in the `/d/Node` directory, and is designed to automate the setup of new projects with various utility scripts and setup tools. Key components include:
+    - **`master-setup.sh`**: The primary script that orchestrates the project setup.
+    - **Utility Scripts**: Shell scripts in `/d/Node/utils` and JavaScript utilities in `/d/Node/utils/js-utils`.
+    - **Modular Directory Structure**: Organized subdirectories for components, views, services, styles, etc.
+    - **PostgreSQL**: Preferred database for backend operations.
    - The project is built with Node.js, npm, PostgreSQL, React, Express, and other related technologies.
    - Development is done on a Windows 10 machine, using Git Bash for command line operations.
 
 3. Code Generation and Adaptation:
-   - When generating new code or adapting functionality from other projects (e.g., Ai-toolbox, web-tools, DemTech), ensure it's compatible with our Node project structure and technologies.
+   - When generating new code or adapting functionality from projects (e.g., Ai-toolbox, DemTech, ultimate, and web-tools), which are located inside the `/d/Node/projects` directory, we must ensure code is compatible with our Node project structure and technologies.
    - Adjust imports, file paths, and dependencies as necessary to fit our project structure.
 
 4. Documentation:

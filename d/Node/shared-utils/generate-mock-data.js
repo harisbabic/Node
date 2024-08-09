@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 function generateMockData(projectName, dataType, count) {
-  const projectDir = path.join('/d/Node/projects', projectName, 'src/mockData');
+  const projectDir = path.join('/d/Node/projects', projectName, 'server/src/mockData');
 
   if (!fs.existsSync(projectDir)) {
     fs.mkdirSync(projectDir, { recursive: true });

@@ -23,9 +23,5 @@ yarn-debug.log*
 yarn-error.log*
 
 *storybook.log
-
-node_modules/
-.env
-*.log
-build/
-.bak/
+.png
+.ico

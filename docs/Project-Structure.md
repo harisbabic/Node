@@ -2,11 +2,13 @@
 
 ## Environment design to automate the setup of new projects
 
+## This project structure has been streamlined to a single project named 'ultimate' inside the `projects/` directory.
+
 ### Project Structure:
 ```
 /d/Node/
 ├── docs
-│   │   ├── Comprehensive-Integration-Plan-Incorporating-Features-from-Ai-toolbox-Web-Tools-and-DemTech-into-d-Node-Project
+│   │   ├── Comprehensive-Integration-Plan-Incorporating-Features-from-Web-Tools-and-DemTech-into-d-Node-Project
 │   │   ├── extra-sh-scripts-list.txt
 │   │   ├── implementation-guide.md
 │   │   ├── noloco-theme-setup.md
@@ -201,27 +203,26 @@
 │               │               └── unit
 │                   │                   └── sample.test.js
 ├── shared-utils
+│   │   ├── generate-ai-tools.js
+│   │   ├── generate-charts.js
+│   │   ├── generate-components.js
+│   │   ├── generate-forms-templates.js
+│   │   ├── generate-mock-data.js
+│   │   ├── generate-models.js
 │   │   ├── generate-project-readme.js
-│   │   ├── generate-tree.js
+│   │   ├── generate-routes.js
+│   │   ├── generate-structure.js
 │   │   └── package.json
 └── utils
         ├── continue-master-setup.sh
         ├── create-api-route.sh
+        ├── FULL_PROJECT_TREE.txt
         ├── FULL_README.md
         ├── generate-api-service.sh
         ├── generate-config.sh
         ├── generate-layout.sh
         ├── generate-tests.sh
         ├── init-git.sh
-        ├── js-utils
-    │       │   ├── generate-ai-tools.js
-    │       │   ├── generate-charts.js
-    │       │   ├── generate-components.js
-    │       │   ├── generate-forms-templates.js
-    │       │   ├── generate-mock-data.js
-    │       │   ├── generate-models.js
-    │       │   ├── generate-readme.js
-    │       │   └── generate-routes.js
         ├── master-setup.sh
         ├── run-migrations.sh
         ├── set-configs.sh
