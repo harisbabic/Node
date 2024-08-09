@@ -1,28 +1,30 @@
 # AI Toolbox
 
-This project is part of the /d/Node ecosystem, focusing on AI-powered tools and utilities.
+This directory contains code snippets and utilities related to AI-powered tools. These are intended to be incorporated into the /d/Node environment project.
 
-## Features
+## Purpose
 
-- AI-driven code generation
-- Machine learning model integration
-- Natural language processing utilities
+- Provide reference implementations for AI-driven functionalities
+- Serve as a source for extracting and adapting AI-related code into the main /d/Node project
 
-## Getting Started
+## Contents
 
-1. Navigate to the project directory:
-   ```
-   cd /d/Node/projects/ai-toolbox
-   ```
-2. Install dependencies:
-   ```
-   npm install
-   ```
-3. Run the development server:
-   ```
-   npm run dev
-   ```
+- AI-driven code generation utilities
+- Machine learning model integration examples
+- Natural language processing utility functions
+
+## Note
+
+This is not a standalone project. The code here is meant to be reviewed, adapted, and integrated into the main /d/Node environment as needed. Once integration is complete, this directory may be removed from the repository.
+
+## Usage in /d/Node Development
+
+When incorporating these AI functionalities into the /d/Node project:
+1. Review the relevant code snippets in this directory
+2. Adapt the code to fit the /d/Node project structure and coding standards
+3. Integrate the adapted code into the appropriate location in the /d/Node project
+4. Ensure proper testing and documentation of the newly integrated features
 
 ## Contributing
 
-Please refer to the main CONTRIBUTING.md file in the /d/Node root directory for contribution guidelines.
+For guidelines on how to contribute to the main /d/Node project, please refer to the CONTRIBUTING.md file in the /d/Node root directory.
