@@ -12,7 +12,7 @@ To maintain consistency and clarity in our project development, please adhere to
    - Development is done on a Windows 10 machine, using Git Bash for command line operations.
 
 3. Code Generation and Adaptation:
-   - When generating new code or adapting functionality from other projects (e.g., Ai-toolbox, web-tools), ensure it's compatible with our Node project structure and technologies.
+   - When generating new code or adapting functionality from other projects (e.g., Ai-toolbox, web-tools, DemTech), ensure it's compatible with our Node project structure and technologies.
    - Adjust imports, file paths, and dependencies as necessary to fit our project structure.
 
 4. Documentation:

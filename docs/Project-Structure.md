@@ -6,7 +6,7 @@
 ```
 /d/Node/
 ├── docs
-│   │   ├── Comprehensive-Integration-Plan-Incorporating-Features-from-Web-Tools-and-DemTech-into-d-Node-Project
+│   │   ├── Comprehensive-Integration-Plan-Incorporating-Features-from-Ai-toolbox-Web-Tools-and-DemTech-into-d-Node-Project
 │   │   ├── extra-sh-scripts-list.txt
 │   │   ├── implementation-guide.md
 │   │   ├── noloco-theme-setup.md
