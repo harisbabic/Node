@@ -13,59 +13,38 @@ error_exit() {
 }
 
 project_name="$1"
-db_user="$2"
-db_pass="$3"
+db_user="${project_name}_user"
+db_pass="$2"
 
-if [ -z "$project_name" ] || [ -z "$db_user" ] || [ -z "$db_pass" ]; then
-  error_exit "Usage: $0 <project-name> <db-user> <db-pass>"
+if [ -z "$project_name" ] || [ -z "$db_pass" ]; then
+  error_exit "Usage: $0 <project-name> <db-pass>"
 fi
 
 log "Setting up PostgreSQL for $project_name"
 
 # Check if PostgreSQL is installed
-log "Checking if PostgreSQL is installed..."
 if ! command -v psql &> /dev/null; then
     error_exit "PostgreSQL is not installed. Please install it and try again."
 fi
 
-log "PostgreSQL is installed. Proceeding with setup..."
-
-project_dir="/d/Node/projects/$project_name"
 server_dir="$project_dir/server"
 cd "$server_dir" || error_exit "Failed to change to server directory"
 
-# Create database and user
-log "Attempting to create database and user..."
-PGPASSWORD="${db_pass}" psql -U postgres -h localhost << EOF
-CREATE DATABASE ${project_name} WITH OWNER ${db_user};
-DO
-\$\$
-BEGIN
-  IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = '${db_user}') THEN
-    CREATE USER ${db_user} WITH ENCRYPTED PASSWORD '${db_pass}';
-  END IF;
-END
-\$\$;
+log "Creating database and user as admin..."
+psql -U postgres <<EOF
+CREATE DATABASE ${project_name};
+CREATE USER ${db_user} WITH ENCRYPTED PASSWORD '${db_pass}';
 GRANT ALL PRIVILEGES ON DATABASE ${project_name} TO ${db_user};
-\c ${project_name}
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 EOF
 
-if [ $? -ne 0 ]; then
-    error_exit "Failed to set up database and user"
-fi
-log "Database and user setup completed."
+log "Creating server/.env..."
+cat << EOF > "$server_dir/.env"
+DATABASE_URL=postgres://${db_user}:${db_pass}@localhost:5432/${project_name}
+PORT=3000
+BASE_URL=http://localhost:3000  # Optional, for local development
+EOF
 
-log "Database and user created successfully."
-
-# Update .env file
-log "Updating .env file..."
-if [ -f .env ]; then
-    sed -i '/^DATABASE_URL/d' .env
-fi
-echo "DATABASE_URL=postgres://${db_user}:${db_pass}@localhost:5432/${project_name}" >> .env
-
-log ".env file updated."
+log "PostgreSQL setup completed for $project_name"
 
 # Install necessary packages
 log "Installing necessary npm packages..."
