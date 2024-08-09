@@ -33,9 +33,6 @@ The `/d/Node` project is an environment designed to automate the setup of new pr
     cp .env.example .env
    ```
 3. **Open the `.env` file and replace the placeholder values with your actual configuration details**.
-   ```bash
-    use the editor of hour choice to open and edit the .env file
-   ```
 
 Note: Never commit your actual `.env` file to version control as it may contain sensitive information.
 
