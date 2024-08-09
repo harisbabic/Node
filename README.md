@@ -1,50 +1,71 @@
 # /d/Node Project
 
 ## Overview
-The `/d/Node` project is an environment designed to automate the setup of new projects. It includes a variety of utility scripts, a `master-setup.sh` script, and a modular structure for client and server components. The primary goal is to provide a streamlined development environment with built-in support for PostgreSQL, automation, and advanced features.
+The /d/Node project is an advanced, evolving application development environment designed to rapidly create customizable, robust, and feature-rich web applications. It provides a comprehensive set of tools, components, and functionalities for both frontend and backend development.
 
-## Key Components
-- **`master-setup.sh`**: Orchestrates the entire project setup.
-- **Utility Scripts**: Found in `/d/Node/utils`, these scripts automate various tasks, including project creation, database setup, and more.
-- **Modular Directory Structure**: Organizes code into logical subdirectories for easy navigation and scalability.
-- **PostgreSQL Integration**: The default database for backend operations.
+## Project Structure
+```
+/d/Node/
+├── README.md
+├── CONTRIBUTING.md
+├── CHANGELOG.md
+├── LICENSE
+├── .gitignore
+├── docs/
+│   └── ... (various documentation files)
+├── utils/
+│   └── ... (utility scripts for project management)
+├── projects/
+│   ├── ai-toolbox/
+│   ├── DemTech/
+│   ├── test_project/
+│   ├── ultimate/
+│   └── web-tools/
+└── shared-utils/
+    └── ... (shared utilities across projects)
+```
 
-## Installation and Setup
-1. **Clone the Repository**:
-    ```bash
-    git clone https://github.com/harisbabic/Node.git
-    cd Node
-    ```
+## Key Features
+- Rapid project setup and deployment
+- Rich library of reusable frontend and backend components
+- User and permission management system
+- Advanced web forms and UI elements
+- Customizable themes and layouts
+- Drag-and-drop functionality
+- Comprehensive testing suite
+- Ongoing expansion of features and capabilities
 
-2. **Run the Master Setup Script**:
-    ```bash
-    ./master-setup.sh <project-name>
-    ```
-    Follow the prompts to complete the setup.
+## Getting Started
+To create a new project using the /d/Node environment:
 
-## Environment Setup
-
-1. Navigate to the **`/d/Node`** directory.
-   ```bash
-    cd /d/Node
-    ```
-2. Copy the **`.env.example`** file to create a new **`.env`** file:
-   ```bash
-    cp .env.example .env
+1. Clone this repository
+2. Navigate to the `/d/Node/utils` directory
+3. Run the master setup script:
    ```
-3. Open the **`.env`** file and replace the placeholder values with your actual configuration details.
+   ./master-setup.sh your_project_name
+   ```
+4. Follow the prompts to customize your project setup
 
-Note: Never commit your actual **`.env`** file to version control as it may contain sensitive information.
+For more detailed instructions, see the [Project Setup Guide](docs/project-setup-guide.md).
 
-## Project Tree
-[Include the latest project tree here]
+## Utility Scripts
+The `utils/` directory contains various scripts to automate project setup and management. See the [Utils README](utils/README.md) for details on each script.
 
-## Documentation
-For detailed documentation, see the following:
-- [WORKING_RULES.md](./WORKING_RULES.md)
-- [CONTRIBUTING.md](./CONTRIBUTING.md)
-- [docs/](./docs/)
+## Reference Projects
+The `projects/` directory contains several reference projects:
+- `ai-toolbox`: AI-related functionalities
+- `DemTech`: Democracy-focused tech solutions
+- `web-tools`: Business management and directory tools
+- `test_project`: Demonstrates basic project setup
+- `ultimate`: Comprehensive example of all features
 
-## Next Steps
-- Review the current action plan in [ACTION_PLAN.md](./docs/ACTION_PLAN.md)
-- Ensure all new features are thoroughly tested and documented.
+These projects serve as sources of functionality to be integrated into the main /d/Node environment. They are continuously evolving and may be removed once fully integrated.
+
+## Contributing
+We welcome contributions to expand the capabilities of the /d/Node environment. Please read our [Contributing Guidelines](CONTRIBUTING.md) before submitting any pull requests.
+
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Changelog
+For a detailed list of changes and version updates, please see our [Changelog](CHANGELOG.md).
