@@ -1,6 +1,5 @@
 #!/bin/bash
 # setup-auth.sh
-# Usage: ./setup-auth.sh <project-name>
 
 set -euo pipefail
 
@@ -8,161 +7,99 @@ log() {
   echo "$(date '+%Y-%m-%d %H:%M:%S') - $1"
 }
 
-error_exit() {
-  echo "$(date '+%Y-%m-%d %H:%M:%S') - ERROR: $1" >&2
-  exit 1
-}
-
-project_name=$1
+project_name="$1"
+project_dir="/d/Node/projects/$project_name"
+server_dir="$project_dir/server"
 
 if [ -z "$project_name" ]; then
   echo "Usage: $0 <project-name>"
   exit 1
 fi
 
-project_dir="/d/Node/projects/$project_name"
-server_dir="$project_dir/server"
+log "Setting up authentication and authorization for $project_name"
 
 # Install necessary packages
-cd "$project_dir"
-npm install jsonwebtoken bcryptjs
+cd "$server_dir"
+npm install bcryptjs jsonwebtoken passport passport-jwt
+npm install @types/jsonwebtoken @types/passport-jwt --save-dev
 
-# Create an authentication middleware
+# Create auth middleware
 mkdir -p "$server_dir/src/middleware"
-cat << EOF > "$server_dir/src/middleware/auth.js"
-// projects/grow-tracking-app/server/src/middleware/auth.js
-const jwt = require('jsonwebtoken');
+cat << EOF > "$server_dir/src/middleware/auth.middleware.ts"
+import { Request, Response, NextFunction } from 'express';
+import passport from 'passport';
+import { User } from '../models/User.model';
 
-module.exports = function (req, res, next) {
-  // Get token from header
-  const token = req.header('x-auth-token');
+export const authenticate = (req: Request, res: Response, next: NextFunction) => {
+  passport.authenticate('jwt', { session: false }, (err: Error, user: User) => {
+    if (err || !user) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+    req.user = user;
+    return next();
+  })(req, res, next);
+};
+EOF
 
-  // Check if no token
-  if (!token) {
-    return res.status(401).json({ msg: 'No token, authorization denied' });
-  }
+# Create auth controller
+mkdir -p "$server_dir/src/controllers"
+cat << EOF > "$server_dir/src/controllers/auth.controller.ts"
+import { Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
+import { User } from '../models/User.model';
 
-  // Verify token
+export const register = async (req: Request, res: Response) => {
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded.user;
-    next();
-  } catch (err) {
-    res.status(401).json({ msg: 'Token is not valid' });
+    const { username, email, password } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await User.create({ username, email, password: hashedPassword });
+    res.status(201).json({ message: 'User registered successfully', userId: user.id });
+  } catch (error) {
+    res.status(500).json({ message: 'Error registering user', error });
+  }
+};
+
+export const login = async (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ where: { email } });
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET as string, { expiresIn: '1h' });
+    res.json({ token });
+  } catch (error) {
+    res.status(500).json({ message: 'Error logging in', error });
   }
 };
 EOF
 
-# Create authentication routes
+# Create auth routes
 mkdir -p "$server_dir/src/routes"
-cat << EOF > "$server_dir/src/routes/auth.js"
-const express = require('express');
+cat << EOF > "$server_dir/src/routes/auth.routes.ts"
+import express from 'express';
+import { register, login } from '../controllers/auth.controller';
+
 const router = express.Router();
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
-const auth = require('../middleware/auth');
-require('dotenv').config();
 
-// @route   POST api/auth/register
-// @desc    Register user
-// @access  Public
-router.post('/register', async (req, res) => {
-  const { name, email, password } = req.body;
+router.post('/register', register);
+router.post('/login', login);
 
-  try {
-    let user = await User.findOne({ email });
-    if (user) {
-      return res.status(400).json({ msg: 'User already exists' });
-    }
-
-    user = new User({
-      name,
-      email,
-      password,
-    });
-
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(password, salt);
-
-    await user.save();
-
-    const payload = {
-      user: {
-        id: user.id,
-      },
-    };
-
-    jwt.sign(
-      payload,
-      process.env.JWT_SECRET,
-      { expiresIn: 3600 },
-      (err, token) => {
-        if (err) throw err;
-        res.json({ token });
-      }
-    );
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
-  }
-});
-
-// @route   POST api/auth/login
-// @desc    Authenticate user & get token
-// @access  Public
-router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
-
-  try {
-    let user = await User.findOne({ email });
-    if (!user) {
-      return res.status(400).json({ msg: 'Invalid Credentials' });
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(400).json({ msg: 'Invalid Credentials' });
-    }
-
-    const payload = {
-      user: {
-        id: user.id,
-      },
-    };
-
-    jwt.sign(
-      payload,
-      process.env.JWT_SECRET,
-      { expiresIn: 3600 },
-      (err, token) => {
-        if (err) throw err;
-        res.json({ token });
-      }
-    );
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
-  }
-});
-
-// @route   GET api/auth/user
-// @desc    Get logged in user
-// @access  Private
-router.get('/user', auth, async (req, res) => {
-  try {
-    const user = await User.findById(req.user.id).select('-password');
-    res.json(user);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
-  }
-});
-
-module.exports = router;
+export default router;
 EOF
 
-# Update .env file with JWT secret
-echo "JWT_SECRET=mySecretKey" >> "$server_dir/.env"
+# Update .env file to add JWT_SECRET only if not already set
+env_file="$server_dir/.env"
+if grep -q "^JWT_SECRET=" "$env_file"; then
+  log "JWT_SECRET already set in .env"
+else
+  echo "JWT_SECRET=$(openssl rand -base64 32)" >> "$env_file"
+  log "JWT_SECRET added to .env"
+fi
 
-echo "Authentication and authorization set up for $project_name"
+# Update app.ts to include auth routes
+sed -i '/import express from '"'"'express'"'"';/a import authRoutes from '"'"'./routes/auth.routes'"'"';' "$server_dir/src/app.ts"
+sed -i '/app.use(express.json());/a app.use('"'"'/api/auth'"'"', authRoutes);' "$server_dir/src/app.ts"
+
+log "Authentication and authorization set up for $project_name"
