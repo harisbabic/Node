@@ -3,6 +3,10 @@
 ## Overview
 The /d/Node project is an advanced, evolving application development environment designed to rapidly create customizable, robust, and feature-rich web applications. It provides a comprehensive set of tools, components, and functionalities for both frontend and backend development.
 
+## Project Development Guidelines
+
+Before contributing or reviewing code, please read our [Working Rules and Instructions](DEVELOPMENT_GUIDELINES.md). These guidelines ensure consistency and clarity in our development process. Review these rules regularly and before generating any code or responses.
+
 ## Project Structure
 ```
 /d/Node/
