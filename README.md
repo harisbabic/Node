@@ -40,16 +40,16 @@ Before contributing or reviewing code, please read our [Working Rules and Instru
 - Comprehensive testing suite
 - Ongoing expansion of features and capabilities
 
-## Features
+### Features
 - **Project Management**: Organize tasks with boards, lists, and cards; collaborate using comments, attachments, and user assignments.
-- **Client Management**: CRM integration with client profiles, contracts, and a client portal for project transparency.
+- **Client Management**: CRM integration with client profiles, contracts, and a client portal for transparency.
 - **Financial Management**: Automate invoicing, payments, budgeting, and expense tracking.
-- **Automation & Integrations**: Streamline workflows and integrate with external tools.
+- **Automation & Integrations**: Streamline workflows and connect with external tools.
 - **Server-Side Dashboard**: Manage users, projects, and analytics with drag-and-drop functionality.
-- **Dynamic Form Builder**: Create custom forms using drag-and-drop.
+- **Dynamic Form Builder**: Create custom forms using a drag-and-drop interface.
 - **Business & Event Management**: Manage businesses, schedule events, and collect reviews.
 - **Security & Auditability**: Implement robust security, user roles, and audit logs.
-- **Advanced Features**: No-code app creation, comprehensive permissions, and advanced debugging tools.
+- **Advanced Features**: No-code app creation, comprehensive permissions, advanced debugging tools, and deployment features.
 
 ## Installation
 
