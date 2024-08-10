@@ -8,6 +8,7 @@ This project is an advanced tool designed for managing projects, businesses, eve
 Before contributing or reviewing code, please read our [Working Rules and Instructions](DEVELOPMENT_GUIDELINES.md). These guidelines ensure consistency and clarity in our development process. Review these rules regularly and before generating any code or responses.
 
 ## Project Structure
+
 ```
 /d/Node/
 ├── README.md
@@ -39,36 +40,49 @@ Before contributing or reviewing code, please read our [Working Rules and Instru
 - Comprehensive testing suite
 - Ongoing expansion of features and capabilities
 
-
 ## Features
 
-- **Project Management**: Manage tasks, projects, and user assignments with ease.
-   - **Visual Task Management**: Boards, lists, and cards provide a simple yet powerful way to organize tasks.
-   - **Collaboration**: Easy-to-use collaboration tools with comments, attachments, and user assignments.
-- **Client Management**:
-   - **CRM Integration**: Having a robust Client Relationship Management (CRM) system with client profiles, contracts, invoicing that allows for detailed tracking of client interactions, proposals, contracts, and payments. Clients should be linked to Projects and should have detailed profiles that include contact information, notes, and tags for organization.
-   - **Client Portal**: A dedicated portal where clients can view project progress, invoices, contracts, and communications is crucial for transparency and ease of access.
-- **Financial Management**:
-   - **Invoicing and Payments**: Automating invoicing with features like recurring payments and late fee reminders can streamline the financial aspects of project management. Invoices should be tied to specific projects and clients.
-   - **Budgeting and Expenses**: Real-time budget tracking and expense logging are essential for keeping projects on track financially. This data should be integrated with project and task management to provide a comprehensive overview.
-- **Automation and Integrations**:
-   - **Automated Workflows**: Automating routine tasks, such as sending reminders, updating project statuses, and tracking time, can significantly increase efficiency.
-   - **Integrations**: Allowing integrations with other tools, such as calendars, email clients, and financial software, can enhance the functionality and flexibility of the platform.
-- **Server-Side Dashboard With Drag-and-Drop Development Functionality**: A powerful dashboard for managing users, projects, and analytics from the backend.
-- **Dynamic Form Builder**: Create custom forms using a drag-and-drop interface, tailored to your specific needs.
-- **Business and Event Management**: Organize and promote businesses, schedule events, and manage services within the application.
-- **Polls and Reviews**: Engage with users through polls and collect valuable feedback with a built-in review system.
-- **Component-Based Structure**:
-   - Inspired by Retool’s component library, we should consider a modular approach in our schema design where different components (e.g., Projects, Tasks, Clients) can be independently developed and then integrated.
-- **Data Connectivity**:
-   - Ensure our system is capable of integrating with various databases and external APIs, allowing for flexible data sources, similar to Retool’s universal connectivity.
-- **Security and Auditability**:
-   - Implement robust security features in our schema, including user roles, audit logs, and secure data handling practices. This is crucial for any enterprise-level application.
-- **Advanced Features**:
-   - **No-Code Flexibility**: Allows for the creation of highly customizable apps using a no-code approach, which can be beneficial for future adaptability.
-   - **Comprehensive Permissions**: Detailed user roles and permissions management, ensuring that data access is controlled.
-   - **Integration and Automation**: Powerful integration capabilities with APIs and third-party tools, coupled with workflow automation.
-   - **Advanced Debugging and Deployment Tools**: Robust tools with capabilities to monitor application performance and manage different environments, which can be essential for maintaining a high-quality product.
+- **Project Management**
+   - Visual Task Management: Boards, lists, and cards for organizing tasks.
+   - Collaboration: Tools for comments, attachments, and user assignments.
+  
+- **Client Management**
+   - CRM Integration: Robust client profiles, contracts, and invoicing.
+   - Client Portal: Dedicated portal for clients to view project progress and communications.
+  
+- **Financial Management**
+   - Invoicing and Payments: Automate invoicing with recurring payments and late fee reminders.
+   - Budgeting and Expenses: Real-time tracking integrated with projects and tasks.
+
+- **Automation and Integrations**
+   - Automated Workflows: Automate routine tasks like reminders and status updates.
+   - Integrations: Connect with calendars, email clients, and financial software.
+
+- **Server-Side Dashboard**
+   - Drag-and-Drop Development: Manage users, projects, and analytics.
+
+- **Dynamic Form Builder**
+   - Create custom forms with drag-and-drop functionality.
+
+- **Business and Event Management**
+   - Manage and promote businesses, schedule events, and manage services.
+
+- **Polls and Reviews**
+   - Engage users through polls and collect feedback with a review system.
+
+- **Component-Based Structure**
+   - Modular design for independent development and integration of components.
+
+- **Data Connectivity**
+   - Integration with multiple databases and external APIs.
+
+- **Security and Auditability**
+   - Robust security with user roles, audit logs, and secure data handling.
+
+- **Advanced Features**
+   - No-Code Flexibility: Create customizable apps with a no-code approach.
+   - Comprehensive Permissions: Detailed user roles and permissions management.
+   - Debugging and Deployment Tools: Advanced tools for monitoring and managing environments.
 
 ## Installation
 
@@ -99,6 +113,7 @@ Before contributing or reviewing code, please read our [Working Rules and Instru
    ```bash
    npm start
    ```
+   
 ## Usage
 - **Managing Projects**: Navigate to the Projects section to create, update, and manage your projects.
 - **Building Forms**: Use the Form Builder to create custom forms by dragging and dropping form elements.
