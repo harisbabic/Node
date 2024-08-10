@@ -35,6 +35,3 @@
 
 - **Phase 5: Deployment and Maintenance**
 - [ ] CI/CD pipeline, automated deployment, and production monitoring.
-
-Each phase will be reviewed and adjusted as necessary based on project progress and emerging requirements.
-
