@@ -117,9 +117,21 @@ if [[ $setup_pwa =~ ^[Yy]$ ]]; then
 fi
 
 # Server setup
-read -s -p "Enter PostgreSQL password for ${project_name}_user: " db_password
-echo
-run_script setup-postgresql.sh "$project_name" "${project_name}_user" "$db_password"
+echo "Setting up PostgreSQL..."
+if [ -z "$DB_PASS" ]; then
+  read -s -p "Enter PostgreSQL password for ${project_name}_user: " db_password
+  export DB_PASS="$db_password"
+  echo
+else
+  echo "Using existing PostgreSQL password from environment."
+fi
+
+echo "Loading environment variables..."
+source utils/env.sh
+
+echo "Setting up the database..."
+run_script setup-database.sh
+
 run_script setup-auth.sh "$project_name"
 run_script run-migrations.sh "$project_name" "${project_name}_user" "$db_password"
 run_script enhance-error-handling.sh "$project_name"
@@ -131,18 +143,43 @@ if [[ $create_route =~ ^[Yy]$ ]]; then
   run_script create-api-route.sh "$project_name" "$route_name"
 fi
 
-# Noloco-like functionality setup
+# Noloco-like functionality setup with customization
 read -p "Do you want to set up Noloco-like functionalities? (y/n) " setup_noloco
 if [[ $setup_noloco =~ ^[Yy]$ ]]; then
-  run_script setup-api-generation.sh "$project_dir"
-  run_script setup-rbac.sh "$project_dir"
-  run_script setup-workflows.sh "$project_dir"
-  run_script setup-dynamic-ui.sh "$project_dir"
-  run_script setup-file-management.sh "$project_dir"
-  run_script setup-email-templates.sh "$project_dir"
-  run_script setup-dashboard.sh "$project_dir"
-  run_script setup-noloco-theme.sh "$project_dir" "both"
-  run_script setup-data-modeling.sh "$project_dir"
+  echo "Noloco-like functionalities setup options:"
+  echo "1. Full Setup"
+  echo "2. API Generation Only"
+  echo "3. UI Customization Only"
+  echo "4. RBAC and Workflows Only"
+  read -p "Choose an option (1-4): " noloco_option
+
+  case $noloco_option in
+    1)
+      run_script setup-api-generation.sh "$project_dir"
+      run_script setup-rbac.sh "$project_dir"
+      run_script setup-workflows.sh "$project_dir"
+      run_script setup-dynamic-ui.sh "$project_dir"
+      run_script setup-file-management.sh "$project_dir"
+      run_script setup-email-templates.sh "$project_dir"
+      run_script setup-dashboard.sh "$project_dir"
+      run_script setup-noloco-theme.sh "$project_dir" "both"
+      run_script setup-data-modeling.sh "$project_dir"
+      ;;
+    2)
+      run_script setup-api-generation.sh "$project_dir"
+      ;;
+    3)
+      run_script setup-dynamic-ui.sh "$project_dir"
+      run_script setup-noloco-theme.sh "$project_dir" "both"
+      ;;
+    4)
+      run_script setup-rbac.sh "$project_dir"
+      run_script setup-workflows.sh "$project_dir"
+      ;;
+    *)
+      echo "Invalid option. Skipping Noloco-like functionality setup."
+      ;;
+  esac
 fi
 
 read -p "Do you want to set up component documentation? (y/n) " setup_component_docs
