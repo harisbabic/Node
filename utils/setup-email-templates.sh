@@ -64,7 +64,7 @@ class EmailService {
   }
 
   async saveTemplate(templateData) {
-    const query = 'INSERT INTO email_templates(name, subject, body) VALUES($1, $2, $3) RETURNING *';
+    const query = 'INSERT INTO email_templates(name, subject, body) VALUES(\$1, \$2, \$3) RETURNING *';
     const values = [templateData.name, templateData.subject, templateData.body];
     const result = await pool.query(query, values);
     return result.rows[0];
@@ -76,7 +76,7 @@ class EmailService {
   }
 
   async getTemplateByName(name) {
-    const result = await pool.query('SELECT * FROM email_templates WHERE name = $1', [name]);
+    const result = await pool.query('SELECT * FROM email_templates WHERE name = \$1', [name]);
     return result.rows[0];
   }
 }
@@ -93,7 +93,7 @@ const pool = new Pool({
 
 class EmailTemplateModel {
   async saveTemplate(templateData) {
-    const query = 'INSERT INTO email_templates(name, subject, body) VALUES($1, $2, $3) RETURNING *';
+    const query = 'INSERT INTO email_templates(name, subject, body) VALUES(\$1, \$2, \$3) RETURNING *';
     const values = [templateData.name, templateData.subject, templateData.body];
     const result = await pool.query(query, values);
     return result.rows[0];
@@ -105,7 +105,7 @@ class EmailTemplateModel {
   }
 
   async getTemplateByName(name) {
-    const result = await pool.query('SELECT * FROM email_templates WHERE name = $1', [name]);
+    const result = await pool.query('SELECT * FROM email_templates WHERE name = \$1', [name]);
     return result.rows[0];
   }
 }

@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const excludeExtensions = ['.pkl', '.png', '.jpg', '.jpeg', '.svg', '.ico', '.txt'];
-const excludeDirectories = ['node_modules', '.git', '.github', '.vscode', 'venv', '.bak', 'docs'];
+const excludeDirectories = ['node_modules', '.git', '.vscode', 'venv', '.bak'];
 const excludeFiles = ['package-lock.json'];
 
 function log(message) {
@@ -41,12 +41,12 @@ function generateReadmeForDirectory(directoryPath, directoryName, depth = 0) {
     return readmeContent;
 }
 
-const rootDirs = ['/add-new-project', '/Node'];
+const rootDirs = ['/Node'];
 let fullReadmeContent = '# Project Documentation\n\n';
 
 rootDirs.forEach(dir => {
     fullReadmeContent += generateReadmeForDirectory(dir, path.basename(dir));
 });
 
-fs.writeFileSync(path.join('/Node/utils', 'FULL_README.md'), fullReadmeContent);
-console.log('/Node/utils/FULL_README.md generated successfully.');
+fs.writeFileSync(path.join('/Node', 'README.md'), fullReadmeContent);
+console.log('/Node/README.md generated successfully.');

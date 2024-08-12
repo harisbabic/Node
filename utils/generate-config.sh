@@ -1,21 +1,28 @@
 #!/bin/bash
 # generate-config.sh
 
-project_dir="$1"
-config_type="$2"
+set -euo pipefail
 
-if [ -z "$project_dir" ] || [ -z "$config_type" ]; then
-  echo "Usage: $0 <project-dir> <config-type>"
-  echo "Config types: webpack, babel, tsconfig"
+log() {
+  echo "$(date '+%Y-%m-%d %H:%M:%S') - $1"
+}
+
+error_exit() {
+  echo "$(date '+%Y-%m-%d %H:%M:%S') - ERROR: $1" >&2
   exit 1
+}
+
+project_dir="$1"
+
+if [ -z "$project_dir" ]; then
+  error_exit "Usage: $0 <project-dir>"
 fi
 
 client_dir="$project_dir/client"
-# cd "$client_dir"
+cd "$project_dir"
 
-case "$config_type" in
-  webpack)
-    cat << EOF > "$client_dir/webpack.config.js"
+# Create webpack.config.js
+cat << EOF > "$client_dir/webpack.config.js"
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -70,10 +77,10 @@ module.exports = {
   },
 };
 EOF
-    echo "Webpack config generated in $client_dir"
-    ;;
-  babel)
-    cat << EOF > "$client_dir/.babelrc"
+log "Webpack config generated in $client_dir"
+
+# Create .babelrc
+cat << EOF > "$client_dir/.babelrc"
 {
   "presets": [
     ["@babel/preset-env", {
@@ -89,10 +96,10 @@ EOF
   ]
 }
 EOF
-    echo "Babel config generated in $client_dir"
-    ;;
-  tsconfig)
-    cat << EOF > "$client_dir/tsconfig.json"
+log "Babel config generated in $client_dir"
+
+# Create tsconfig.json
+cat << EOF > "$client_dir/tsconfig.json"
 {
   "compilerOptions": {
     "target": "es5",
@@ -114,10 +121,6 @@ EOF
   "include": ["src"]
 }
 EOF
-    echo "TypeScript config generated in $client_dir"
-    ;;
-  *)
-    echo "Invalid config type. Choose 'webpack', 'babel', or 'tsconfig'."
-    exit 1
-    ;;
-esac
+log "TypeScript config generated in $client_dir"
+
+echo "Configuration files created successfully for $client_dir"

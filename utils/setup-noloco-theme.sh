@@ -6,7 +6,7 @@ install_target="$2"
 
 if [ -z "$project_dir" ] || [ -z "$install_target" ]; then
     echo "Usage: $0 <project-dir> <install-target>"
-    echo "install-target options: frontend, backend, both"
+    echo "install-target options: client, server, both"
     exit 1
 fi
 
@@ -17,13 +17,13 @@ BACKGROUND_COLOR="#F8FAFC"
 TEXT_COLOR="#1E293B"
 
 # Font
-FONT_FAMILY="'Inter', sans-serif"
+FONT_FAMILY= "Inter, sans-serif"
 
-setup_frontend() {
-    echo "Setting up Noloco theme for frontend..."
-    
+setup_client() {
+    echo "Setting up Noloco theme for client..."
+
     # Install dependencies
-    cd "$project_dir/frontend" || exit
+    cd "$project_dir/client" || exit
     npm install styled-components@^5.3.5 react-icons@^4.3.1
 
     # Create theme file
@@ -31,7 +31,7 @@ setup_frontend() {
     cat << EOF > src/styles/NolocoTheme.js
 import { createGlobalStyle } from 'styled-components';
 
-export const theme = {
+const NolocoTheme = {
   colors: {
     primary: '${PRIMARY_COLOR}',
     secondary: '${SECONDARY_COLOR}',
@@ -39,9 +39,10 @@ export const theme = {
     text: '${TEXT_COLOR}',
   },
   fonts: {
-    body: ${FONT_FAMILY},
+    body: '${FONT_FAMILY}',
   },
 };
+export default NolocoTheme;
 
 export const GlobalStyle = createGlobalStyle\`
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -67,7 +68,7 @@ EOF
 
     # Create component templates
     mkdir -p src/components/Noloco
-    
+
     # Button component
     cat << EOF > src/components/Noloco/Button.js
 import styled from 'styled-components';
@@ -124,14 +125,14 @@ EOF
     sed -i "s/<React.StrictMode>/<ThemeProvider theme={theme}><React.StrictMode><GlobalStyle \/>/" src/App.js
     sed -i "s/<\/React.StrictMode>/<\/React.StrictMode><\/ThemeProvider>/" src/App.js
 
-    echo "Frontend Noloco theme setup completed."
+    echo "Client Noloco theme setup completed."
 }
 
-setup_backend() {
-    echo "Setting up Noloco theme for backend..."
-    
-    # For backend, we'll create some utility functions and middleware that align with Noloco's style
-    cd "$project_dir/backend" || exit
+setup_server() {
+    echo "Setting up Noloco theme for server..."
+
+    # For server, we'll create some utility functions and middleware that align with Noloco's style
+    cd "$project_dir/server" || exit
     mkdir -p src/utils src/middleware
 
     # Create a utility file for consistent API responses
@@ -173,22 +174,22 @@ const errorHandler = (err, req, res, next) => {
 module.exports = errorHandler;
 EOF
 
-    echo "Backend Noloco theme setup completed."
+    echo "Server-side Noloco theme setup completed."
 }
 
 case "$install_target" in
-    frontend)
-        setup_frontend
+    client)
+        setup_client
         ;;
-    backend)
-        setup_backend
+    server)
+        setup_server
         ;;
     both)
-        setup_frontend
-        setup_backend
+        setup_client
+        setup_server
         ;;
     *)
-        echo "Invalid install target. Choose 'frontend', 'backend', or 'both'."
+        echo "Invalid install target. Choose 'client', 'server', or 'both'."
         exit 1
         ;;
 esac

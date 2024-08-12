@@ -11,6 +11,7 @@ if [ -z "$project_dir" ] || [ -z "$project_name" ]; then
     exit 1
 fi
 
+# Install testing dependencies
 server_dir="$project_dir/server"
 cd "$server_dir" || exit 1
 
@@ -44,6 +45,7 @@ cat << EOF > ./package.json
   }
 }
 EOF
+echo "package.json generated in $server_dir"
 
 # Create jest.config.js
 cat << EOF > ./jest.config.js
@@ -56,6 +58,7 @@ module.exports = {
   setupFilesAfterEnv: ['./jest.setup.js']
 };
 EOF
+echo "jest.config.js generated in $server_dir"
 
 # Create jest.setup.js
 cat << EOF > ./jest.setup.js
@@ -110,6 +113,7 @@ global.Date = class extends Date {
   }
 };
 EOF
+echo "jest.setup.js generated in $server_dir"
 
 echo "Configuration files created successfully for $project_name"
 echo "Jest configuration files created in $server_dir"

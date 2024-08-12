@@ -18,12 +18,20 @@ if [ -z "$project_dir" ]; then
   error_exit "Usage: $0 <project-dir>"
 fi
 
-mkdir -p "$project_dir/server/src/middlewares" "$project_dir/server/src/models"
+server_dir="$project_dir/server"
+src_dir="$server_dir/src"
+
+mkdir -p "$src_dir/middlewares" "$src_dir/models" "$src_dir/routes"
 
 log "Setting up RBAC for $project_dir"
 
+# Install required packages
+cd "$server_dir"
+npm install bcryptjs jsonwebtoken
+cd -
+
 # Create RBAC middleware
-cat << EOF > "$project_dir/server/src/middlewares/rbacMiddleware.js"
+cat << EOF > "$src_dir/middlewares/rbacMiddleware.js"
 // src/middlewares/rbacMiddleware.js
 const rbacMiddleware = (requiredRole) => {
   return (req, res, next) => {
@@ -43,7 +51,7 @@ module.exports = rbacMiddleware;
 EOF
 
 # Create User model with role
-cat << EOF > "$project_dir/server/src/models/User.js"
+cat << EOF > "$src_dir/models/User.js"
 const { Pool } = require('pg');
 const bcrypt = require('bcryptjs');
 const pool = new Pool({
@@ -53,14 +61,14 @@ const pool = new Pool({
 class UserService {
   async createUser(userData) {
     const hashedPassword = await bcrypt.hash(userData.password, 12);
-    const query = 'INSERT INTO users (username, email, password, role) VALUES($1, $2, $3, $4) RETURNING *';
+    const query = 'INSERT INTO users (username, email, password, role) VALUES(\$1, \$2, \$3, \$4) RETURNING *';
     const values = [userData.username, userData.email, hashedPassword, userData.role];
     const result = await pool.query(query, values);
     return result.rows[0];
   }
 
   async findUserByEmail(email) {
-    const query = 'SELECT * FROM users WHERE email = $1';
+    const query = 'SELECT * FROM users WHERE email = \$1';
     const result = await pool.query(query, [email]);
     return result.rows[0];
   }
@@ -74,7 +82,7 @@ module.exports = new UserService();
 EOF
 
 # Update auth routes to include role
-cat << EOF > "$project_dir/server/src/routes/authRoutes.js"
+cat << EOF > "$src_dir/routes/authRoutes.js"
 // src/routes/authRoutes.js
 const express = require('express');
 const jwt = require('jsonwebtoken');

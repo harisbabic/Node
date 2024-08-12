@@ -88,17 +88,67 @@ EOF
 sed -i '/<\/head>/i\    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />' public/index.html
 sed -i '/<\/head>/i\    <meta name="theme-color" content="#000000" />' public/index.html
 
+# Create a service worker file
+cat << EOF > public/service-worker.js
+const CACHE_NAME = "my-app-cache-v1";
+const urlsToCache = [
+  "/",
+  "/index.html",
+  "/styles.css",
+  "/main.js",
+  "/logo.png",
+];
+
+// Install a service worker
+self.addEventListener("install", event => {
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => {
+        console.log("Opened cache");
+        return cache.addAll(urlsToCache);
+      })
+  );
+});
+
+// Cache and return requests
+self.addEventListener("fetch", event => {
+  event.respondWith(
+    caches.match(event.request)
+      .then(response => {
+        return response || fetch(event.request);
+      })
+  );
+});
+
+// Update a service worker
+self.addEventListener("activate", event => {
+  const cacheWhitelist = ["my-app-cache-v1"];
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          if (cacheWhitelist.indexOf(cacheName) === -1) {
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
+  );
+});
+EOF
+echo "Service Worker file created in $client_dir/public directory."
+
 # Create a service worker registration file
 cat << EOF > src/serviceWorkerRegistration.js
 import { Workbox } from 'workbox-window';
 
 export function register() {
   if ('serviceWorker' in navigator) {
-    const wb = new Workbox('/service-worker.js');
+    const wb = new Workbox('../public/service-worker.js');
 
     wb.addEventListener('installed', event => {
       if (event.isUpdate) {
-        if (confirm('New content is available! Click OK to refresh.')) {
+        if (window.confirm('New content is available! Click OK to refresh.')) {
           window.location.reload();
         }
       }
@@ -108,13 +158,9 @@ export function register() {
   }
 }
 EOF
+echo "Service Worker Registration setup completed for $client_dir/src directory."
 
-# Update index.js to include service worker registration
-cat << EOF >> src/index.js
+# Update index.js to include service worker registration at the top
+sed -i "1iimport { register } from './serviceWorkerRegistration';" src/index.js
 
-import { register } from './serviceWorkerRegistration';
-
-register();
-EOF
-
-log "PWA setup completed for $client_dir directory."
+echo "PWA setup completed for $client_dir directory."

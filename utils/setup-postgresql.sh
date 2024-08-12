@@ -13,11 +13,11 @@ error_exit() {
 }
 
 project_name="$1"
-db_user="$2"
-db_pass="$3"
+db_user="${project_name}_user"
+db_pass="$2"
 
-if [ -z "$project_name" ] || [ -z "$db_user" ] || [ -z "$db_pass" ]; then
-  error_exit "Usage: $0 <project-name> <db-user> <db-pass>"
+if [ -z "$project_name" ] || [ -z "$db_pass" ]; then
+  error_exit "Usage: $0 <project-name> <db-pass>"
 fi
 
 log "Setting up PostgreSQL for $project_name"
@@ -30,28 +30,33 @@ fi
 server_dir="$project_dir/server"
 cd "$server_dir" || error_exit "Failed to change to server directory"
 
-# Create database and user
-psql -U postgres << EOF || error_exit "Failed to create database and user"
+log "Creating database and user as admin..."
+psql -U postgres <<EOF
 CREATE DATABASE ${project_name};
 CREATE USER ${db_user} WITH ENCRYPTED PASSWORD '${db_pass}';
 GRANT ALL PRIVILEGES ON DATABASE ${project_name} TO ${db_user};
-\c ${project_name}
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 EOF
 
-# Update .env file
-if [ -f .env ]; then
-    sed -i '/^DATABASE_URL/d' .env
-fi
-echo "DATABASE_URL=postgres://${db_user}:${db_pass}@localhost:5432/${project_name}" >> .env
+log "Creating server/.env..."
+cat << EOF > "$server_dir/.env"
+DATABASE_URL=postgres://${db_user}:${db_pass}@localhost:5432/${project_name}
+PORT=3000
+BASE_URL=http://localhost:3000  # Optional, for local development
+EOF
+
+log "PostgreSQL setup completed for $project_name"
 
 # Install necessary packages
+log "Installing necessary npm packages..."
 npm install express pg sequelize dotenv || error_exit "Failed to install npm packages"
 
+log "NPM packages installed."
+
 # Create database connection utility
-mkdir -p src/utils
-cat << EOF > src/utils/db.js
-// src/utils/db.js
+log "Creating database connection utility..."
+mkdir -p "$server_dir/src/config"
+cat << EOF > "$server_dir/src/config/database.js"
+// src/config/database.js
 const { Pool } = require('pg');
 const { Sequelize } = require('sequelize');
 require('dotenv').config();
@@ -92,5 +97,37 @@ module.exports = {
   query: (text, params) => pool.query(text, params),
 };
 EOF
+
+log "Database connection utility created."
+
+# Create a basic model
+log "Creating basic User model..."
+mkdir -p "$server_dir/src/models"
+cat << EOF > "$server_dir/src/models/User.js"
+// src/models/User.js
+
+const { Sequelize, DataTypes } = require('sequelize');
+const sequelize = require('../config/database');
+
+const User = sequelize.define('User', {
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true
+  },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false
+  }
+});
+
+module.exports = User;
+EOF
+
+log "Basic User model created."
 
 log "PostgreSQL setup completed for $project_name"

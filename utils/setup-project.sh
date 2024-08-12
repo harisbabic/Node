@@ -126,6 +126,27 @@ app.use(errorHandler);
 module.exports = app;
 EOF
 
+# Creating a basic app.ts if it doesn't exist
+if [ ! -f "$server_dir/src/app.ts" ]; then
+  mkdir -p "$server_dir/src"
+  cat << EOF > "$server_dir/src/app.ts"
+import express from 'express';
+const app = express();
+
+app.use(express.json());
+
+// Your routes will be added here later
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(\`Server is running on port \${PORT}\`);
+});
+
+export default app;
+EOF
+  echo "Created basic app.ts at $server_dir/src/"
+fi
+
 log "Updating package.json with new dependencies..."
 cd "$server_dir"
 npm install express-session connect-pg-simple passport
@@ -228,7 +249,7 @@ EOF
 
 log "Creating server/.env..."
 cat << EOF > "$server_dir/.env"
-DATABASE_URL=postgres://${project_name}_user:your_secure_password@localhost:5432/${project_name}
+DATABASE_URL=postgres://${project_name}_user:postgres@localhost:5432/${project_name}
 PORT=3000
 BASE_URL=http://localhost:3000  # Optional, for local development
 EOF
