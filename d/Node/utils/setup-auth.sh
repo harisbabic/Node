@@ -98,6 +98,15 @@ else
   log "JWT_SECRET added to .env"
 fi
 
+# Check if app.ts exists before running sed
+if [ -f "$server_dir/src/app.ts" ]; then
+  sed -i '/import express from '"'"'express'"'"';/a import authRoutes from '"'"'./routes/auth.routes'"'"';' "$server_dir/src/app.ts"
+  sed -i '/app.use(express.json());/a app.use('"'"'/api/auth'"'"', authRoutes);' "$server_dir/src/app.ts"
+  log "Authentication routes added to app.ts"
+else
+  log "app.ts not found at $server_dir/src/. Skipping route integration."
+fi
+
 # Update app.ts to include auth routes
 sed -i '/import express from '"'"'express'"'"';/a import authRoutes from '"'"'./routes/auth.routes'"'"';' "$server_dir/src/app.ts"
 sed -i '/app.use(express.json());/a app.use('"'"'/api/auth'"'"', authRoutes);' "$server_dir/src/app.ts"

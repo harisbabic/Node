@@ -76,6 +76,8 @@ cd "$project_dir"
 # Core setup
 run_script setup-project.sh "$project_name"
 run_script set-configs.sh "$project_dir" "$project_name"
+run_script update-package-json.sh "$project_name"
+run_script setup-ci-cd.sh "$project_name"
 run_script generate-tests.sh "$project_name"
 run_script init-git.sh "$project_name"
 
@@ -83,12 +85,8 @@ run_script init-git.sh "$project_name"
 run_script setup-sass.sh "$project_dir"
 run_script setup-styled-components.sh "$project_dir"
 run_script setup-redux.sh "$project_dir"
-# run_script setup-redux-actions.sh "$project_name"
 run_script generate-config.sh "$project_dir"
-# run_script generate-config.sh "$project_dir" webpack
-# run_script generate-config.sh "$project_dir" babel
-# run_script generate-config.sh "$project_dir" tsconfig
-# run_script generate-layout.sh "$project_dir" dashboard
+run_script generate-layout.sh "$project_dir" dashboard
 run_script setup-state-management.sh "$project_dir" redux
 run_script generate-api-service.sh "$project_dir" api
 run_script setup-responsive-design.sh "$project_dir"
@@ -118,7 +116,9 @@ fi
 
 # Server setup
 echo "Setting up PostgreSQL..."
-if [ -z "$DB_PASS" ]; then
+
+# Ensure DB_PASS is defined
+if [ -z "${DB_PASS:-}" ]; then
   read -s -p "Enter PostgreSQL password for ${project_name}_user: " db_password
   export DB_PASS="$db_password"
   echo
@@ -126,14 +126,27 @@ else
   echo "Using existing PostgreSQL password from environment."
 fi
 
+# Generate the .env file before setting up PostgreSQL
+log "Creating .env file with project-specific credentials..."
+cat <<EOL > ./env.sh
+#!/bin/bash
+
+# Database credentials
+export DB_NAME="${project_name}_db"
+export DB_USER="${project_name}_user"
+export DB_PASS="${DB_PASS}"
+EOL
+
+chmod +x ./env.sh
+
 echo "Loading environment variables..."
-source utils/env.sh
+source ./env.sh
 
 echo "Setting up the database..."
 run_script setup-database.sh
 
 run_script setup-auth.sh "$project_name"
-run_script run-migrations.sh "$project_name" "${project_name}_user" "$db_password"
+# run_script run-migrations.sh "$project_name" "${project_name}_user" "$db_password"
 run_script enhance-error-handling.sh "$project_name"
 
 # API Route setup

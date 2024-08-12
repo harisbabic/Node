@@ -96,7 +96,7 @@ cat << EOF > "$client_dir/.babelrc"
   ]
 }
 EOF
-echo "Babel config generated in $client_dir"
+log "Babel config generated in $client_dir"
 
 # Create tsconfig.json
 cat << EOF > "$client_dir/tsconfig.json"

@@ -17,7 +17,7 @@ BACKGROUND_COLOR="#F8FAFC"
 TEXT_COLOR="#1E293B"
 
 # Font
-FONT_FAMILY= 'Inter, sans-serif'
+FONT_FAMILY= "Inter, sans-serif"
 
 setup_client() {
     echo "Setting up Noloco theme for client..."
@@ -39,7 +39,7 @@ const NolocoTheme = {
     text: '${TEXT_COLOR}',
   },
   fonts: {
-    body: ${FONT_FAMILY},
+    body: '${FONT_FAMILY}',
   },
 };
 export default NolocoTheme;

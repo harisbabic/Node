@@ -1,8 +1,25 @@
 #!/bin/bash
-# setup-ci.sh
-# Usage: ./setup-ci.sh <project-name>
+# setup-ci-cd.sh
+# Usage: ./setup-ci-cd.sh <project-name>
+
+set -euo pipefail
+
+log() {
+  echo "$(date '+%Y-%m-%d %H:%M:%S') - $1"
+}
+
+error_exit() {
+  echo "$(date '+%Y-%m-%d %H:%M:%S') - ERROR: $1" >&2
+  exit 1
+}
 
 project_name=$1
+
+if [ -z "$project_name" ]; then
+  echo "Usage: $0 [-v] <project-name>"
+  exit 1
+fi
+
 project_dir="/d/Node/projects/$project_name"
 
 mkdir -p "$project_dir/.github/workflows"
