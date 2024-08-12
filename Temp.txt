@@ -1,1 +1,947 @@
+Here's the current version of `utils/` directory as well as teh new project uploaded called "DynamicFormsApp" which we created. I'll paste below the log output of how many times it took running the ```master-setup.sh``` script to create the project and in the end we still 
+ had a ton of issues. Here's the github link: ```https://github.com/harisbabic/Node``` Here are the bash outputs: ```$ master-setup.sh DynamicFormsApp
+2024-08-09 22:45:50 - DynamicFormsApp
+2024-08-09 22:45:50 - /d/Node/projects/DynamicFormsApp
+2024-08-09 22:45:50 - Running setup-project.sh...
+2024-08-09 22:45:50 : Creating project directory...
+2024-08-09 22:45:50 : Initializing project structure...
+2024-08-09 22:45:50 : Installing express pg sequelize cors dotenv dependencies...
 
+added 101 packages, and audited 102 packages in 18s
+
+14 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+2024-08-09 22:46:10 : Creating server/src/app.js...
+2024-08-09 22:46:10 : Updating package.json with new dependencies...
+
+added 9 packages, and audited 111 packages in 2s
+
+15 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+added 12 packages, and audited 123 packages in 2s
+
+15 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+/d/Node/projects/DynamicFormsApp/server
+2024-08-09 22:46:15 : Creating error handling middleware...
+2024-08-09 22:46:15 : Creating basic passport configuration...
+2024-08-09 22:46:15 : Creating server/src/routes/models.js...
+2024-08-09 22:46:15 : Creating server/src/index.js...
+/d/Node/utils/setup-project.sh: line 185: Server: command not found
+2024-08-09 22:46:16 : Creating server/.env...
+2024-08-09 22:46:16 : Creating project .gitignore...
+2024-08-09 22:46:16 : Updating server/src/index.js to use app.js...
+2024-08-09 22:46:16 : Setting up client...
+
+Creating a new React app in D:\Node\projects\DynamicFormsApp\client.
+
+Installing packages. This might take a couple of minutes.
+Installing react, react-dom, and react-scripts with cra-template...
+
+
+added 1480 packages in 1m
+
+261 packages are looking for funding
+  run `npm fund` for details
+
+Installing template dependencies using npm...
+
+added 63 packages, and changed 1 package in 9s
+
+261 packages are looking for funding
+  run `npm fund` for details
+Removing template package using npm...
+
+
+removed 1 package, and audited 1543 packages in 6s
+
+261 packages are looking for funding
+  run `npm fund` for details
+
+8 vulnerabilities (2 moderate, 6 high)
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+
+Success! Created client at D:\Node\projects\DynamicFormsApp\client
+Inside that directory, you can run several commands:
+
+  npm start
+    Starts the development server.
+
+  npm run build
+    Bundles the app into static files for production.
+
+  npm test
+    Starts the test runner.
+
+  npm run eject
+    Removes this tool and copies build dependencies, configuration files
+    and scripts into the app directory. If you do this, you can’t go back!
+
+We suggest that you begin by typing:
+
+  cd D:\Node\projects\DynamicFormsApp\client
+  npm start
+
+Happy hacking!
+
+added 18 packages, and audited 1561 packages in 7s
+
+264 packages are looking for funding
+  run `npm fund` for details
+
+8 vulnerabilities (2 moderate, 6 high)
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+2024-08-09 22:48:11 : Project DynamicFormsApp set up successfully
+2024-08-09 22:48:11 - Running set-configs.sh...
+Configuration files created successfully for DynamicFormsApp
+Jest configuration files created in /d/Node/projects/DynamicFormsApp/server
+2024-08-09 22:48:11 - Running generate-tests.sh...
+Creating test/unit and test/integration directories...
+Sample tests generated in /d/Node/projects/DynamicFormsApp/server/tests
+2024-08-09 22:48:11 - Running init-git.sh...
+Initialized empty Git repository in D:/Node/projects/DynamicFormsApp/.git/
+warning: in the working copy of '.gitignore', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/.gitignore', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/README.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/package-lock.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/package.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/public/index.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/public/manifest.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/public/robots.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/src/App.css', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/src/App.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/src/App.test.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/src/index.css', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/src/index.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/src/reportWebVitals.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/src/setupTests.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/jest.config.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/jest.setup.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/package-lock.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/package.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/src/app.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/src/config/passport.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/src/index.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/src/middleware/error-handling-middleware.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/src/routes/models.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/tests/integration/api.test.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/tests/unit/sample.test.js', LF will be replaced by CRLF the next time Git touches it
+[master (root-commit) 76bd7de] Initial commit
+ 32 files changed, 21996 insertions(+)
+ create mode 100644 .gitignore
+ create mode 100644 README.md
+ create mode 100644 client/.gitignore
+ create mode 100644 client/README.md
+ create mode 100644 client/package-lock.json
+ create mode 100644 client/package.json
+ create mode 100644 client/public/favicon.ico
+ create mode 100644 client/public/index.html
+ create mode 100644 client/public/logo192.png
+ create mode 100644 client/public/logo512.png
+ create mode 100644 client/public/manifest.json
+ create mode 100644 client/public/robots.txt
+ create mode 100644 client/src/App.css
+ create mode 100644 client/src/App.js
+ create mode 100644 client/src/App.test.js
+ create mode 100644 client/src/index.css
+ create mode 100644 client/src/index.js
+ create mode 100644 client/src/logo.svg
+ create mode 100644 client/src/reportWebVitals.js
+ create mode 100644 client/src/setupTests.js
+ create mode 100644 server/babel.config.js
+ create mode 100644 server/jest.config.js
+ create mode 100644 server/jest.setup.js
+ create mode 100644 server/package-lock.json
+ create mode 100644 server/package.json
+ create mode 100644 server/src/app.js
+ create mode 100644 server/src/config/passport.js
+ create mode 100644 server/src/index.js
+ create mode 100644 server/src/middleware/error-handling-middleware.js
+ create mode 100644 server/src/routes/models.js
+ create mode 100644 server/tests/integration/api.test.js
+ create mode 100644 server/tests/unit/sample.test.js
+Git initialized with .gitignore for DynamicFormsApp
+2024-08-09 22:48:13 - Running setup-sass.sh...
+
+added 2 packages, and audited 1563 packages in 4s
+
+264 packages are looking for funding
+  run `npm fund` for details
+
+8 vulnerabilities (2 moderate, 6 high)
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+SASS setup completed for /d/Node/projects/DynamicFormsApp/client directory.
+2024-08-09 22:48:19 - Running setup-styled-components.sh...
+
+up to date, audited 1563 packages in 4s
+
+264 packages are looking for funding
+  run `npm fund` for details
+
+8 vulnerabilities (2 moderate, 6 high)
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+sed: -e expression #1, char 83: unknown option to `s'
+Styled-components setup completed for /d/Node/projects/DynamicFormsApp/client directory.
+2024-08-09 22:48:24 - Running setup-redux.sh...
+2024-08-09 22:48:24 - Installing Redux and related packages...
+
+added 8 packages, and audited 1571 packages in 6s
+
+265 packages are looking for funding
+  run `npm fund` for details
+
+8 vulnerabilities (2 moderate, 6 high)
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+2024-08-09 22:48:30 - Creating Redux directory structure...
+2024-08-09 22:48:30 - Creating store.js...
+2024-08-09 22:48:30 - Creating root reducer (index.js in slices directory)...
+2024-08-09 22:48:30 - Creating an example slice...
+2024-08-09 22:48:30 - Updating index.js to use Redux...
+2024-08-09 22:48:30 - Updating App.js to use Redux...
+2024-08-09 22:48:30 - Updating index.js to use Redux...
+2024-08-09 22:48:31 - Redux setup completed for /d/Node/projects/DynamicFormsApp/client directory.
+2024-08-09 22:48:31 - Running generate-config.sh...
+2024-08-09 22:48:31 - Webpack config generated in /d/Node/projects/DynamicFormsApp/client
+Babel config generated in /d/Node/projects/DynamicFormsApp/client
+2024-08-09 22:48:31 - TypeScript config generated in /d/Node/projects/DynamicFormsApp/client
+Configuration files created successfully for /d/Node/projects/DynamicFormsApp/client
+2024-08-09 22:48:31 - Running setup-state-management.sh...
+Setting up redux for /d/Node/projects/DynamicFormsApp/client
+redux setup completed for /d/Node/projects/DynamicFormsApp/client
+2024-08-09 22:48:31 - Running generate-api-service.sh...
+Enhanced API service apiService created in /d/Node/projects/DynamicFormsApp/client/src/services
+2024-08-09 22:48:31 - Running setup-responsive-design.sh...
+Responsive design helpers created in /d/Node/projects/DynamicFormsApp/client/src/styles and /d/Node/projects/DynamicFormsApp/client/src/components
+2024-08-09 22:48:31 - Running setup-accessibility.sh...
+Enhanced accessibility setup completed for /d/Node/projects/DynamicFormsApp/client
+2024-08-09 22:48:31 - Running setup-performance-optimization.sh...
+/d/Node/utils/setup-performance-optimization.sh: line 18: url: unbound variable
+/d/Node/utils/setup-performance-optimization.sh: line 18: height: unbound variable
+Enhanced performance optimization setup completed for /d/Node/projects/DynamicFormsApp/client
+Do you want to set up animations with Framer Motion? (y/n) y
+2024-08-09 22:48:40 - Running setup-animation.sh...
+2024-08-09 22:48:40 - Setting up framer-motion for /d/Node/projects/DynamicFormsApp/client
+
+added 1 package, and audited 1572 packages in 5s
+
+265 packages are looking for funding
+  run `npm fund` for details
+
+8 vulnerabilities (2 moderate, 6 high)
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+framer-motion setup completed for /d/Node/projects/DynamicFormsApp/client directory.
+Do you want to set up internationalization (i18n)? (y/n) y
+2024-08-09 22:48:47 - Running setup-i18n.sh...
+2024-08-09 22:48:47 - Setting up internationalization for /d/Node/projects/DynamicFormsApp/client
+
+added 11 packages, and audited 1583 packages in 5s
+
+266 packages are looking for funding
+  run `npm fund` for details
+
+8 vulnerabilities (2 moderate, 6 high)
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+2024-08-09 22:48:52 - Internationalization setup completed for /d/Node/projects/DynamicFormsApp/client directory.
+Do you want to set up SEO? (y/n) y
+2024-08-09 22:48:54 - Running setup-seo.sh...
+2024-08-09 22:48:54 - Setting up SEO for /d/Node/projects/DynamicFormsApp/client
+
+added 3 packages, and audited 1586 packages in 5s
+
+266 packages are looking for funding
+  run `npm fund` for details
+
+8 vulnerabilities (2 moderate, 6 high)
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+Sitemap generated successfully
+robots.txt generated successfully
+2024-08-09 22:49:00 - SEO setup completed for /d/Node/projects/DynamicFormsApp
+Do you want to set up as a Progressive Web App (PWA)? (y/n) y
+2024-08-09 22:49:02 - Running setup-pwa.sh...
+2024-08-09 22:49:02 - Setting up PWA for /d/Node/projects/DynamicFormsApp/client
+npm warn deprecated workbox-cacheable-response@6.6.0: workbox-background-sync@6.6.0
+npm warn deprecated workbox-google-analytics@6.6.0: It is not compatible with newer versions of GA starting with v4, as long as you are using GAv3 it should be ok, but the package is not longer being maintained
+
+added 34 packages, changed 19 packages, and audited 1620 packages in 7s
+
+267 packages are looking for funding
+  run `npm fund` for details
+
+8 vulnerabilities (2 moderate, 6 high)
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+
+up to date, audited 1620 packages in 5s
+
+267 packages are looking for funding
+  run `npm fund` for details
+
+8 vulnerabilities (2 moderate, 6 high)
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+2024-08-09 22:49:15 - PWA setup completed for /d/Node/projects/DynamicFormsApp/client directory.
+Setting up PostgreSQL...
+/d/Node/utils/master-setup.sh: line 121: DB_PASS: unbound variable
+2024-08-09 22:49:15 - Setup interrupted. Cleaning up...
+
+
+$ master-setup.sh DynamicFormsApp
+2024-08-09 23:02:14 - DynamicFormsApp
+2024-08-09 23:02:14 - /d/Node/projects/DynamicFormsApp
+Setting up PostgreSQL...
+/d/Node/utils/master-setup.sh: line 122: DB_PASS: unbound variable
+2024-08-09 23:02:14 - Setup interrupted. Cleaning up...
+
+
+$ master-setup.sh DynamicFormsApp
+2024-08-09 23:03:19 - DynamicFormsApp
+2024-08-09 23:03:19 - /d/Node/projects/DynamicFormsApp
+Setting up PostgreSQL...
+Enter PostgreSQL password for DynamicFormsApp_user:
+2024-08-09 23:03:24 - Creating .env file with project-specific credentials...
+Loading environment variables...
+Setting up the database...
+2024-08-09 23:03:24 - Running setup-database.sh...
+Executing db/migrations/001_create_users_table.sql...
+psql: error: connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "your_database_user"
+Executing db/migrations/002_create_projects_table.sql...
+psql: error: connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "your_database_user"
+Executing db/migrations/003_create_tasks_table.sql...
+psql: error: connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "your_database_user"
+Executing db/migrations/004_create_clients_table.sql...
+psql: error: connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "your_database_user"
+Executing db/migrations/005_create_invoices_table.sql...
+psql: error: connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "your_database_user"
+Executing db/migrations/006_create_expenses_table.sql...
+psql: error: connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "your_database_user"
+Executing db/migrations/007_create_budgets_table.sql...
+psql: error: connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "your_database_user"
+Executing db/migrations/008_create_reminders_table.sql...
+psql: error: connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "your_database_user"
+Executing db/migrations/009_create_automation_rules_table.sql...
+psql: error: connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "your_database_user"
+Executing db/migrations/010_create_events_table.sql...
+psql: error: connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "your_database_user"
+Executing db/migrations/011_create_reviews_table.sql...
+psql: error: connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "your_database_user"
+Executing db/migrations/012_create_services_table.sql...
+psql: error: connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "your_database_user"
+Executing db/migrations/013_create_polls_table.sql...
+psql: error: connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "your_database_user"
+Database setup completed successfully!
+2024-08-09 23:03:26 - Running setup-auth.sh...
+2024-08-09 23:03:26 - Setting up authentication and authorization for DynamicFormsApp
+npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+npm warn deprecated abab@2.0.6: Use your platform's native atob() and btoa() methods instead
+npm warn deprecated domexception@2.0.1: Use your platform's native DOMException instead
+npm warn deprecated w3c-hr-time@1.0.2: Use your platform's native performance.now() and performance.timeOrigin.
+npm warn deprecated superagent@8.1.2: Please upgrade to v9.0.0+ as we have fixed a public vulnerability with formidable dependency. Note that v9.0.0+ requires Node.js v14.18.0+. See https://github.com/ladjs/superagent/pull/1800 for insight. This project is supported and maintained by the team at Forward Email @ https://forwardemail.net
+
+added 374 packages, removed 18 packages, changed 1 package, and audited 479 packages in 17s
+
+49 packages are looking for funding
+  run `npm fund` for details
+
+3 high severity vulnerabilities
+
+To address all issues, run:
+  npm audit fix
+
+Run `npm audit` for details.
+
+added 14 packages, and audited 493 packages in 3s
+
+49 packages are looking for funding
+  run `npm fund` for details
+
+3 high severity vulnerabilities
+
+To address all issues, run:
+  npm audit fix
+
+Run `npm audit` for details.
+2024-08-09 23:03:47 - JWT_SECRET added to .env
+sed: can't read /d/Node/projects/DynamicFormsApp/server/src/app.ts: No such file or directory
+2024-08-09 23:03:47 - ERROR: Script setup-auth.sh failed. Stopping setup.
+2024-08-09 23:03:47 - Setup interrupted. Cleaning up...
+
+
+$ rm -rf projects/DynamicFormsApp/
+
+
+$ master-setup.sh DynamicFormsApp
+2024-08-10 00:29:29 - DynamicFormsApp
+2024-08-10 00:29:29 - /d/Node/projects/DynamicFormsApp
+Do you want to set up component documentation? (y/n) y
+2024-08-10 00:29:33 - Running setup-component-docs.sh...
+2024-08-10 00:29:33 - Setting up component documentation for /d/Node/projects/DynamicFormsApp/client
+╭──────────────────────────────────────────────────────╮
+│                                                      │
+│   Adding Storybook version 8.2.8 to your project..   │
+│                                                      │
+╰──────────────────────────────────────────────────────╯
+ • Detecting project type. ✓
+Installing dependencies...
+
+
+up to date, audited 1651 packages in 5s
+
+274 packages are looking for funding
+  run `npm fund` for details
+
+8 vulnerabilities (2 moderate, 6 high)
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+ • Adding Storybook support to your "Create React App" based project
+- Getting the correct version of 13 packages
+√ Getting the correct version of 13 packages
+    Configuring eslint-plugin-storybook in your package.json
+- Installing Storybook dependencies
+√ Installing Storybook dependencies
+. ✓
+Installing dependencies...
+
+
+up to date, audited 2115 packages in 6s
+
+352 packages are looking for funding
+  run `npm fund` for details
+
+9 vulnerabilities (3 moderate, 6 high)
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+
+attention => Storybook now collects completely anonymous telemetry regarding usage.
+This information is used to shape Storybook's roadmap and prioritize features.
+You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+https://storybook.js.org/telemetry
+
+╭──────────────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│   Storybook was successfully installed in your project! 🎉                   │
+│   To run Storybook manually, run npm run storybook. CTRL+C to stop.          │
+│                                                                              │
+│   Wanna know more about Storybook? Check out https://storybook.js.org/       │
+│   Having trouble or want to chat? Join us at https://discord.gg/storybook/   │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+Running Storybook
+
+> client@0.1.0 storybook
+> storybook dev -p 6006 --initial-path=/onboarding --quiet
+
+storybook v8.2.8
+
+(node:31556) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+info => Serving static files from ./.\public at /
+info => Starting manager..
+info => Starting preview..
+info => Loading Webpack configuration from `node_modules\react-scripts`
+info => Removing existing JavaScript and TypeScript rules.
+info => Modifying Create React App rules.
+info Addon-docs: using MDX3
+info => Using default Webpack5 setup
+<i> [webpack-dev-middleware] wait until bundle finished
+info Using tsconfig paths for react-docgen
+One of your dependencies, babel-preset-react-app, is importing the
+"@babel/plugin-proposal-private-property-in-object" package without
+declaring it in its dependencies. This is currently working because
+"@babel/plugin-proposal-private-property-in-object" is already in your
+node_modules folder for unrelated reasons, but it may break at any time.
+
+babel-preset-react-app is part of the create-react-app project, which
+is not maintianed anymore. It is thus unlikely that this bug will
+ever be fixed. Add "@babel/plugin-proposal-private-property-in-object" to
+your devDependencies to work around this error. This will make this message
+go away.
+
+<i> [webpack-dev-middleware] wait until bundle finished: /__webpack_hmr
+No issues found.
+<i> [webpack-dev-middleware] wait until bundle finished: /iframe.html?viewMode=story&id=example-button--primary&onboarding=true&args=
+<i> [webpack-dev-middleware] wait until bundle finished: /vendors-node_modules_pmmmwh_react-refresh-webpack-plugin_client_ErrorOverlayEntry_js-node_mod-2d034f.iframe.bundle.js
+<i> [webpack-dev-middleware] wait until bundle finished: /main.iframe.bundle.js
+No issues found.
+Issues checking in progress...
+No issues found.
+Issues checking in progress...
+No issues found.
+2024-08-10 00:43:12 - Setup interrupted. Cleaning up...
+
+
+
+$ master-setup.sh DynamicFormsApp
+2024-08-10 00:44:19 - DynamicFormsApp
+2024-08-10 00:44:19 - /d/Node/projects/DynamicFormsApp
+Do you want to set up as a Progressive Web App (PWA)? (y/n) y
+2024-08-10 00:44:23 - Running setup-pwa.sh...
+2024-08-10 00:44:23 - Setting up PWA for /d/Node/projects/DynamicFormsApp/client
+
+up to date, audited 2115 packages in 7s
+
+352 packages are looking for funding
+  run `npm fund` for details
+
+9 vulnerabilities (3 moderate, 6 high)
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+
+up to date, audited 2115 packages in 6s
+
+352 packages are looking for funding
+  run `npm fund` for details
+
+9 vulnerabilities (3 moderate, 6 high)
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+2024-08-10 00:44:37 - PWA setup completed for /d/Node/projects/DynamicFormsApp/client directory.
+Do you want to set up Noloco-like functionalities? (y/n) y
+Noloco-like functionalities setup options:
+1. Full Setup
+2. API Generation Only
+3. UI Customization Only
+4. RBAC and Workflows Only
+Choose an option (1-4): 1
+2024-08-10 00:44:56 - Running setup-api-generation.sh...
+2024-08-10 00:44:56 - Setting up API generation for /d/Node/projects/DynamicFormsApp
+2024-08-10 00:44:56 - API generation setup completed for /d/Node/projects/DynamicFormsApp
+2024-08-10 00:44:56 - Running setup-rbac.sh...
+2024-08-10 00:44:56 - Setting up RBAC for /d/Node/projects/DynamicFormsApp
+
+up to date, audited 537 packages in 2s
+
+58 packages are looking for funding
+  run `npm fund` for details
+
+3 high severity vulnerabilities
+
+To address all issues, run:
+  npm audit fix
+
+Run `npm audit` for details.
+/d/Node/projects/DynamicFormsApp
+2024-08-10 00:44:59 - RBAC setup completed for /d/Node/projects/DynamicFormsApp
+2024-08-10 00:44:59 - Running setup-workflows.sh...
+2024-08-10 00:44:59 - Setting up workflows for /d/Node/projects/DynamicFormsApp
+2024-08-10 00:44:59 - Workflows setup completed for /d/Node/projects/DynamicFormsApp
+2024-08-10 00:44:59 - Running setup-dynamic-ui.sh...
+2024-08-10 00:44:59 - Setting up dynamic UI for /d/Node/projects/DynamicFormsApp
+Dynamic UI components setup completed for /d/Node/projects/DynamicFormsApp
+2024-08-10 00:44:59 - Running setup-file-management.sh...
+2024-08-10 00:44:59 - Setting up file management for /d/Node/projects/DynamicFormsApp
+
+up to date, audited 537 packages in 2s
+
+58 packages are looking for funding
+  run `npm fund` for details
+
+3 high severity vulnerabilities
+
+To address all issues, run:
+  npm audit fix
+
+Run `npm audit` for details.
+2024-08-10 00:45:02 - File management setup completed for /d/Node/projects/DynamicFormsApp
+2024-08-10 00:45:02 - Running setup-email-templates.sh...
+2024-08-10 00:45:02 - Setting up email templates for /d/Node/projects/DynamicFormsApp
+
+up to date, audited 537 packages in 2s
+
+58 packages are looking for funding
+  run `npm fund` for details
+
+3 high severity vulnerabilities
+
+To address all issues, run:
+  npm audit fix
+
+Run `npm audit` for details.
+2024-08-10 00:45:05 - Email templates setup completed for /d/Node/projects/DynamicFormsApp
+2024-08-10 00:45:05 - Running setup-dashboard.sh...
+2024-08-10 00:45:05 - Setting up dashboard for /d/Node/projects/DynamicFormsApp
+2024-08-10 00:45:05 - Dashboard setup completed for /d/Node/projects/DynamicFormsApp
+2024-08-10 00:45:05 - Running setup-noloco-theme.sh...
+/d/Node/utils/setup-noloco-theme.sh: line 20: Inter, sans-serif: command not found
+Setting up Noloco theme for client...
+
+up to date, audited 2115 packages in 6s
+
+352 packages are looking for funding
+  run `npm fund` for details
+
+9 vulnerabilities (3 moderate, 6 high)
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+Client Noloco theme setup completed.
+Setting up Noloco theme for server...
+Server-side Noloco theme setup completed.
+Noloco theme setup completed for both.
+2024-08-10 00:45:12 - Running setup-data-modeling.sh...
+2024-08-10 00:45:12 - Setting up data modeling for /d/Node/projects/DynamicFormsApp
+2024-08-10 00:45:12 - Installing class-variance-authority...
+
+up to date, audited 2115 packages in 6s
+
+352 packages are looking for funding
+  run `npm fund` for details
+
+9 vulnerabilities (3 moderate, 6 high)
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+2024-08-10 00:45:18 - Installing Tailwind CSS...
+
+up to date, audited 2115 packages in 6s
+
+352 packages are looking for funding
+  run `npm fund` for details
+
+9 vulnerabilities (3 moderate, 6 high)
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+
+tailwind.config.js already exists.
+postcss.config.js already exists.
+2024-08-10 00:45:26 - Updating Tailwind CSS configuration...
+2024-08-10 00:45:26 - Updating src/index.css with Tailwind directives...
+? Which style would you like to use? » - Use arrow-keys. Return to submit.
+>   Default
+    New York
+
+√ Which style would you like to use? » Default
+? Which color would you like to use as base color? » - Use arrow-keys. Return to submit.
+>   Slate
+    Gray
+    Zinc
+    Neutral
+    Stone
+
+√ Which color would you like to use as base color? » Slate
+? Would you like to use CSS variables for colors? » no / yes
+√ Would you like to use CSS variables for colors? ... no / yes
+
+- Writing components.json...
+√ Writing components.json...
+- Initializing project...
+√ Initializing project...
+- Installing dependencies...
+√ Installing dependencies...
+
+Success! Project initialization completed. You may now add components.
+
+exit
+2024-08-10 00:59:05 - Setup interrupted. Cleaning up...
+
+
+
+$ master-setup.sh DynamicFormsApp
+2024-08-10 00:59:45 - DynamicFormsApp
+2024-08-10 00:59:45 - /d/Node/projects/DynamicFormsApp
+Do you want to set up as a Progressive Web App (PWA)? (y/n) y
+2024-08-10 00:59:47 - Running setup-pwa.sh...
+2024-08-10 00:59:47 - Setting up PWA for /d/Node/projects/DynamicFormsApp/client
+
+up to date, audited 2115 packages in 7s
+
+352 packages are looking for funding
+  run `npm fund` for details
+
+9 vulnerabilities (3 moderate, 6 high)
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+
+up to date, audited 2115 packages in 6s
+
+352 packages are looking for funding
+  run `npm fund` for details
+
+9 vulnerabilities (3 moderate, 6 high)
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+Service Worker file created in /d/Node/projects/DynamicFormsApp/client/public directory.
+Service Worker Registration setup completed for /d/Node/projects/DynamicFormsApp/client/src directory.
+PWA setup completed for /d/Node/projects/DynamicFormsApp/client directory.
+Do you want to set up component documentation? (y/n) y
+2024-08-10 01:00:04 - Running setup-component-docs.sh...
+2024-08-10 01:00:04 - Setting up component documentation for /d/Node/projects/DynamicFormsApp/client
+╭──────────────────────────────────────────────────────╮
+│                                                      │
+│   Adding Storybook version 8.2.8 to your project..   │
+│                                                      │
+╰──────────────────────────────────────────────────────╯
+ • Detecting project type. ✓
+Installing dependencies...
+
+
+up to date, audited 2115 packages in 7s
+
+352 packages are looking for funding
+  run `npm fund` for details
+
+9 vulnerabilities (3 moderate, 6 high)
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+ • Adding Storybook support to your "Create React App" based project
+- Getting the correct version of 0 packages
+√ Getting the correct version of 0 packages
+. ✓
+Installing dependencies...
+
+
+up to date, audited 2115 packages in 6s
+
+352 packages are looking for funding
+  run `npm fund` for details
+
+9 vulnerabilities (3 moderate, 6 high)
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+╭──────────────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│   Storybook was successfully installed in your project! 🎉                   │
+│   To run Storybook manually, run npm run storybook. CTRL+C to stop.          │
+│                                                                              │
+│   Wanna know more about Storybook? Check out https://storybook.js.org/       │
+│   Having trouble or want to chat? Join us at https://discord.gg/storybook/   │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+Running Storybook
+
+> client@0.1.0 storybook
+> storybook dev -p 6006 --initial-path=/onboarding --quiet
+
+storybook v8.2.8
+
+(node:40172) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+info => Serving static files from ./.\public at /
+info => Starting manager..
+info => Starting preview..
+info => Loading Webpack configuration from `node_modules\react-scripts`
+info => Removing existing JavaScript and TypeScript rules.
+info => Modifying Create React App rules.
+info Addon-docs: using MDX3
+info => Using default Webpack5 setup
+<i> [webpack-dev-middleware] wait until bundle finished
+info Using tsconfig paths for react-docgen
+<i> [webpack-dev-middleware] wait until bundle finished: /__webpack_hmr
+<i> [webpack-dev-middleware] wait until bundle finished: /__webpack_hmr
+No issues found.
+<i> [webpack-dev-middleware] wait until bundle finished: /iframe.html?viewMode=story&id=example-button--primary&onboarding=true&args=
+<i> [webpack-dev-middleware] wait until bundle finished: /vendors-node_modules_pmmmwh_react-refresh-webpack-plugin_client_ErrorOverlayEntry_js-node_mod-2d034f.iframe.bundle.js
+<i> [webpack-dev-middleware] wait until bundle finished: /main.iframe.bundle.js
+One of your dependencies, babel-preset-react-app, is importing the
+"@babel/plugin-proposal-private-property-in-object" package without
+declaring it in its dependencies. This is currently working because
+"@babel/plugin-proposal-private-property-in-object" is already in your
+node_modules folder for unrelated reasons, but it may break at any time.
+
+babel-preset-react-app is part of the create-react-app project, which
+is not maintianed anymore. It is thus unlikely that this bug will
+ever be fixed. Add "@babel/plugin-proposal-private-property-in-object" to
+your devDependencies to work around this error. This will make this message
+go away.
+
+No issues found.
+No issues found.
+No issues found.
+No issues found.
+No issues found.
+No issues found.
+No issues found.
+Issues checking in progress...
+Issues checking in progress...
+No issues found.
+No issues found.
+No issues found.
+No issues found.
+No issues found.
+No issues found.
+Issues checking in progress...
+No issues found.
+No issues found.
+No issues found.
+No issues found.
+No issues found.
+2024-08-10 09:38:26 - Setup interrupted. Cleaning up...
+
+
+
+$ master-setup.sh DynamicFormsApp
+2024-08-10 09:46:50 - DynamicFormsApp
+2024-08-10 09:46:50 - /d/Node/projects/DynamicFormsApp
+Do you want to set up component documentation? (y/n) y
+2024-08-10 09:46:54 - Running setup-component-docs.sh...
+2024-08-10 09:46:54 - Setting up component documentation for /d/Node/projects/DynamicFormsApp/client
+╭──────────────────────────────────────────────────────╮
+│                                                      │
+│   Adding Storybook version 8.2.8 to your project..   │
+│                                                      │
+╰──────────────────────────────────────────────────────╯
+ • Detecting project type. ✓
+Installing dependencies...
+
+
+up to date, audited 2115 packages in 6s
+
+352 packages are looking for funding
+  run `npm fund` for details
+
+9 vulnerabilities (3 moderate, 6 high)
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+ • Adding Storybook support to your "Create React App" based project
+- Getting the correct version of 0 packages
+√ Getting the correct version of 0 packages
+. ✓
+Installing dependencies...
+
+
+up to date, audited 2115 packages in 6s
+
+352 packages are looking for funding
+  run `npm fund` for details
+
+9 vulnerabilities (3 moderate, 6 high)
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+╭──────────────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│   Storybook was successfully installed in your project! 🎉                   │
+│   To run Storybook manually, run npm run storybook. CTRL+C to stop.          │
+│                                                                              │
+│   Wanna know more about Storybook? Check out https://storybook.js.org/       │
+│   Having trouble or want to chat? Join us at https://discord.gg/storybook/   │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+Running Storybook
+
+> client@0.1.0 storybook
+> storybook dev -p 6006 --initial-path=/onboarding --quiet
+
+storybook v8.2.8
+
+(node:31484) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+info => Serving static files from ./.\public at /
+info => Starting manager..
+info => Starting preview..
+info => Loading Webpack configuration from `node_modules\react-scripts`
+info => Removing existing JavaScript and TypeScript rules.
+info => Modifying Create React App rules.
+info Addon-docs: using MDX3
+info => Using default Webpack5 setup
+<i> [webpack-dev-middleware] wait until bundle finished
+info Using tsconfig paths for react-docgen
+<i> [webpack-dev-middleware] wait until bundle finished: /__webpack_hmr
+<i> [webpack-dev-middleware] wait until bundle finished: /__webpack_hmr
+<i> [webpack-dev-middleware] wait until bundle finished: /__webpack_hmr
+No issues found.
+<i> [webpack-dev-middleware] wait until bundle finished: /iframe.html?viewMode=story&id=example-button--primary&onboarding=true&args=
+<i> [webpack-dev-middleware] wait until bundle finished: /runtime_main.fdf3243a020a0a33b9f2.hot-update.json
+One of your dependencies, babel-preset-react-app, is importing the
+"@babel/plugin-proposal-private-property-in-object" package without
+declaring it in its dependencies. This is currently working because
+"@babel/plugin-proposal-private-property-in-object" is already in your
+node_modules folder for unrelated reasons, but it may break at any time.
+
+babel-preset-react-app is part of the create-react-app project, which
+is not maintianed anymore. It is thus unlikely that this bug will
+ever be fixed. Add "@babel/plugin-proposal-private-property-in-object" to
+your devDependencies to work around this error. This will make this message
+go away.
+
+<i> [webpack-dev-middleware] wait until bundle finished: /main.iframe.bundle.js
+No issues found.
+2024-08-12 07:56:41 - Setup interrupted. Cleaning up...
+
+
+```
