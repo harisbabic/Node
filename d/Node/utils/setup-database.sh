@@ -1,9 +1,7 @@
 #!/bin/bash
 
 # setup-database.sh
-# This script sets up the PostgreSQL database for the Node project.
-# It checks for PostgreSQL installation, creates a new database and user,
-# and sets up the necessary environment variables.
+# This script sets up the PostgreSQL database for the Node project on Windows.
 
 set -e
 
@@ -28,30 +26,22 @@ if [ -z "$1" ]; then
 fi
 
 PROJECT_NAME="$1"
-DB_NAME="${PROJECT_NAME,,}_db"
-DB_USER="${PROJECT_NAME,,}_user"
+DB_NAME="${PROJECT_NAME//-/_}_db"
+DB_USER="${PROJECT_NAME//-/_}_user"
 
 # Function to check if PostgreSQL is installed
 check_postgres_installation() {
     if ! command -v psql &> /dev/null; then
-        log_info "PostgreSQL is not installed. Installing..."
-        
-        # Install PostgreSQL (this assumes a Debian-based system)
-        sudo apt-get update
-        sudo apt-get install -y postgresql postgresql-contrib
-        
-        # Start PostgreSQL service
-        sudo service postgresql start
-        
-        log_info "PostgreSQL installed successfully."
+        log_error "PostgreSQL is not installed or not in PATH. Please install PostgreSQL and add it to your PATH."
+        exit 1
     else
-        log_info "PostgreSQL is already installed."
+        log_info "PostgreSQL is installed."
     fi
 }
 
 # Function to check if database exists
 database_exists() {
-    sudo -u $POSTGRES_ADMIN_USER psql -lqt | cut -d \| -f 1 | grep -qw "$1"
+    PGPASSWORD=$POSTGRES_ADMIN_PASSWORD psql -U $POSTGRES_ADMIN_USER -h $DB_HOST -p $DB_PORT -lqt | cut -d \| -f 1 | grep -qw "$1"
 }
 
 # Function to create database and user
@@ -60,13 +50,18 @@ create_database_and_user() {
     DB_PASSWORD=$(openssl rand -base64 32)
 
     # Create database and user
-    sudo -u $POSTGRES_ADMIN_USER psql << EOF
+    PGPASSWORD=$POSTGRES_ADMIN_PASSWORD psql -U $POSTGRES_ADMIN_USER -h $DB_HOST -p $DB_PORT << EOF
 CREATE DATABASE $DB_NAME;
 CREATE USER $DB_USER WITH ENCRYPTED PASSWORD '$DB_PASSWORD';
 GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;
 EOF
 
-    log_info "Database $DB_NAME and user $DB_USER created successfully."
+    if [ $? -eq 0 ]; then
+        log_info "Database $DB_NAME and user $DB_USER created successfully."
+    else
+        log_error "Failed to create database and user. Please check your PostgreSQL installation and permissions."
+        exit 1
+    fi
 }
 
 # Function to update .env file
@@ -78,7 +73,7 @@ update_env_file() {
         sed -i "s/DB_HOST=.*/DB_HOST=$DB_HOST/" .env
         sed -i "s/DB_PORT=.*/DB_PORT=$DB_PORT/" .env
     else
-        cat > .env << EOL
+        cat > ../projects/${PROJECT_NAME}/.env << EOL
 # Database Configuration
 DB_NAME=$DB_NAME
 DB_USER=$DB_USER
@@ -88,14 +83,6 @@ DB_PORT=$DB_PORT
 
 # JWT Configuration
 JWT_SECRET=$(openssl rand -base64 32)
-
-# Note: To change the database password, use the following steps:
-# 1. Update the DB_PASSWORD value in this file
-# 2. Connect to your PostgreSQL database as an admin user
-# 3. Run the following SQL command:
-#    ALTER USER $DB_USER WITH PASSWORD 'your_new_password';
-# 
-# In future versions, password changes will be manageable through the backend dashboard.
 EOL
     fi
 
@@ -106,6 +93,18 @@ EOL
 log_info "Starting database setup for project: $PROJECT_NAME"
 
 check_postgres_installation
+
+# Prompt for PostgreSQL admin password
+read -sp "Enter PostgreSQL admin password: " POSTGRES_ADMIN_PASSWORD
+echo
+
+# Test the connection
+if PGPASSWORD=$POSTGRES_ADMIN_PASSWORD psql -U $POSTGRES_ADMIN_USER -h $DB_HOST -p $DB_PORT -c '\q' 2>/dev/null; then
+    log_info "Successfully connected to PostgreSQL."
+else
+    log_error "Failed to connect to PostgreSQL. Please check your password and PostgreSQL setup."
+    exit 1
+fi
 
 if database_exists "$DB_NAME"; then
     log_info "Database $DB_NAME already exists."

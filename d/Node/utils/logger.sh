@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # logger.sh
 # Relative path: d/Node/utils/logger.sh
 
@@ -8,9 +7,6 @@ set -euo pipefail
 
 # Default log level
 LOG_LEVEL=${LOG_LEVEL:-"INFO"}
-
-# Default log file
-LOG_FILE=${LOG_FILE:-"/var/log/node-project.log"}
 
 # Log levels
 declare -A LOG_LEVELS=( ["DEBUG"]=0 ["INFO"]=1 ["WARN"]=2 ["ERROR"]=3 ["FATAL"]=4 )
@@ -30,6 +26,15 @@ get_timestamp() {
     date "+%Y-%m-%d %H:%M:%S"
 }
 
+# Function to set up log file
+setup_log_file() {
+    local project_name=$1
+    LOG_DIR="/d/Node/logs"
+    mkdir -p "$LOG_DIR"
+    LOG_FILE="$LOG_DIR/${project_name}-setup.log"
+    touch "$LOG_FILE"
+}
+
 # Function to log messages
 log() {
     local level=$1
@@ -40,9 +45,11 @@ log() {
     if [[ ${LOG_LEVELS[$level]} -ge ${LOG_LEVELS[$LOG_LEVEL]} ]]; then
         # Log to console with color
         echo -e "${LOG_COLORS[$level]}[$timestamp] [$level] $message${NC}" >&2
-        
-        # Log to file without color
-        echo "[$timestamp] [$level] $message" >> "$LOG_FILE"
+
+        # Log to file without color if LOG_FILE is set
+        if [[ -n "${LOG_FILE:-}" ]]; then
+            echo "[$timestamp] [$level] $message" >> "$LOG_FILE"
+        fi
     fi
 }
 
@@ -63,21 +70,6 @@ set_log_level() {
     fi
 }
 
-# Function to set log file
-set_log_file() {
-    if [[ -w $(dirname "$1") ]]; then
-        LOG_FILE=$1
-    else
-        log_error "Cannot write to log file: $1. Using default: $LOG_FILE"
-    fi
-}
-
-# Ensure log file exists and is writable
-touch "$LOG_FILE" 2>/dev/null || {
-    echo "Cannot create log file: $LOG_FILE" >&2
-    exit 1
-}
-
 # Main execution check
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     echo "This script is meant to be sourced, not executed directly." >&2
@@ -85,4 +77,4 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 fi
 
 # Log script initialization
-log_info "Logging initialized. Log level: $LOG_LEVEL, Log file: $LOG_FILE"
+log_info "Logging initialized. Log level: $LOG_LEVEL"

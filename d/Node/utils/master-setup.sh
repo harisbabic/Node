@@ -1,5 +1,6 @@
 #!/bin/bash
 # master-setup.sh
+# Relative path: d/Node/utils/master-setup.sh
 
 set -e
 
@@ -14,38 +15,69 @@ if [ -z "$1" ]; then
 fi
 
 PROJECT_NAME="$1"
-PROJECT_DIR="../projects/$PROJECT_NAME"
+PROJECT_DIR="/d/Node/projects/$PROJECT_NAME"
+
+# Set up logging for this project
+setup_log_file "$PROJECT_NAME"
+
+log_info "Starting setup for project: $PROJECT_NAME"
+
+# Source the default config
+source "$(dirname "$0")/project-config.sh"
+
+# Function to prompt user for configuration
+prompt_config() {
+    local var_name="$1"
+    local description="$2"
+    local default_value="${!var_name}"
+
+    read -p "$description [$default_value]: " user_input
+    if [ -n "$user_input" ]; then
+        eval "$var_name=$user_input"
+    fi
+}
+
+# Prompt user for customization
+echo "Project Configuration"
+echo "====================="
+prompt_config SETUP_CLIENT "Set up client-side? (true/false)"
+prompt_config SETUP_ANIMATION "Set up animations? (true/false)"
+prompt_config SETUP_I18N "Set up internationalization? (true/false)"
+prompt_config SETUP_SEO "Set up SEO? (true/false)"
+prompt_config SETUP_PWA "Set up as Progressive Web App? (true/false)"
+prompt_config SETUP_API "Set up API? (true/false)"
+prompt_config SETUP_NOLOCO "Set up Noloco-like functionality? (true/false)"
+if [ "$SETUP_NOLOCO" = true ]; then
+    prompt_config NOLOCO_OPTION "Noloco option (1: Full, 2: API Only, 3: UI Only, 4: RBAC and Workflows)"
+fi
+prompt_config SETUP_COMPONENT_DOCS "Set up component documentation? (true/false)"
+prompt_config USE_TYPESCRIPT "Use TypeScript? (true/false)"
+prompt_config DATABASE_TYPE "Database type (postgresql/mysql/mongodb)"
+prompt_config FRONTEND_FRAMEWORK "Frontend framework (react/vue/angular)"
+
+# Create project directory
+mkdir -p "$PROJECT_DIR"
+cd "$PROJECT_DIR"
 
 # Function to run setup script with error handling
 run_setup_script() {
     local script=$1
+    shift  # Remove the first argument (script name) from the argument list
     log_info "Running $script..."
-    if ../utils/$script "$PROJECT_NAME"; then
+    if ../../utils/$script "$PROJECT_NAME" "$@"; then
         log_info "$script completed successfully."
     else
-        log_error "Error: $script failed."
-        exit 1
+        log_warn "Warning: $script completed with potential issues. Check the logs for details."
     fi
 }
 
-cleanup() {
-    log_warn "Setup interrupted. Cleaning up..."
-    # Add cleanup actions here if needed
-}
-
-trap cleanup EXIT
-
-# Create project directory
-mkdir -p "$PROJECT_DIR"
-cd "$PROJECT_DIR" || exit
-
-# Database setup
-log_info "Starting database setup..."
+# Run database setup
 run_setup_script setup-database.sh
 
-# Core setup
-log_info "Starting core setup..."
+# Run project setup
 run_setup_script setup-project.sh
+
+# Core setup
 run_setup_script set-configs.sh
 run_setup_script update-package-json.sh
 run_setup_script setup-ci-cd.sh
@@ -53,62 +85,48 @@ run_setup_script generate-tests.sh
 run_setup_script init-git.sh
 
 # Client setup
-log_info "Starting client setup..."
-run_setup_script setup-sass.sh
-run_setup_script setup-styled-components.sh
-run_setup_script setup-redux.sh
-run_setup_script generate-config.sh
-run_setup_script generate-layout.sh dashboard
-run_setup_script setup-state-management.sh redux
-run_setup_script generate-api-service.sh api
-run_setup_script setup-responsive-design.sh
-run_setup_script setup-accessibility.sh
-run_setup_script setup-performance-optimization.sh
+if [ "$SETUP_CLIENT" = true ]; then
+    run_setup_script setup-sass.sh
+    run_setup_script setup-styled-components.sh
+    run_setup_script setup-redux.sh
+    run_setup_script generate-config.sh
+    run_setup_script generate-layout.sh dashboard
+    run_setup_script setup-state-management.sh redux
+    run_setup_script generate-api-service.sh api
+    run_setup_script setup-responsive-design.sh
+    run_setup_script setup-accessibility.sh
+    run_setup_script setup-performance-optimization.sh
+fi
 
-# Optional Client setups
-log_info "Optional client setups..."
-read -p "Do you want to set up animations with Framer Motion? (y/n) " setup_animation
-if [[ $setup_animation =~ ^[Yy]$ ]]; then
+# Optional setups
+if [ "$SETUP_ANIMATION" = true ]; then
     run_setup_script setup-animation.sh framer-motion
 fi
 
-read -p "Do you want to set up internationalization (i18n)? (y/n) " setup_i18n
-if [[ $setup_i18n =~ ^[Yy]$ ]]; then
+if [ "$SETUP_I18N" = true ]; then
     run_setup_script setup-i18n.sh
 fi
 
-read -p "Do you want to set up SEO? (y/n) " setup_seo
-if [[ $setup_seo =~ ^[Yy]$ ]]; then
+if [ "$SETUP_SEO" = true ]; then
     run_setup_script setup-seo.sh
 fi
 
-read -p "Do you want to set up as a Progressive Web App (PWA)? (y/n) " setup_pwa
-if [[ $setup_pwa =~ ^[Yy]$ ]]; then
+if [ "$SETUP_PWA" = true ]; then
     run_setup_script setup-pwa.sh
 fi
 
 # Server setup
-log_info "Starting server setup..."
 run_setup_script setup-auth.sh
 
-# API Route setup
-read -p "Do you want to create an API route? (y/n) " create_route
-if [[ $create_route =~ ^[Yy]$ ]]; then
+# API setup
+if [ "$SETUP_API" = true ]; then
     read -p "Enter the route name: " route_name
     run_setup_script create-api-route.sh "$route_name"
 fi
 
 # Noloco-like functionality setup
-read -p "Do you want to set up Noloco-like functionalities? (y/n) " setup_noloco
-if [[ $setup_noloco =~ ^[Yy]$ ]]; then
-    echo "Noloco-like functionalities setup options:"
-    echo "1. Full Setup"
-    echo "2. API Generation Only"
-    echo "3. UI Customization Only"
-    echo "4. RBAC and Workflows Only"
-    read -p "Choose an option (1-4): " noloco_option
-
-    case $noloco_option in
+if [ "$SETUP_NOLOCO" = true ]; then
+    case $NOLOCO_OPTION in
         1)
             run_setup_script setup-api-generation.sh
             run_setup_script setup-rbac.sh
@@ -131,18 +149,11 @@ if [[ $setup_noloco =~ ^[Yy]$ ]]; then
             run_setup_script setup-rbac.sh
             run_setup_script setup-workflows.sh
             ;;
-        *)
-            log_warn "Invalid option. Skipping Noloco-like functionality setup."
-            ;;
     esac
 fi
 
-read -p "Do you want to set up component documentation? (y/n) " setup_component_docs
-if [[ $setup_component_docs =~ ^[Yy]$ ]]; then
+if [ "$SETUP_COMPONENT_DOCS" = true ]; then
     run_setup_script setup-component-docs.sh
 fi
 
-log_info "Project $PROJECT_NAME setup completed successfully!"
-
-# Remove the trap before exiting normally
-trap - EXIT
+log_info "Project $PROJECT_NAME setup completed. Check the logs for any warnings or errors."
