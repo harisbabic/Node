@@ -37,6 +37,7 @@
 
 ### 9. Performance
 - Consider the performance implications of your code, especially for database operations and API calls.
+- Ensure all scripts are executable with `chmod +x`.
 
 ### 10. Accessibility
 - Ensure new UI components are accessible and follow WCAG guidelines.
@@ -46,6 +47,9 @@
 - Each file should be production-ready, with meaningful implementations and tests.
 - Only use placeholders when absolutely necessary, and clearly mark them for later completion.
 - Focus on generating meaningful and thorough tests for each module, avoiding generic or example tests that do not fully assess functionality.
+- Follow consistent indentation (2 spaces for JavaScript, 4 spaces for Python, etc.).
+- Use meaningful variable names.
+- Write comments for complex logic or non-obvious code.
 
 ### 12. Streamlining Content
    - Ensure no redundant information is present.
