@@ -1,58 +1,42 @@
 #!/bin/bash
 # master-setup.sh
 
-set -euo pipefail
+set -e
+
+# Source the common functions
+source "$(dirname "$0")/common-functions.sh"
+
+# Check if project name is provided
+if [ -z "$1" ]; then
+    echo "Please provide a project name as an argument."
+    exit 1
+fi
+
+PROJECT_NAME="$1"
+PROJECT_DIR="../projects/$PROJECT_NAME"
+
+# Database setup
+../utils/setup-database.sh "$PROJECT_NAME"
+
+# Create project directory
+mkdir -p "$PROJECT_DIR"
+cd "$PROJECT_DIR" || exit
+
 
 log() {
   echo "$(date '+%Y-%m-%d %H:%M:%S') - $1"
 }
 
-error_exit() {
-  echo "$(date '+%Y-%m-%d %H:%M:%S') - ERROR: $1" >&2
-  exit 1
-}
-
-project_name=$1
-log "$project_name"
-
-# Parse command line options
-verbose=false
-while getopts "v" opt; do
-  case $opt in
-    v) verbose=true ;;
-    *) echo "Usage: $0 [-v] <project-name>"; exit 1 ;;
-  esac
-done
-shift $((OPTIND-1))
-
-if $verbose; then
-  set -x
-fi
-
-if [ -z "$project_name" ]; then
-  echo "Usage: $0 [-v] <project-name>"
-  exit 1
-fi
-
-project_dir="/d/Node/projects/$project_name"
-log "$project_dir"
-utils_dir="/d/Node/utils"
-
-log() {
-  echo "$(date '+%Y-%m-%d %H:%M:%S') - $1"
-}
-
-run_script() {
-  local script=$1
-  shift
-  log "Running $script..."
-  if [ -f "$utils_dir/$script" ]; then
-    if ! "$utils_dir/$script" "$@"; then
-      error_exit "Script $script failed. Stopping setup."
+# Function to run setup script with error handling
+run_setup_script() {
+    local script=$1
+    echo "Running $script..."
+    if ../utils/$script "$PROJECT_NAME"; then
+        echo "$script completed successfully."
+    else
+        echo "Error: $script failed."
+        exit 1
     fi
-  else
-    log "Warning: $script not found. Skipping..."
-  fi
 }
 
 error_exit() {
@@ -70,48 +54,48 @@ cleanup() {
 trap cleanup EXIT
 
 # Create project directory
-mkdir -p "$project_dir"
-cd "$project_dir"
+mkdir -p "$PROJECT_DIR"
+cd "$PROJECT_DIR"
 
 # Core setup
-run_script setup-project.sh "$project_name"
-run_script set-configs.sh "$project_dir" "$project_name"
-run_script update-package-json.sh "$project_name"
-run_script setup-ci-cd.sh "$project_name"
-run_script generate-tests.sh "$project_name"
-run_script init-git.sh "$project_name"
+run_script setup-project.sh "$PROJECT_NAME"
+run_script set-configs.sh "$PROJECT_DIR" "$PROJECT_NAME"
+run_script update-package-json.sh "$PROJECT_NAME"
+run_script setup-ci-cd.sh "$PROJECT_NAME"
+run_script generate-tests.sh "$PROJECT_NAME"
+run_script init-git.sh "$PROJECT_NAME"
 
 # Client setup
-run_script setup-sass.sh "$project_dir"
-run_script setup-styled-components.sh "$project_dir"
-run_script setup-redux.sh "$project_dir"
-run_script generate-config.sh "$project_dir"
-run_script generate-layout.sh "$project_dir" dashboard
-run_script setup-state-management.sh "$project_dir" redux
-run_script generate-api-service.sh "$project_dir" api
-run_script setup-responsive-design.sh "$project_dir"
-run_script setup-accessibility.sh "$project_dir"
-run_script setup-performance-optimization.sh "$project_dir"
+run_script setup-sass.sh "$PROJECT_DIR"
+run_script setup-styled-components.sh "$PROJECT_DIR"
+run_script setup-redux.sh "$PROJECT_DIR"
+run_script generate-config.sh "$PROJECT_DIR"
+run_script generate-layout.sh "$PROJECT_DIR" dashboard
+run_script setup-state-management.sh "$PROJECT_DIR" redux
+run_script generate-api-service.sh "$PROJECT_DIR" api
+run_script setup-responsive-design.sh "$PROJECT_DIR"
+run_script setup-accessibility.sh "$PROJECT_DIR"
+run_script setup-performance-optimization.sh "$PROJECT_DIR"
 
 # Optional Client setups
 read -p "Do you want to set up animations with Framer Motion? (y/n) " setup_animation
 if [[ $setup_animation =~ ^[Yy]$ ]]; then
-  run_script setup-animation.sh "$project_dir" framer-motion
+  run_script setup-animation.sh "$PROJECT_DIR" framer-motion
 fi
 
 read -p "Do you want to set up internationalization (i18n)? (y/n) " setup_i18n
 if [[ $setup_i18n =~ ^[Yy]$ ]]; then
-  run_script setup-i18n.sh "$project_dir"
+  run_script setup-i18n.sh "$PROJECT_DIR"
 fi
 
 read -p "Do you want to set up SEO? (y/n) " setup_seo
 if [[ $setup_seo =~ ^[Yy]$ ]]; then
-  run_script setup-seo.sh "$project_dir"
+  run_script setup-seo.sh "$PROJECT_DIR"
 fi
 
 read -p "Do you want to set up as a Progressive Web App (PWA)? (y/n) " setup_pwa
 if [[ $setup_pwa =~ ^[Yy]$ ]]; then
-  run_script setup-pwa.sh "$project_dir"
+  run_script setup-pwa.sh "$PROJECT_DIR"
 fi
 
 # Server setup
@@ -119,7 +103,7 @@ echo "Setting up PostgreSQL..."
 
 # Ensure DB_PASS is defined
 if [ -z "${DB_PASS:-}" ]; then
-  read -s -p "Enter PostgreSQL password for ${project_name}_user: " db_password
+  read -s -p "Enter PostgreSQL password for ${PROJECT_NAME}_user: " db_password
   export DB_PASS="$db_password"
   echo
 else
@@ -132,8 +116,8 @@ cat <<EOL > ./env.sh
 #!/bin/bash
 
 # Database credentials
-export DB_NAME="${project_name}_db"
-export DB_USER="${project_name}_user"
+export DB_NAME="${PROJECT_NAME}_db"
+export DB_USER="${PROJECT_NAME}_user"
 export DB_PASS="${DB_PASS}"
 EOL
 
@@ -145,15 +129,15 @@ source ./env.sh
 echo "Setting up the database..."
 run_script setup-database.sh
 
-run_script setup-auth.sh "$project_name"
-# run_script run-migrations.sh "$project_name" "${project_name}_user" "$db_password"
-run_script enhance-error-handling.sh "$project_name"
+run_script setup-auth.sh "$PROJECT_NAME"
+# run_script run-migrations.sh "$PROJECT_NAME" "${PROJECT_NAME}_user" "$db_password"
+run_script enhance-error-handling.sh "$PROJECT_NAME"
 
 # API Route setup
 read -p "Do you want to create an API route? (y/n) " create_route
 if [[ $create_route =~ ^[Yy]$ ]]; then
   read -p "Enter the route name: " route_name
-  run_script create-api-route.sh "$project_name" "$route_name"
+  run_script create-api-route.sh "$PROJECT_NAME" "$route_name"
 fi
 
 # Noloco-like functionality setup with customization
@@ -168,26 +152,26 @@ if [[ $setup_noloco =~ ^[Yy]$ ]]; then
 
   case $noloco_option in
     1)
-      run_script setup-api-generation.sh "$project_dir"
-      run_script setup-rbac.sh "$project_dir"
-      run_script setup-workflows.sh "$project_dir"
-      run_script setup-dynamic-ui.sh "$project_dir"
-      run_script setup-file-management.sh "$project_dir"
-      run_script setup-email-templates.sh "$project_dir"
-      run_script setup-dashboard.sh "$project_dir"
-      run_script setup-noloco-theme.sh "$project_dir" "both"
-      run_script setup-data-modeling.sh "$project_dir"
+      run_script setup-api-generation.sh "$PROJECT_DIR"
+      run_script setup-rbac.sh "$PROJECT_DIR"
+      run_script setup-workflows.sh "$PROJECT_DIR"
+      run_script setup-dynamic-ui.sh "$PROJECT_DIR"
+      run_script setup-file-management.sh "$PROJECT_DIR"
+      run_script setup-email-templates.sh "$PROJECT_DIR"
+      run_script setup-dashboard.sh "$PROJECT_DIR"
+      run_script setup-noloco-theme.sh "$PROJECT_DIR" "both"
+      run_script setup-data-modeling.sh "$PROJECT_DIR"
       ;;
     2)
-      run_script setup-api-generation.sh "$project_dir"
+      run_script setup-api-generation.sh "$PROJECT_DIR"
       ;;
     3)
-      run_script setup-dynamic-ui.sh "$project_dir"
-      run_script setup-noloco-theme.sh "$project_dir" "both"
+      run_script setup-dynamic-ui.sh "$PROJECT_DIR"
+      run_script setup-noloco-theme.sh "$PROJECT_DIR" "both"
       ;;
     4)
-      run_script setup-rbac.sh "$project_dir"
-      run_script setup-workflows.sh "$project_dir"
+      run_script setup-rbac.sh "$PROJECT_DIR"
+      run_script setup-workflows.sh "$PROJECT_DIR"
       ;;
     *)
       echo "Invalid option. Skipping Noloco-like functionality setup."
@@ -197,11 +181,11 @@ fi
 
 read -p "Do you want to set up component documentation? (y/n) " setup_component_docs
 if [[ $setup_component_docs =~ ^[Yy]$ ]]; then
-  run_script setup-component-docs.sh "$project_dir"
+  run_script setup-component-docs.sh "$PROJECT_DIR"
 fi
 
 log "Project setup complete."
-echo "Project $project_name has been set up successfully!"
+echo "Project $PROJECT_NAME setup completed successfully!"
 
 # Remove the trap before exiting normally
 trap - EXIT
