@@ -38,6 +38,13 @@ Before contributing or reviewing code, please read our [Working Rules and Instru
 - `/client`: Frontend code
 - `/docs`: Documentation
 
+## Setup and Installation
+1. Clone the repository
+2. Run `./utils/master-setup.sh [PROJECT_NAME]` to set up the project
+3. Navigate to the project directory: `cd projects/[PROJECT_NAME]`
+4. Install dependencies: `npm install`
+5. Start the development server: `npm run dev`
+
 ## Usage
 - **Managing Projects**: Navigate to the Projects section to create, update, and manage your projects.
 - **Building Forms**: Use the Form Builder to create custom forms by dragging and dropping form elements.
@@ -167,3 +174,12 @@ When generating or discussing code:
 5. Consider security, performance, and accessibility in all suggestions and implementations.
 
 If any aspect of a task or request conflicts with these guidelines, seek clarification before proceeding. Your adherence to these guidelines is essential for the project's success and for maintaining clear, consistent communication throughout our interactions.
+
+## Contributing
+Please read our [Contributing Guide](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
+
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Contact
+For any questions or concerns, please open an issue on this repository.
