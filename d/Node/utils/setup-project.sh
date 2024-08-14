@@ -3,21 +3,32 @@
 
 set -e
 
-project_name=$1
+# Source the common functions
+source "$(dirname "$0")/common-functions.sh"
 
-if [ -z "$project_name" ]; then
-  echo "Usage: $0 <project-name>"
-  exit 1
+# Check if project name is provided
+if [ -z "$1" ]; then
+    echo "Please provide a project name as an argument."
+    exit 1
 fi
 
-# Check for Node.js and npm
-if ! command -v node > /dev/null 2>&1 || ! command -v npm > /dev/null 2>&1; then
-    error_exit "Node.js and npm are required but not installed. Please install them and try again."
-fi
+PROJECT_NAME="$1"
+PROJECT_DIR="../projects/$PROJECT_NAME"
 
-project_dir="/d/Node/projects/$project_name"
-client_dir="$project_dir/client"
-server_dir="$project_dir/server"
+# Create necessary directories
+mkdir -p "$PROJECT_DIR/server/src"
+mkdir -p "$PROJECT_DIR/client/src"
+
+# Set up server
+cd "$PROJECT_DIR/server"
+
+# Initialize package.json for server
+npm init -y
+
+# Install server dependencies
+npm install express pg sequelize dotenv cors express-session connect-pg-simple passport
+npm install --save-dev typescript ts-node @types/express @types/node nodemon @types/express-session @types/passport
+
 
 log() {
   echo "$(date +"%Y-%m-%d %T") : $1"
@@ -29,41 +40,51 @@ error_exit() {
 }
 
 log "Creating project directory..."
-mkdir -p "$project_dir" || error_exit "Failed to create project directory"
-cd "$project_dir" || error_exit "Failed to navigate to project directory"
+cd "$PROJECT_DIR" || error_exit "Failed to navigate to project directory"
 touch .gitignore README.md || error_exit "Failed to create initial config files"
 mkdir -p .github docs || error_exit "Failed to create project structure directories"
 
 # Initialize project structure
 log "Initializing project structure..."
-mkdir -p "$server_dir/src/config" "$server_dir/src/controllers" "$server_dir/src/middleware" "$server_dir/src/models" "$server_dir/src/routes" "$server_dir/src/utils" "$server_dir/src/services" || error_exit "Failed to create server structure directories"
-mkdir -p "$server_dir/tests" || error_exit "Failed to create tests directory"
-cd "$server_dir" || error_exit "Failed to navigate to server directory"
-touch "$server_dir/package.json" "$server_dir/src/app.js" "$server_dir/.env" "$server_dir/babel.config.js" "$server_dir/jest.config.js" "$server_dir/jest.setup.js" || error_exit "Failed to create initial server files"
+mkdir -p "$PROJECT_DIR/server/src/controllers" "$PROJECT_DIR/server/src/models" "$PROJECT_DIR/server/src/utils" "$PROJECT_DIR/server/src/services" || error_exit "Failed to create server structure directories"
+mkdir -p "$PROJECT_DIR/server/tests" || error_exit "Failed to create tests directory"
+cd "$PROJECT_DIR/server" || error_exit "Failed to navigate to server directory"
+touch "$PROJECT_DIR/server/src/app.js" "$PROJECT_DIR/server/babel.config.js" "$PROJECT_DIR/server/jest.config.js" "$PROJECT_DIR/server/jest.setup.js" || error_exit "Failed to create initial server files"
 
-cat << EOF > "$server_dir/package.json"
+# Create tsconfig.json for server
+cat > tsconfig.json << EOL
 {
-  "name": "${project_name}",
-  "version": "1.0.0",
-  "main": "index.js",
-  "directories": {
-    "doc": "docs"
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": ""
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
 }
-EOF
+EOL
 
-log "Installing express pg sequelize cors dotenv dependencies..."
-npm install express pg sequelize cors dotenv
+# Create app.ts
+cat > "src/app.ts" << EOL
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+export default app;
+EOL
 
 log "Creating server/src/app.js..."
-cat << EOF > "$server_dir/src/app.js"
+cat << EOF > "$PROJECT_DIR/server/src/app.js"
 const express = require('express');
 const { Pool } = require('pg');
 const session = require('express-session');
@@ -126,37 +147,10 @@ app.use(errorHandler);
 module.exports = app;
 EOF
 
-# Creating a basic app.ts if it doesn't exist
-if [ ! -f "$server_dir/src/app.ts" ]; then
-  mkdir -p "$server_dir/src"
-  cat << EOF > "$server_dir/src/app.ts"
-import express from 'express';
-const app = express();
-
-app.use(express.json());
-
-// Your routes will be added here later
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(\`Server is running on port \${PORT}\`);
-});
-
-export default app;
-EOF
-  echo "Created basic app.ts at $server_dir/src/"
-fi
-
-log "Updating package.json with new dependencies..."
-cd "$server_dir"
-npm install express-session connect-pg-simple passport
-npm install --save-dev @types/express-session @types/passport
-cd -
-
 log "Creating error handling middleware..."
-mkdir -p "$server_dir/src/middleware"
+mkdir -p "$PROJECT_DIR/server/src/middleware"
 
-cat << EOF > "$server_dir/src/middleware/error-handling-middleware.js"
+cat << EOF > "$PROJECT_DIR/server/src/middleware/error-handling-middleware.js"
 const errorHandler = (err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Something broke!');
@@ -166,8 +160,8 @@ module.exports = errorHandler;
 EOF
 
 log "Creating basic passport configuration..."
-mkdir -p "$server_dir/src/config"
-cat << EOF > "$server_dir/src/config/passport.js"
+mkdir -p "$PROJECT_DIR/server/src/config"
+cat << EOF > "$PROJECT_DIR/server/src/config/passport.js"
 module.exports = (passport) => {
     // Add passport strategies and serialization here
     // This is a placeholder and should be expanded based on your auth requirements
@@ -175,6 +169,7 @@ module.exports = (passport) => {
 EOF
 
 log "Creating server/src/routes/models.js..."
+mkdir -p "$PROJECT_DIR/server/src/routes"
 cat << EOF > src/routes/models.js
 const express = require('express');
 const router = express.Router();
@@ -203,7 +198,7 @@ module.exports = router;
 EOF
 
 log "Creating server/src/index.js..."
-cat << EOF > "$server_dir/src/index.js"
+cat << EOF > "$PROJECT_DIR/server/src/index.js"
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
@@ -247,15 +242,8 @@ const startServer = async () => {
 startServer();
 EOF
 
-log "Creating server/.env..."
-cat << EOF > "$server_dir/.env"
-DATABASE_URL=postgres://${project_name}_user:postgres@localhost:5432/${project_name}
-PORT=3000
-BASE_URL=http://localhost:3000  # Optional, for local development
-EOF
-
 log "Creating project .gitignore..."
-cat << EOF > "$project_dir/.gitignore"
+cat << EOF > "$PROJECT_DIR/.gitignore"
 node_modules/
 .env
 *.log
@@ -263,14 +251,14 @@ build/
 EOF
 
 log "Updating server/src/index.js to use app.js..."
-sed -i '1i\const app = require(\'./app');' "$server_dir/src/index.js"
-sed -i '/const app = express();/d' "$server_dir/src/index.js"
-sed -i '/app\.use(cors());/d' "$server_dir/src/index.js"
-sed -i '/app\.use(express\.json());/d' "$server_dir/src/index.js"
+sed -i '1i\const app = require(\'./app');' "$PROJECT_DIR/server/src/index.js"
+sed -i '/const app = express();/d' "$PROJECT_DIR/server/src/index.js"
+sed -i '/app\.use(cors());/d' "$PROJECT_DIR/server/src/index.js"
+sed -i '/app\.use(express\.json());/d' "$PROJECT_DIR/server/src/index.js"
 
 log "Setting up client..."
-npx create-react-app "$client_dir"
-cd "$client_dir" || error_exit "Failed to navigate to client directory"
+npx create-react-app "$PROJECT_DIR/client"
+cd "$PROJECT_DIR/client" || error_exit "Failed to navigate to client directory"
 npm install axios react-router-dom styled-components
 
-log "Project $project_name set up successfully"
+log "Project $PROJECT_NAME set up successfully"
