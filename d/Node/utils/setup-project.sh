@@ -1,14 +1,16 @@
 #!/bin/bash
 # setup-project.sh
+# Relative path: d/Node/utils/setup-project.sh
 
 set -e
 
-# Source the common functions
+# Source the common functions and logger
 source "$(dirname "$0")/common-functions.sh"
+source "$(dirname "$0")/logger.sh"
 
 # Check if project name is provided
 if [ -z "$1" ]; then
-    echo "Please provide a project name as an argument."
+    log_error "Please provide a project name as an argument."
     exit 1
 fi
 
@@ -16,8 +18,7 @@ PROJECT_NAME="$1"
 PROJECT_DIR="../projects/$PROJECT_NAME"
 
 # Create necessary directories
-mkdir -p "$PROJECT_DIR/server/src"
-mkdir -p "$PROJECT_DIR/client/src"
+mkdir -p "$PROJECT_DIR/server/src" "$PROJECT_DIR/server/tests" "$PROJECT_DIR/client/src"
 
 # Set up server
 cd "$PROJECT_DIR/server"
@@ -27,29 +28,7 @@ npm init -y
 
 # Install server dependencies
 npm install express pg sequelize dotenv cors express-session connect-pg-simple passport
-npm install --save-dev typescript ts-node @types/express @types/node nodemon @types/express-session @types/passport
-
-
-log() {
-  echo "$(date +"%Y-%m-%d %T") : $1"
-}
-
-error_exit() {
-  echo "$(date +"%Y-%m-%d %T") : $1" 1>&2
-  exit 1
-}
-
-log "Creating project directory..."
-cd "$PROJECT_DIR" || error_exit "Failed to navigate to project directory"
-touch .gitignore README.md || error_exit "Failed to create initial config files"
-mkdir -p .github docs || error_exit "Failed to create project structure directories"
-
-# Initialize project structure
-log "Initializing project structure..."
-mkdir -p "$PROJECT_DIR/server/src/controllers" "$PROJECT_DIR/server/src/models" "$PROJECT_DIR/server/src/utils" "$PROJECT_DIR/server/src/services" || error_exit "Failed to create server structure directories"
-mkdir -p "$PROJECT_DIR/server/tests" || error_exit "Failed to create tests directory"
-cd "$PROJECT_DIR/server" || error_exit "Failed to navigate to server directory"
-touch "$PROJECT_DIR/server/src/app.js" "$PROJECT_DIR/server/babel.config.js" "$PROJECT_DIR/server/jest.config.js" "$PROJECT_DIR/server/jest.setup.js" || error_exit "Failed to create initial server files"
+npm install --save-dev typescript ts-node @types/express @types/node nodemon @types/express-session @types/passport jest supertest
 
 # Create tsconfig.json for server
 cat > tsconfig.json << EOL
