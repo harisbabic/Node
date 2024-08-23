@@ -1,34 +1,46 @@
 #!/bin/bash
 # setup-pwa.sh
+# Relative path: d/Node/utils/setup-pwa.sh
+# Description: Sets up Progressive Web App (PWA) for the project
 
 set -euo pipefail
 
-log() {
-  echo "$(date '+%Y-%m-%d %H:%M:%S') - $1"
-}
+# Source the common functions and logger
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/common-functions.sh"
+source "$SCRIPT_DIR/logger.sh"
 
-error_exit() {
-  echo "$(date '+%Y-%m-%d %H:%M:%S') - ERROR: $1" >&2
-  exit 1
-}
-
-project_dir="$1"
-
-if [ -z "$project_dir" ]; then
-  error_exit "Usage: $0 <project-dir>"
+# Check if project name is provided
+if [ $# -eq 0 ]; then
+    log_error "Please provide a project name as an argument."
+    echo "Usage: $0 <project-name>"
+    exit 1
 fi
 
-client_dir="$project_dir/client"
-cd "$client_dir" || error_exit "Failed to change to client directory"
+PROJECT_NAME="$1"
+PROJECT_DIR="$NODE_DIR/projects/$PROJECT_NAME"
+CLIENT_DIR="$PROJECT_DIR/client"
 
-log "Setting up PWA for $client_dir"
+log_info "Setting up PWA for $PROJECT_NAME"
+
+# Ensure client directory exists
+if [ ! -d "$CLIENT_DIR" ]; then
+    log_error "Client directory does not exist: $CLIENT_DIR"
+    exit 1
+fi
+
+cd "$CLIENT_DIR" || exit 1
 
 # Install workbox-webpack-plugin and other PWA-related packages
+log_info "Installing PWA-related packages..."
 npm install --save-dev workbox-webpack-plugin
 npm install workbox-window
 
 # Update webpack.config.js to include workbox plugin
-cat << EOF >> webpack.config.js
+log_info "Updating webpack configuration..."
+WEBPACK_CONFIG="$CLIENT_DIR/webpack.config.js"
+if [ -f "$WEBPACK_CONFIG" ]; then
+    cat << EOF >> "$WEBPACK_CONFIG"
 
 const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
 
@@ -54,12 +66,17 @@ module.exports.plugins.push(
   })
 );
 EOF
+    log_info "Webpack configuration updated"
+else
+    log_warn "webpack.config.js not found. Please manually add Workbox plugin to your webpack configuration."
+fi
 
 # Create a manifest.json file
-cat << EOF > public/manifest.json
+log_info "Creating manifest.json..."
+cat << EOF > "$CLIENT_DIR/public/manifest.json"
 {
-  "short_name": "Your App",
-  "name": "Your Application Name",
+  "short_name": "$PROJECT_NAME",
+  "name": "$PROJECT_NAME Progressive Web App",
   "icons": [
     {
       "src": "favicon.ico",
@@ -85,68 +102,26 @@ cat << EOF > public/manifest.json
 EOF
 
 # Update index.html to include manifest and theme-color
-sed -i '/<\/head>/i\    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />' public/index.html
-sed -i '/<\/head>/i\    <meta name="theme-color" content="#000000" />' public/index.html
-
-# Create a service worker file
-cat << EOF > public/service-worker.js
-const CACHE_NAME = "my-app-cache-v1";
-const urlsToCache = [
-  "/",
-  "/index.html",
-  "/styles.css",
-  "/main.js",
-  "/logo.png",
-];
-
-// Install a service worker
-self.addEventListener("install", event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => {
-        console.log("Opened cache");
-        return cache.addAll(urlsToCache);
-      })
-  );
-});
-
-// Cache and return requests
-self.addEventListener("fetch", event => {
-  event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        return response || fetch(event.request);
-      })
-  );
-});
-
-// Update a service worker
-self.addEventListener("activate", event => {
-  const cacheWhitelist = ["my-app-cache-v1"];
-  event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.map(cacheName => {
-          if (cacheWhitelist.indexOf(cacheName) === -1) {
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    })
-  );
-});
-EOF
-echo "Service Worker file created in $client_dir/public directory."
+log_info "Updating index.html..."
+INDEX_HTML="$CLIENT_DIR/public/index.html"
+if [ -f "$INDEX_HTML" ]; then
+    sed -i '/<\/head>/i\    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />' "$INDEX_HTML"
+    sed -i '/<\/head>/i\    <meta name="theme-color" content="#000000" />' "$INDEX_HTML"
+    log_info "index.html updated with manifest and theme-color"
+else
+    log_warn "index.html not found. Please manually add manifest and theme-color meta tags to your HTML file."
+fi
 
 # Create a service worker registration file
-cat << EOF > src/serviceWorkerRegistration.js
+log_info "Creating service worker registration file..."
+cat << EOF > "$CLIENT_DIR/src/serviceWorkerRegistration.ts"
 import { Workbox } from 'workbox-window';
 
-export function register() {
+export function register(): void {
   if ('serviceWorker' in navigator) {
-    const wb = new Workbox('../public/service-worker.js');
+    const wb = new Workbox('/service-worker.js');
 
-    wb.addEventListener('installed', event => {
+    wb.addEventListener('installed', (event) => {
       if (event.isUpdate) {
         if (window.confirm('New content is available! Click OK to refresh.')) {
           window.location.reload();
@@ -158,9 +133,16 @@ export function register() {
   }
 }
 EOF
-echo "Service Worker Registration setup completed for $client_dir/src directory."
 
-# Update index.js to include service worker registration at the top
-sed -i "1iimport { register } from './serviceWorkerRegistration';" src/index.js
+# Update index.tsx to include service worker registration
+log_info "Updating index.tsx with service worker registration..."
+INDEX_TSX="$CLIENT_DIR/src/index.tsx"
+if [ -f "$INDEX_TSX" ]; then
+    sed -i "1iimport { register } from './serviceWorkerRegistration';" "$INDEX_TSX"
+    sed -i '/ReactDOM.render(/a register();' "$INDEX_TSX"
+    log_info "index.tsx updated with service worker registration"
+else
+    log_warn "index.tsx not found. Please manually add service worker registration to your main application file."
+fi
 
-echo "PWA setup completed for $client_dir directory."
+log_info "PWA setup completed for $PROJECT_NAME"

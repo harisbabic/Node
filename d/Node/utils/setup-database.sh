@@ -1,17 +1,18 @@
 #!/bin/bash
-
 # setup-database.sh
-# This script sets up the PostgreSQL database for the Node project on Windows.
+# Relative path: d/Node/utils/setup-database.sh
+# Description: Sets up the database for the project
 
-set -e
+set -euo pipefail
 
 # Source the common functions and logger
-source "$(dirname "$0")/common-functions.sh"
-source "$(dirname "$0")/logger.sh"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/common-functions.sh"
+source "$SCRIPT_DIR/logger.sh"
 
 # Load configuration
 if [[ -f .env ]]; then
-    source .env
+    source_env_file .env
 fi
 
 # Configuration with defaults
@@ -20,8 +21,9 @@ DB_PORT=${DB_PORT:-5432}
 POSTGRES_ADMIN_USER=${POSTGRES_ADMIN_USER:-"postgres"}
 
 # Check if project name is provided
-if [ -z "$1" ]; then
+if [ $# -eq 0 ]; then
     log_error "Please provide a project name as an argument."
+    echo "Usage: $0 <project-name>"
     exit 1
 fi
 
@@ -31,7 +33,7 @@ DB_USER="${PROJECT_NAME//-/_}_user"
 
 # Function to check if PostgreSQL is installed
 check_postgres_installation() {
-    if ! command -v psql &> /dev/null; then
+    if ! command_exists psql; then
         log_error "PostgreSQL is not installed or not in PATH. Please install PostgreSQL and add it to your PATH."
         exit 1
     else
@@ -41,39 +43,39 @@ check_postgres_installation() {
 
 # Function to check if database exists
 database_exists() {
-    PGPASSWORD=$POSTGRES_ADMIN_PASSWORD psql -U $POSTGRES_ADMIN_USER -h $DB_HOST -p $DB_PORT -lqt | cut -d \| -f 1 | grep -qw "$1"
+    PGPASSWORD=$POSTGRES_ADMIN_PASSWORD psql -U "$POSTGRES_ADMIN_USER" -h "$DB_HOST" -p "$DB_PORT" -lqt | cut -d \| -f 1 | grep -qw "$1"
 }
 
 # Function to create database and user
 create_database_and_user() {
     # Generate a random password for the new database user
-    DB_PASSWORD=$(openssl rand -base64 32)
+    DB_PASSWORD=$(generate_random_string 32)
 
     # Create database and user
-    PGPASSWORD=$POSTGRES_ADMIN_PASSWORD psql -U $POSTGRES_ADMIN_USER -h $DB_HOST -p $DB_PORT << EOF
+    if ! PGPASSWORD=$POSTGRES_ADMIN_PASSWORD psql -U "$POSTGRES_ADMIN_USER" -h "$DB_HOST" -p "$DB_PORT" << EOF
 CREATE DATABASE $DB_NAME;
 CREATE USER $DB_USER WITH ENCRYPTED PASSWORD '$DB_PASSWORD';
 GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;
 EOF
-
-    if [ $? -eq 0 ]; then
-        log_info "Database $DB_NAME and user $DB_USER created successfully."
-    else
+    then
         log_error "Failed to create database and user. Please check your PostgreSQL installation and permissions."
         exit 1
     fi
+
+    log_info "Database $DB_NAME and user $DB_USER created successfully."
 }
 
 # Function to update .env file
 update_env_file() {
-    if [[ -f .env ]]; then
-        sed -i "s/DB_NAME=.*/DB_NAME=$DB_NAME/" .env
-        sed -i "s/DB_USER=.*/DB_USER=$DB_USER/" .env
-        sed -i "s/DB_PASSWORD=.*/DB_PASSWORD=$DB_PASSWORD/" .env
-        sed -i "s/DB_HOST=.*/DB_HOST=$DB_HOST/" .env
-        sed -i "s/DB_PORT=.*/DB_PORT=$DB_PORT/" .env
-    else
-        cat > ../projects/${PROJECT_NAME}/.env << EOL
+    local env_file="../projects/${PROJECT_NAME}/.env"
+    ensure_directory "$(dirname "$env_file")"
+
+    if [[ -f "$env_file" ]]; then
+        backup_file "$env_file"
+        log_info "Existing .env file backed up."
+    fi
+
+    cat > "$env_file" << EOL
 # Database Configuration
 DB_NAME=$DB_NAME
 DB_USER=$DB_USER
@@ -82,9 +84,8 @@ DB_HOST=$DB_HOST
 DB_PORT=$DB_PORT
 
 # JWT Configuration
-JWT_SECRET=$(openssl rand -base64 32)
+JWT_SECRET=$(generate_random_string 64)
 EOL
-    fi
 
     log_info "Database credentials have been saved to .env file."
 }
@@ -99,15 +100,26 @@ read -sp "Enter PostgreSQL admin password: " POSTGRES_ADMIN_PASSWORD
 echo
 
 # Test the connection
-if PGPASSWORD=$POSTGRES_ADMIN_PASSWORD psql -U $POSTGRES_ADMIN_USER -h $DB_HOST -p $DB_PORT -c '\q' 2>/dev/null; then
-    log_info "Successfully connected to PostgreSQL."
-else
+if ! PGPASSWORD=$POSTGRES_ADMIN_PASSWORD psql -U "$POSTGRES_ADMIN_USER" -h "$DB_HOST" -p "$DB_PORT" -c '\q' 2>/dev/null; then
     log_error "Failed to connect to PostgreSQL. Please check your password and PostgreSQL setup."
     exit 1
 fi
 
+log_info "Successfully connected to PostgreSQL."
+
 if database_exists "$DB_NAME"; then
-    log_info "Database $DB_NAME already exists."
+    log_warn "Database $DB_NAME already exists."
+    read -p "Do you want to drop the existing database and create a new one? (y/n): " confirm
+    if [[ $confirm == [yY] ]]; then
+        if ! PGPASSWORD=$POSTGRES_ADMIN_PASSWORD psql -U "$POSTGRES_ADMIN_USER" -h "$DB_HOST" -p "$DB_PORT" -c "DROP DATABASE $DB_NAME;"; then
+            log_error "Failed to drop existing database. Please check your permissions."
+            exit 1
+        fi
+        log_info "Existing database dropped. Creating new database and user..."
+        create_database_and_user
+    else
+        log_info "Using existing database. Skipping database creation."
+    fi
 else
     log_info "Creating new database and user..."
     create_database_and_user

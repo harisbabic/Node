@@ -1,6 +1,7 @@
 #!/bin/bash
 # logger.sh
 # Relative path: d/Node/utils/logger.sh
+# Description: Logging utility for project setup scripts
 
 # Set strict mode
 set -euo pipefail

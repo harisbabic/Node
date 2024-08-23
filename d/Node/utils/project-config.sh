@@ -1,6 +1,7 @@
 #!/bin/bash
 # project-config.sh
 # Relative path: d/Node/utils/project-config.sh
+# Description: Configuration options for project setup
 
 # Core Setup
 SETUP_DATABASE=true
@@ -25,20 +26,20 @@ SETUP_ACCESSIBILITY=true
 SETUP_PERFORMANCE_OPTIMIZATION=true
 
 # Optional Client Setups
-SETUP_ANIMATION=false
-SETUP_I18N=false
-SETUP_SEO=false
-SETUP_PWA=false
+SETUP_ANIMATION=true
+SETUP_I18N=true
+SETUP_SEO=true
+SETUP_PWA=true
 
 # Server Setup
 SETUP_AUTH=true
 
 # API Setup
-SETUP_API=false
+SETUP_API=true
 
 # Noloco-like Functionality
-SETUP_NOLOCO=false
-NOLOCO_OPTION=0  # 0: None, 1: Full, 2: API Only, 3: UI Only, 4: RBAC and Workflows
+SETUP_NOLOCO=true
+NOLOCO_OPTION=1  # 0: None, 1: Full, 2: API Only, 3: UI Only, 4: RBAC and Workflows
 
 # Component Documentation
 SETUP_COMPONENT_DOCS=false
@@ -47,3 +48,5 @@ SETUP_COMPONENT_DOCS=false
 USE_TYPESCRIPT=true
 DATABASE_TYPE="postgresql"  # Options: postgresql, mysql, mongodb
 FRONTEND_FRAMEWORK="react"  # Options: react, vue, angular
+
+# Note: These are default values. They can be overridden by user input in the master-setup.sh script.

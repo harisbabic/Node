@@ -1,34 +1,44 @@
 #!/bin/bash
 # setup-i18n.sh
+# Relative path: d/Node/utils/setup-i18n.sh
+# Description: Sets up internationalization for the project
 
 set -euo pipefail
 
-log() {
-  echo "$(date '+%Y-%m-%d %H:%M:%S') - $1"
-}
+# Source the common functions and logger
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/common-functions.sh"
+source "$SCRIPT_DIR/logger.sh"
 
-error_exit() {
-  echo "$(date '+%Y-%m-%d %H:%M:%S') - ERROR: $1" >&2
-  exit 1
-}
-
-project_dir="$1"
-
-if [ -z "$project_dir" ]; then
-  error_exit "Usage: $0 <project-dir>"
+# Check if project name is provided
+if [ $# -eq 0 ]; then
+    log_error "Please provide a project name as an argument."
+    echo "Usage: $0 <project-name>"
+    exit 1
 fi
 
-client_dir="$project_dir/client"
-cd "$client_dir" || error_exit "Failed to change to client directory"
+PROJECT_NAME="$1"
+PROJECT_DIR="$NODE_DIR/projects/$PROJECT_NAME"
+CLIENT_DIR="$PROJECT_DIR/client"
 
-log "Setting up internationalization for $client_dir"
+log_info "Setting up internationalization for $PROJECT_NAME"
 
-# Install react-i18next, i18next, and related packages
+# Ensure client directory exists
+if [ ! -d "$CLIENT_DIR" ]; then
+    log_error "Client directory does not exist: $CLIENT_DIR"
+    exit 1
+fi
+
+cd "$CLIENT_DIR" || exit 1
+
+# Install i18n dependencies
+log_info "Installing i18n dependencies..."
 npm install react-i18next i18next i18next-http-backend i18next-browser-languagedetector
 
 # Create i18n configuration
+log_info "Creating i18n configuration..."
 mkdir -p src/i18n
-cat << EOF > src/i18n/i18n.js
+cat << EOF > src/i18n/i18n.ts
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import Backend from 'i18next-http-backend';
@@ -53,22 +63,25 @@ export default i18n;
 EOF
 
 # Create sample translation files
+log_info "Creating sample translation files..."
 mkdir -p public/locales/en public/locales/es
 echo '{"hello": "Hello", "welcome": "Welcome to our app!"}' > public/locales/en/translation.json
 echo '{"hello": "Hola", "welcome": "¡Bienvenido a nuestra aplicación!"}' > public/locales/es/translation.json
 
-# Update index.js to use i18n
-sed -i '1iimport "./i18n/i18n";\n' src/index.js
+# Update index.tsx to use i18n
+log_info "Updating index.tsx to use i18n..."
+sed -i '1iimport "./i18n/i18n";\n' src/index.tsx
 
 # Create a language switcher component
-cat << EOF > src/components/LanguageSwitcher.js
+log_info "Creating language switcher component..."
+cat << EOF > src/components/LanguageSwitcher.tsx
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-const LanguageSwitcher = () => {
+const LanguageSwitcher: React.FC = () => {
   const { i18n } = useTranslation();
 
-  const changeLanguage = (lng) => {
+  const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
   };
 
@@ -83,4 +96,4 @@ const LanguageSwitcher = () => {
 export default LanguageSwitcher;
 EOF
 
-log "Internationalization setup completed for $client_dir directory."
+log_info "Internationalization setup completed for $PROJECT_NAME"

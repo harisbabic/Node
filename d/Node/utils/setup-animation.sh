@@ -1,39 +1,48 @@
 #!/bin/bash
 # setup-animation.sh
+# Relative path: d/Node/utils/setup-animation.sh
+# Description: Sets up animation library for the project
 
 set -euo pipefail
 
-log() {
-  echo "$(date '+%Y-%m-%d %H:%M:%S') - $1"
-}
+# Source the common functions and logger
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/common-functions.sh"
+source "$SCRIPT_DIR/logger.sh"
 
-error_exit() {
-  echo "$(date '+%Y-%m-%d %H:%M:%S') - ERROR: $1" >&2
-  exit 1
-}
-
-project_dir="$1"
-animation_lib="${2:-framer-motion}"
-
-if [ -z "$project_dir" ]; then
-  error_exit "Usage: $0 <project-dir> [animation-library]"
+# Check if project name is provided
+if [ $# -eq 0 ]; then
+    log_error "Please provide a project name as an argument."
+    echo "Usage: $0 <project-name> [animation-library]"
+    exit 1
 fi
 
-client_dir="$project_dir/client"
-cd "$client_dir" || error_exit "Failed to change to client directory"
+PROJECT_NAME="$1"
+ANIMATION_LIB="${2:-framer-motion}"
+PROJECT_DIR="$NODE_DIR/projects/$PROJECT_NAME"
+CLIENT_DIR="$PROJECT_DIR/client"
 
-log "Setting up $animation_lib for $client_dir"
+log_info "Setting up $ANIMATION_LIB for $PROJECT_NAME"
 
-case "$animation_lib" in
+# Ensure client directory exists
+if [ ! -d "$CLIENT_DIR" ]; then
+    log_error "Client directory does not exist: $CLIENT_DIR"
+    exit 1
+fi
+
+cd "$CLIENT_DIR" || exit 1
+
+case "$ANIMATION_LIB" in
   framer-motion)
+    log_info "Installing framer-motion..."
     npm install framer-motion
 
-    # Create a sample animated component
-    cat << EOF > src/components/AnimatedBox.js
+    log_info "Creating sample animated component..."
+    cat << EOF > src/components/AnimatedBox.tsx
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const AnimatedBox = () => (
+const AnimatedBox: React.FC = () => (
   <motion.div
     initial={{ opacity: 0, scale: 0.5 }}
     animate={{ opacity: 1, scale: 1 }}
@@ -53,14 +62,15 @@ export default AnimatedBox;
 EOF
     ;;
   react-spring)
+    log_info "Installing react-spring..."
     npm install react-spring
 
-    # Create a sample animated component
-    cat << EOF > src/components/AnimatedBox.js
+    log_info "Creating sample animated component..."
+    cat << EOF > src/components/AnimatedBox.tsx
 import React from 'react';
 import { useSpring, animated } from 'react-spring';
 
-const AnimatedBox = () => {
+const AnimatedBox: React.FC = () => {
   const props = useSpring({
     to: { opacity: 1, scale: 1 },
     from: { opacity: 0, scale: 0.5 },
@@ -84,15 +94,16 @@ export default AnimatedBox;
 EOF
     ;;
   react-transition-group)
-    npm install react-transition-group
+    log_info "Installing react-transition-group..."
+    npm install react-transition-group @types/react-transition-group
 
-    # Create a sample animated component
-    cat << EOF > src/components/AnimatedBox.js
+    log_info "Creating sample animated component..."
+    cat << EOF > src/components/AnimatedBox.tsx
 import React, { useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import './AnimatedBox.css';
 
-const AnimatedBox = () => {
+const AnimatedBox: React.FC = () => {
   const [inProp, setInProp] = useState(false);
   return (
     <div>
@@ -109,7 +120,7 @@ const AnimatedBox = () => {
 export default AnimatedBox;
 EOF
 
-    # Create CSS for the animated component
+    log_info "Creating CSS for the animated component..."
     cat << EOF > src/components/AnimatedBox.css
 .box {
   width: 100px;
@@ -135,9 +146,9 @@ EOF
 EOF
     ;;
   *)
-    echo "Invalid animation library. Choose 'framer-motion', 'react-spring', or 'react-transition-group'."
+    log_error "Invalid animation library. Choose 'framer-motion', 'react-spring', or 'react-transition-group'."
     exit 1
     ;;
 esac
 
-echo "$animation_lib setup completed for $client_dir directory."
+log_info "$ANIMATION_LIB setup completed for $PROJECT_NAME"

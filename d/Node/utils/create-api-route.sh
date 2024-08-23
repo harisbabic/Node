@@ -1,96 +1,112 @@
 #!/bin/bash
-
 # create-api-route.sh
-# Usage: create-api-route.sh <project-name> <route-name>
+# Relative path: d/Node/utils/create-api-route.sh
 # Description: Creates a new API route with controller and model for PostgreSQL
 
 set -euo pipefail
 
+# Source the common functions and logger
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/common-functions.sh"
+source "$SCRIPT_DIR/logger.sh"
+
+# Check if project name and route name are provided
 if [ $# -ne 2 ]; then
+    log_error "Please provide a project name and route name as arguments."
     echo "Usage: $0 <project-name> <route-name>"
     exit 1
 fi
 
-project_name=$1
-route_name=$2
+PROJECT_NAME="$1"
+ROUTE_NAME="$2"
 
-project_dir="/d/Node/projects/$project_name"
-src_dir="$project_dir/server/src"
-routes_dir="$src_dir/routes"
-controllers_dir="$src_dir/controllers"
-models_dir="$src_dir/models"
+PROJECT_DIR="$NODE_DIR/projects/$PROJECT_NAME"
+SERVER_DIR="$PROJECT_DIR/server"
+SRC_DIR="$SERVER_DIR/src"
+ROUTES_DIR="$SRC_DIR/routes"
+CONTROLLERS_DIR="$SRC_DIR/controllers"
+MODELS_DIR="$SRC_DIR/models"
+
+log_info "Creating API route for $ROUTE_NAME in $PROJECT_NAME"
 
 # Ensure directories exist
-mkdir -p "$routes_dir" "$controllers_dir" "$models_dir"
+ensure_directory "$ROUTES_DIR"
+ensure_directory "$CONTROLLERS_DIR"
+ensure_directory "$MODELS_DIR"
 
 # Create route file
-cat << EOF > "$routes_dir/${route_name}.js"
-const express = require('express');
+log_info "Creating route file..."
+cat << EOF > "$ROUTES_DIR/${ROUTE_NAME}.routes.ts"
+import express from 'express';
+import * as ${ROUTE_NAME}Controller from '../controllers/${ROUTE_NAME}.controller';
+
 const router = express.Router();
-const ${route_name}Controller = require('../controllers/${route_name}');
 
-router.get('/', ${route_name}Controller.getAll);
-router.post('/', ${route_name}Controller.create);
-router.get('/:id', ${route_name}Controller.getById);
-router.put('/:id', ${route_name}Controller.update);
-router.delete('/:id', ${route_name}Controller.delete);
+router.get('/', ${ROUTE_NAME}Controller.getAll);
+router.post('/', ${ROUTE_NAME}Controller.create);
+router.get('/:id', ${ROUTE_NAME}Controller.getById);
+router.put('/:id', ${ROUTE_NAME}Controller.update);
+router.delete('/:id', ${ROUTE_NAME}Controller.delete);
 
-module.exports = router;
+export default router;
 EOF
 
 # Create controller file
-cat << EOF > "$controllers_dir/${route_name}.js"
-const ${route_name}Model = require('../models/${route_name}');
+log_info "Creating controller file..."
+cat << EOF > "$CONTROLLERS_DIR/${ROUTE_NAME}.controller.ts"
+import { Request, Response } from 'express';
+import { ${ROUTE_NAME} } from '../models/${ROUTE_NAME}.model';
 
-exports.getAll = async (req, res) => {
+export const getAll = async (req: Request, res: Response): Promise<void> => {
   try {
-    const items = await ${route_name}Model.findAll();
+    const items = await ${ROUTE_NAME}.findAll();
     res.json(items);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: 'Error fetching items', error });
   }
 };
 
-exports.create = async (req, res) => {
+export const create = async (req: Request, res: Response): Promise<void> => {
   try {
-    const newItem = await ${route_name}Model.create(req.body);
+    const newItem = await ${ROUTE_NAME}.create(req.body);
     res.status(201).json(newItem);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(400).json({ message: 'Error creating item', error });
   }
 };
 
-exports.getById = async (req, res) => {
+export const getById = async (req: Request, res: Response): Promise<void> => {
   try {
-    const item = await ${route_name}Model.findByPk(req.params.id);
+    const item = await ${ROUTE_NAME}.findByPk(req.params.id);
     if (!item) {
-      return res.status(404).json({ message: 'Item not found' });
+      res.status(404).json({ message: 'Item not found' });
+      return;
     }
     res.json(item);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: 'Error fetching item', error });
   }
 };
 
-exports.update = async (req, res) => {
+export const update = async (req: Request, res: Response): Promise<void> => {
   try {
-    const [updated] = await ${route_name}Model.update(req.body, {
+    const [updated] = await ${ROUTE_NAME}.update(req.body, {
       where: { id: req.params.id }
     });
     if (updated) {
-      const updatedItem = await ${route_name}Model.findByPk(req.params.id);
+      const updatedItem = await ${ROUTE_NAME}.findByPk(req.params.id);
       res.json(updatedItem);
     } else {
       res.status(404).json({ message: 'Item not found' });
     }
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(400).json({ message: 'Error updating item', error });
   }
 };
 
-exports.delete = async (req, res) => {
+export const delete = async (req: Request, res: Response): Promise<void> => {
   try {
-    const deleted = await ${route_name}Model.destroy({
+    const deleted = await ${ROUTE_NAME}.destroy({
       where: { id: req.params.id }
     });
     if (deleted) {
@@ -99,26 +115,51 @@ exports.delete = async (req, res) => {
       res.status(404).json({ message: 'Item not found' });
     }
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: 'Error deleting item', error });
   }
 };
 EOF
 
 # Create model file
-cat << EOF > "$models_dir/${route_name}.js"
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
+log_info "Creating model file..."
+cat << EOF > "$MODELS_DIR/${ROUTE_NAME}.model.ts"
+import { Model, DataTypes } from 'sequelize';
+import { sequelize } from '../config/database';
 
-const ${route_name} = sequelize.define('${route_name}', {
-  // Define your model fields here
-  name: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
+export class ${ROUTE_NAME} extends Model {
+  public id!: number;
+  public name!: string;
   // Add more fields as needed
-});
+}
 
-module.exports = ${route_name};
+${ROUTE_NAME}.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    // Define additional fields here
+  },
+  {
+    sequelize,
+    modelName: '${ROUTE_NAME}',
+  }
+);
 EOF
 
-echo "API route, controller, and model for $route_name created successfully in $project_name"
+# Update app.ts to include the new route
+APP_FILE="$SRC_DIR/app.ts"
+if [ -f "$APP_FILE" ]; then
+    log_info "Updating app.ts with new route..."
+    sed -i "/import express from 'express';/a import ${ROUTE_NAME}Routes from './routes/${ROUTE_NAME}.routes';" "$APP_FILE"
+    sed -i "/app.use(express.json());/a app.use('/api/${ROUTE_NAME}', ${ROUTE_NAME}Routes);" "$APP_FILE"
+else
+    log_warn "app.ts not found. Please manually add the new route to your main application file."
+fi
+
+log_info "API route, controller, and model for $ROUTE_NAME created successfully in $PROJECT_NAME"

@@ -1,35 +1,43 @@
 #!/bin/bash
 # setup-project.sh
 # Relative path: d/Node/utils/setup-project.sh
+# Description: Sets up the basic structure for a Node.js project
 
-set -e
+set -euo pipefail
 
 # Source the common functions and logger
-source "$(dirname "$0")/common-functions.sh"
-source "$(dirname "$0")/logger.sh"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/common-functions.sh"
+source "$SCRIPT_DIR/logger.sh"
 
 # Source the project configuration
-source "$(dirname "$0")/project-config.sh"
+source "$SCRIPT_DIR/project-config.sh"
 
 # Check if project name is provided
-if [ -z "$1" ]; then
+if [ $# -eq 0 ]; then
     log_error "Please provide a project name as an argument."
+    echo "Usage: $0 <project-name>"
     exit 1
 fi
 
 PROJECT_NAME="$1"
-PROJECT_DIR="/d/Node/projects/$PROJECT_NAME"
+PROJECT_DIR="$NODE_DIR/projects/$PROJECT_NAME"
 
 log_info "Setting up project: $PROJECT_NAME"
 
 # Create necessary directories
-mkdir -p "$PROJECT_DIR/server/src" "$PROJECT_DIR/server/tests"
+ensure_directory "$PROJECT_DIR/server/src"
+ensure_directory "$PROJECT_DIR/server/tests"
 
 # Set up server
-cd "$PROJECT_DIR/server"
+cd "$PROJECT_DIR/server" || exit 1
 
 # Initialize package.json for server
-npm init -y
+if [ ! -f package.json ]; then
+    npm init -y
+else
+    log_warn "package.json already exists. Skipping initialization."
+fi
 
 # Install base server dependencies
 npm install express dotenv cors
@@ -64,7 +72,8 @@ if [ "$USE_TYPESCRIPT" = true ]; then
     fi
 
     # Create tsconfig.json
-    cat > tsconfig.json << EOL
+    if [ ! -f tsconfig.json ]; then
+        cat > tsconfig.json << EOL
 {
   "compilerOptions": {
     "target": "es6",
@@ -78,11 +87,15 @@ if [ "$USE_TYPESCRIPT" = true ]; then
   "exclude": ["node_modules"]
 }
 EOL
+    else
+        log_warn "tsconfig.json already exists. Skipping creation."
+    fi
 fi
 
 # Create main application file (app.js or app.ts)
 MAIN_FILE="src/app.$([ "$USE_TYPESCRIPT" = true ] && echo "ts" || echo "js")"
-cat > "$MAIN_FILE" << EOL
+if [ ! -f "$MAIN_FILE" ]; then
+    cat > "$MAIN_FILE" << EOL
 $([ "$USE_TYPESCRIPT" = true ] && echo "import express from 'express';" || echo "const express = require('express');")
 $([ "$USE_TYPESCRIPT" = true ] && echo "import cors from 'cors';" || echo "const cors = require('cors');")
 $([ "$USE_TYPESCRIPT" = true ] && echo "import dotenv from 'dotenv';" || echo "const dotenv = require('dotenv');")
@@ -99,10 +112,14 @@ $([ "$SETUP_AUTH" = true ] && echo "// TODO: Add authentication setup here")
 
 $([ "$USE_TYPESCRIPT" = true ] && echo "export default app;" || echo "module.exports = app;")
 EOL
+else
+    log_warn "$MAIN_FILE already exists. Skipping creation."
+fi
 
 # Create index file
 INDEX_FILE="src/index.$([ "$USE_TYPESCRIPT" = true ] && echo "ts" || echo "js")"
-cat > "$INDEX_FILE" << EOL
+if [ ! -f "$INDEX_FILE" ]; then
+    cat > "$INDEX_FILE" << EOL
 $([ "$USE_TYPESCRIPT" = true ] && echo "import app from './app';" || echo "const app = require('./app');")
 
 const PORT = process.env.PORT || 3000;
@@ -111,11 +128,15 @@ app.listen(PORT, () => {
     console.log(\`Server running on port \${PORT}\`);
 });
 EOL
+else
+    log_warn "$INDEX_FILE already exists. Skipping creation."
+fi
 
 # Create basic error handling middleware
-mkdir -p "src/middleware"
+ensure_directory "src/middleware"
 ERROR_HANDLING_FILE="src/middleware/errorHandling.$([ "$USE_TYPESCRIPT" = true ] && echo "ts" || echo "js")"
-cat > "$ERROR_HANDLING_FILE" << EOL
+if [ ! -f "$ERROR_HANDLING_FILE" ]; then
+    cat > "$ERROR_HANDLING_FILE" << EOL
 $([ "$USE_TYPESCRIPT" = true ] && echo "import { Request, Response, NextFunction } from 'express';" || echo "")
 
 $([ "$USE_TYPESCRIPT" = true ] && echo "export const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {" || echo "const errorHandler = (err, req, res, next) => {")
@@ -125,6 +146,9 @@ $([ "$USE_TYPESCRIPT" = true ] && echo "export const errorHandler = (err: Error,
 
 $([ "$USE_TYPESCRIPT" = true ] && echo "" || echo "module.exports = { errorHandler };")
 EOL
+else
+    log_warn "$ERROR_HANDLING_FILE already exists. Skipping creation."
+fi
 
 # Update package.json scripts
 if [ "$USE_TYPESCRIPT" = true ]; then
@@ -140,9 +164,9 @@ npm pkg set scripts.test="jest"
 # Set up client if SETUP_CLIENT is true
 if [ "$SETUP_CLIENT" = true ]; then
     log_info "Setting up client..."
-    cd "$PROJECT_DIR"
+    cd "$PROJECT_DIR" || exit 1
     if [ -d "client" ] && [ "$(ls -A client)" ]; then
-        log_warn "Client directory already exists and is not empty. Skipping client setup."
+        log_warn "Client directory is not empty. Skipping framework initialization."
     else
         case $FRONTEND_FRAMEWORK in
             "react")
@@ -159,18 +183,55 @@ if [ "$SETUP_CLIENT" = true ]; then
                 exit 1
                 ;;
         esac
-        cd client
-        npm install axios react-router-dom styled-components
     fi
+    cd client || exit 1
+    npm install axios react-router-dom styled-components
+            cat >> "$PROJECT_DIR/client/.gitignore" << EOL
+# Common
+node_modules/
+*.log
+.DS_Store
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Testing
+/coverage
+
+# Client-specific
+/build
+/dist
+
+# Dependency directories
+/.pnp
+.pnp.js
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+EOL
+    # After appending to .gitignore
+    remove_redundant_lines "$PROJECT_DIR/client/.gitignore"
 fi
 
-# Create .gitignore
-cat > "$PROJECT_DIR/.gitignore" << EOL
-node_modules/
-.env
-*.log
-dist/
-build/
-EOL
 
 log_info "Project $PROJECT_NAME set up successfully"

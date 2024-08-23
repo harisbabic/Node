@@ -1,45 +1,45 @@
 #!/bin/bash
-
 # common-functions.sh
 # Relative path: d/Node/utils/common-functions.sh
+# Description: Common utility functions for project setup scripts
 
-# Set strict mode
 set -euo pipefail
 
-# Colors for output
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-NC='\033[0m' # No Color
-
-# Logging functions
-log_info() {
-    echo -e "${GREEN}[INFO]${NC} $1"
-}
-
-log_warn() {
-    echo -e "${YELLOW}[WARN]${NC} $1" >&2
-}
-
-log_error() {
-    echo -e "${RED}[ERROR]${NC} $1" >&2
-}
+# Source the logger
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/logger.sh"
 
 # Check if a command exists
 command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
 
-# Check if a package is installed (for apt-based systems)
+# Check if a package is installed
 package_installed() {
-    dpkg -s "$1" >/dev/null 2>&1
+    if command_exists dpkg; then
+        dpkg -s "$1" >/dev/null 2>&1
+    elif command_exists rpm; then
+        rpm -q "$1" >/dev/null 2>&1
+    else
+        log_error "Unable to check if package is installed: neither dpkg nor rpm found"
+        return 1
+    fi
 }
 
 # Install a package if it's not already installed
 ensure_package() {
     if ! package_installed "$1"; then
         log_info "Installing $1..."
-        sudo apt-get update && sudo apt-get install -y "$1"
+        if command_exists apt-get; then
+            sudo apt-get update && sudo apt-get install -y "$1"
+        elif command_exists yum; then
+            sudo yum install -y "$1"
+        elif command_exists brew; then
+            brew install "$1"
+        else
+            log_error "Unable to install package: no supported package manager found"
+            return 1
+        fi
     else
         log_info "$1 is already installed."
     fi
@@ -86,7 +86,14 @@ ensure_root() {
 
 # Check if a port is in use
 port_in_use() {
-    netstat -tuln | grep -q ":$1 "
+    if command_exists netstat; then
+        netstat -tuln | grep -q ":$1 "
+    elif command_exists ss; then
+        ss -tuln | grep -q ":$1 "
+    else
+        log_error "Unable to check if port is in use: neither netstat nor ss found"
+        return 1
+    fi
 }
 
 # Wait for a service to be available
@@ -109,7 +116,11 @@ wait_for_service() {
 # Generate a random string
 generate_random_string() {
     local length=${1:-32}
-    tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w "$length" | head -n 1
+    if command_exists openssl; then
+        openssl rand -base64 "$length" | tr -dc 'a-zA-Z0-9' | fold -w "$length" | head -n 1
+    else
+        tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w "$length" | head -n 1
+    fi
 }
 
 # Validate an email address format
@@ -139,6 +150,79 @@ source_env_file() {
     else
         log_warn "Environment file not found: $env_file"
     fi
+}
+
+# Check for required tools
+check_required_tools() {
+    local required_tools=("git" "node" "npm" "docker")
+    local missing_tools=()
+
+    for tool in "${required_tools[@]}"; do
+        if ! command_exists "$tool"; then
+            missing_tools+=("$tool")
+        fi
+    done
+
+    if [ ${#missing_tools[@]} -ne 0 ]; then
+        log_error "The following required tools are missing: ${missing_tools[*]}"
+        log_error "Please install them and try again."
+        exit 1
+    fi
+}
+
+# Print setup summary
+print_setup_summary() {
+    log_info "Setup Summary:"
+    log_info "Project Name: $PROJECT_NAME"
+    log_info "Project Directory: $PROJECT_DIR"
+    log_info "Database Type: $DATABASE_TYPE"
+    log_info "Frontend Framework: $FRONTEND_FRAMEWORK"
+    [ "$SETUP_CLIENT" = true ] && log_info "Client-side setup: Completed" || log_info "Client-side setup: Skipped"
+    [ "$SETUP_API" = true ] && log_info "API setup: Completed" || log_info "API setup: Skipped"
+    [ "$SETUP_NOLOCO" = true ] && log_info "Noloco-like functionality: Completed (Option: $NOLOCO_OPTION)" || log_info "Noloco-like functionality: Skipped"
+}
+
+# Offer to open project in user's preferred editor
+offer_open_in_editor() {
+    if command_exists code; then
+        read -p "Do you want to open the project in Visual Studio Code? (y/n): " open_vscode
+        if [[ $open_vscode == [yY] ]]; then
+            code "$PROJECT_DIR"
+        fi
+    elif command_exists atom; then
+        read -p "Do you want to open the project in Atom? (y/n): " open_atom
+        if [[ $open_atom == [yY] ]]; then
+            atom "$PROJECT_DIR"
+        fi
+    elif command_exists subl; then
+        read -p "Do you want to open the project in Sublime Text? (y/n): " open_sublime
+        if [[ $open_sublime == [yY] ]]; then
+            subl "$PROJECT_DIR"
+        fi
+    else
+        log_info "No supported code editor found. You can open the project manually in your preferred editor."
+    fi
+}
+
+# Remove redundant lines from a file
+remove_redundant_lines() {
+    local file="$1"
+    if [ ! -f "$file" ]; then
+        log_error "File not found: $file"
+        return 1
+    fi
+
+    log_info "Removing redundant lines from $file"
+    # Create a temporary file
+    local temp_file=$(mktemp)
+
+    # Sort the file, remove duplicate lines, and preserve comments
+    awk '!seen[$0]++ || /^#/' "$file" | sort -u > "$temp_file"
+
+    # Replace the original file with the cleaned version
+    mv "$temp_file" "$file"
+
+    log_info "Redundant lines removed from $file"
 }
 
 # Main execution check
